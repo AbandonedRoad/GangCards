@@ -74,16 +74,23 @@ public class WayPoint : MonoBehaviour
             // AI car was hit, but this is a Player Only WayPoint
             return;
         }
+
+        var possibleDirs = AvailableDirections.Where(dir => dir != Directions.NotSet);
         if (other.gameObject.tag == "PlayersCar")
         {
             // This is the Players Car.
             PrefabSingleton.Instance.PlayersCarScript.SetCarBackOnTheRoad(other.gameObject.transform.position, other.gameObject.transform.rotation);
+            if (carScript.NewDirection == Directions.Forward && !possibleDirs.Contains(Directions.Forward) && possibleDirs.Any())
+            {
+                // The user did not decide a new direction! Force it!
+                carScript.TranslateNewDirection(possibleDirs.ElementAt(Random.Range(0, possibleDirs.Count())));
+            }
             carScript.AllowExecute = true;
             SetArrows(false);
             return;
         }
         
-        var possibleDirs = AvailableDirections.Where(dir => dir != Directions.NotSet);
+        // This is for AI Cars
         if (possibleDirs.Any())
         {
             var newDirection = possibleDirs.ElementAt(Random.Range(0, possibleDirs.Count()));

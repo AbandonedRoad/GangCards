@@ -14,6 +14,8 @@ namespace Singleton
         public ActionAfterEffactsHandler ActionAfterEffactsHandler { get; private set; }
         public PlayerActionsHandler ActionsHandler { get; private set; }
         public BuildingActionsHandler BuildingActionsHandler { get; private set; }
+        public ItemHandler ItemHandler { get; private set; }
+        public DebugHandler DebugHandler { get; private set; }
 
         public RegularUpdate RegularUpdate { get; private set; }
 
@@ -48,6 +50,8 @@ namespace Singleton
             ActionsHandler = handlingPrefab.GetComponent<PlayerActionsHandler>();
             BuildingActionsHandler = handlingPrefab.GetComponent<BuildingActionsHandler>();
             RegularUpdate = handlingPrefab.GetComponent<RegularUpdate>();
+            ItemHandler = handlingPrefab.GetComponent<ItemHandler>();
+            DebugHandler = handlingPrefab.GetComponent<DebugHandler>();
 
             PlayersCar = GameObject.Find("PlayerCarsPrefab");
             PlayersCarScript = PlayersCar.GetComponent<MoveCars>();

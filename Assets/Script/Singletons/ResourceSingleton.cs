@@ -6,6 +6,8 @@ using System.Collections;
 using Assets.Script;
 using System.Globalization;
 using Enum;
+using Interfaces;
+using Items;
 
 namespace Singleton
 {
@@ -48,10 +50,82 @@ namespace Singleton
                     continue;
                 }
 
-                var filteredKey = keyValuePair[0].Replace("\r\n", String.Empty).Replace(@"\", String.Empty).Replace("~", String.Empty).Replace("\"", String.Empty);
-                var filteredValue = keyValuePair[1].Replace("\r\n", Environment.NewLine).Replace(@"\", String.Empty).Replace("~", String.Empty).Replace("\"", String.Empty);
+                var filteredKey = keyValuePair[0].Trim();
+                var filteredValue = keyValuePair[1].Trim();
                 _texts.Add(filteredKey, filteredValue);
             }
+        }
+
+        /// <summary>
+        /// Gets all Items fro the Text Ressource
+        /// </summary>
+        /// <returns></returns>
+        internal List<IItem> GetItems()
+        {
+            List<IItem> result = new List<IItem>();
+
+            var items = _texts.Where(pair => pair.Key.StartsWith("Item_"));
+            var keys = items.Where(pair => pair.Key.EndsWith("Name_Ger"));
+
+            foreach (var item in keys)
+            {
+                var key = item.Key.Substring(5, item.Key.Length - ("Item_Name_Ger").Length);
+                string language = SettingsSingleton.Instance.Language == Language.English ? "Eng" : "Ger";
+
+                var name = _texts[String.Concat("Item_", key, "Name_", language)];
+                var itemType = _texts[String.Concat("Item_", key, "Type_", language)];
+                var slot = _texts[String.Concat("Item_", key, "Slot_", language)];
+                var p1Type = _texts[String.Concat("Item_", key, "Prop1Typ_", language)];
+                var p1Val = _texts[String.Concat("Item_", key, "Prop1Val_", language)];
+                var p2Type = _texts[String.Concat("Item_", key, "Prop2Typ_", language)];
+                var p2Val = _texts[String.Concat("Item_", key, "Prop2Val_", language)];
+                var p3Type = _texts[String.Concat("Item_", key, "Prop3Typ_", language)];
+                var p3Val = _texts[String.Concat("Item_", key, "Prop3Val_", language)];                
+
+                if (System.Enum.GetNames(typeof(WeaponType)).Contains(itemType))
+                {
+                    // Its a weapon
+                    var splitP1 = p1Val.Split('-');
+                    var splitP2 = p2Val.Split('-');
+                    var splitP3 = p3Val.Split('-');
+
+                    var wType = String.IsNullOrEmpty(itemType) ? null : System.Enum.Parse(typeof(WeaponType), itemType, true) as WeaponType?;
+                    var d1Type = String.IsNullOrEmpty(p1Type) ? null : System.Enum.Parse(typeof(DamageType), p1Type, true) as DamageType?;
+                    var d2Type = String.IsNullOrEmpty(p2Type) ? null : System.Enum.Parse(typeof(DamageType), p2Type, true) as DamageType?;
+                    var d3Type = String.IsNullOrEmpty(p3Type) ? null : System.Enum.Parse(typeof(DamageType), p3Type, true) as DamageType?;
+                    var iSlot = String.IsNullOrEmpty(slot) ? null : System.Enum.Parse(typeof(ItemSlot), slot, true) as ItemSlot?;
+
+                    IItem weapon = null;
+                    if (splitP2.Length == 1)
+                    {
+                        // Only one Property
+                        weapon = new Weapon();
+                    }
+                    else if (splitP3.Length == 1)
+                    {
+                        // Two Properties
+                        weapon = new Weapon(d2Type.Value, new int[] { int.Parse(splitP2[0]), int.Parse(splitP2[1]) });
+                    }
+                    else
+                    {
+                        weapon = new Weapon(d2Type.Value, new int[] { int.Parse(splitP2[0]), int.Parse(splitP2[1]) },
+                            d3Type.Value, new int[] { int.Parse(splitP3[0]), int.Parse(splitP3[1]) });
+                    }
+                    ((Weapon)weapon).Init(name, wType.Value, iSlot.Value, d1Type.Value, new int[] { int.Parse(splitP1[0]), int.Parse(splitP1[1]) });
+
+                    result.Add(weapon);
+                }
+                else if (System.Enum.GetNames(typeof(ArmorType)).Contains(itemType))
+                {
+                    // Its an aromr
+                }
+                else
+                {
+                    Debug.LogError("Item Type " + itemType + " unknown!");
+                }
+            }
+
+            return result;
         }
 
         /// <summary>

@@ -25,6 +25,7 @@ namespace Menu
         private List<Text> _actionButtonsText;
         private Button _leaveButton;
         private Text _leaveText;
+        private Text _leaveButtonText;
         private Text _entryText;
 
         /// <summary>
@@ -34,14 +35,17 @@ namespace Menu
         {
             _buildingActionsPanel = GameObject.Find("BuildingActionsPanelPrefab");
 
-            _entryText = _buildingActionsPanel.GetComponentsInChildren<Text>().First(btn => btn.name == "EntryText");
-            _leaveText = _buildingActionsPanel.GetComponentsInChildren<Text>().First(btn => btn.name == "LeaveText");
+            var texts = _buildingActionsPanel.GetComponentsInChildren<Text>();
+            _entryText = texts.First(btn => btn.name == "EntryText");
+            _leaveText = texts.First(btn => btn.name == "LeaveText");
+            _leaveButtonText = texts.First(btn => btn.name == "LeaveButtonText");
             _leaveButton = _buildingActionsPanel.GetComponentsInChildren<Button>().First(btn => btn.name == "LeaveButton");
 
             ActionHelper.PrepareInstances(_buildingActionsPanel, ref _actionTexts, ref _actionButtons, ref _actionButtonsText, 4);
 
             _actionButtons.ForEach(btn => btn.onClick.AddListener(() => ActionHelper.ExecuteAction(btn.name, _container.CreatedActions)));
             _leaveButton.onClick.AddListener(() => Leave());
+            _leaveButtonText.text = ResourceSingleton.Instance.GetSpecialText(SpecialText.Close);
 
             SwitchBuildingActionsPanel(false);
         }

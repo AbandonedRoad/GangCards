@@ -11,6 +11,7 @@ namespace Assets.Script.Characters
         /// </summary>
         /// <param name="desiredLevel"></param>
         public GangMember(int desiredLevel)
+            : base()
         {
             StreetName = new List<string>();
 
@@ -23,9 +24,6 @@ namespace Assets.Script.Characters
         /// <param name="desiredLevel"></param>
         private void CreateAIPlayer(int desiredLevel)
         {
-            Name = "Sam Schmidt";
-            StreetName.Add("Das Messer");
-            ActiveStreeName = "Das Messer";
             Strength = Random.Range(1, desiredLevel * 3);
             Intelligence = Random.Range(1, desiredLevel * 3);
             Level = desiredLevel;

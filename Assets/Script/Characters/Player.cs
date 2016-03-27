@@ -11,7 +11,6 @@ namespace Assets.Script.Characters
     {
         public PlayerMember()
         {
-
         }
     }
 }

@@ -34,14 +34,5 @@ namespace Singleton
         {
             
         }
-
-        /// <summary>
-        /// Shows the panel, if needed.
-        /// </summary>
-        /// <param name="show"></param>
-        public void ShowBuildingActionPanel(bool show)
-        {
-            PrefabSingleton.Instance.BuildingActionsHandler.SwitchBuildingActionsPanel(show);
-        }
     }
 }

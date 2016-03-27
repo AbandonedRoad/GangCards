@@ -10,11 +10,11 @@ public class MoveCars : MonoBehaviour
     private bool _isPlayersCar;
     private bool _isTurning;
     private Vector3 _newDirectionRotation;
-    private Directions _newDirection;
 
     public float Speed;
     public bool AllowExecute { get; set; }
     public List<Directions> AllowedDirections { get; set; }
+    public Directions NewDirection { get; private set; }
 
     /// <summary>
     /// Starts the instance
@@ -23,6 +23,7 @@ public class MoveCars : MonoBehaviour
     {
         _newDirectionRotation = this.transform.rotation.eulerAngles;
         _isPlayersCar = this.gameObject.tag == "PlayersCar";
+        NewDirection = Directions.Forward;
         AllowedDirections = new List<Directions>();
     }
 
@@ -49,7 +50,7 @@ public class MoveCars : MonoBehaviour
             return;
         }
 
-        _newDirection = newDirection;
+        NewDirection = newDirection;
         var actRot = transform.rotation.eulerAngles;
         _newDirectionRotation = actRot;
         switch (newDirection)
@@ -96,7 +97,7 @@ public class MoveCars : MonoBehaviour
             this.transform.position = _lastPlayerCarPosition;
             this.transform.rotation = _lastPlayerCarRotation;
 
-            _newDirection = Directions.Forward;
+            NewDirection = Directions.Forward;
             _newDirectionRotation = transform.rotation.eulerAngles;
         }
     }
@@ -119,12 +120,13 @@ public class MoveCars : MonoBehaviour
             this.transform.rotation = Quaternion.Euler(_newDirectionRotation);
             Speed = 0.2f;
             AllowExecute = false;
+            NewDirection = Directions.Forward;
             return;
         }
         else
         {
             _isTurning = true;
-            Speed = _newDirection == Directions.Left ? 0.15f : 0.05f;
+            Speed = NewDirection == Directions.Left ? 0.15f : 0.05f;
             var damping = 2;
             var rotation = Quaternion.Euler(Vector3.zero);
             rotation *= Quaternion.Euler(0, _newDirectionRotation.y, 0);

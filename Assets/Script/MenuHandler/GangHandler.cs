@@ -1,6 +1,9 @@
 ﻿using Assets.Script.Characters;
+using Enum;
+using Interfaces;
 using Singleton;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,11 +23,15 @@ namespace Menu
         private Button _nextButton;
         private Button _previousStreetNameButton;
         private Button _nextStreetNameButton;
+        private Dictionary<ItemSlot, Button> _itemButtons = new Dictionary<ItemSlot, Button>();
+        private Dictionary<ItemSlot, Text> _itemTexts = new Dictionary<ItemSlot, Text>();
         private Text _name;
         private Text _streeName;
         private Text _intelligence;
         private Text _strength;
         private Text _level;
+        private Text _gangName;
+        private Text _gangLevel;
 
         /// <summary>
         /// Start this instance.
@@ -39,6 +46,8 @@ namespace Menu
             _intelligence = texts.First(tx => tx.gameObject.name == "IntelligenceText");
             _strength = texts.First(tx => tx.gameObject.name == "StrengthText");
             _level = texts.First(tx => tx.gameObject.name == "LevelText");
+            _gangName = texts.First(tx => tx.gameObject.name == "GangNameText");
+            _gangLevel = texts.First(tx => tx.gameObject.name == "GangLevelText");
 
             var buttons = _gangPanel.GetComponentsInChildren<Button>();
             _nextButton = buttons.First(tx => tx.gameObject.name == "NextButton");
@@ -46,13 +55,34 @@ namespace Menu
             _nextStreetNameButton = buttons.First(tx => tx.gameObject.name == "NextStreetNameButton");
             _previousStreetNameButton = buttons.First(tx => tx.gameObject.name == "PreviousStreetNameButton");
 
+            _itemButtons.Add(ItemSlot.Chest, buttons.First(tx => tx.gameObject.name == "ChestButton"));
+            _itemButtons.Add(ItemSlot.Knife, buttons.First(tx => tx.gameObject.name == "KnifeButton"));
+            _itemButtons.Add(ItemSlot.MainWeapon, buttons.First(tx => tx.gameObject.name == "MainWeaponButton"));
+            _itemButtons.Add(ItemSlot.Pants, buttons.First(tx => tx.gameObject.name == "PantsButton"));
+            _itemButtons.Add(ItemSlot.Pistol, buttons.First(tx => tx.gameObject.name == "PistolButton"));
+
+            _itemTexts.Add(ItemSlot.Chest, texts.First(tx => tx.gameObject.name == "ChestText"));
+            _itemTexts.Add(ItemSlot.Knife, texts.First(tx => tx.gameObject.name == "KnifeText"));
+            _itemTexts.Add(ItemSlot.MainWeapon, texts.First(tx => tx.gameObject.name == "MainWeaponText"));
+            _itemTexts.Add(ItemSlot.Pants, texts.First(tx => tx.gameObject.name == "PantsText"));
+            _itemTexts.Add(ItemSlot.Pistol, texts.First(tx => tx.gameObject.name == "PistolText"));
+
             _nextButton.onClick.AddListener(() => NextGangster());
             _previousButton.onClick.AddListener(() => PreviousGangster());
 
-            _nextStreetNameButton.onClick.AddListener(() => NextGangster());
-            _previousStreetNameButton.onClick.AddListener(() => PreviousGangster());
+            _nextStreetNameButton.onClick.AddListener(() => NextStreeName());
+            _previousStreetNameButton.onClick.AddListener(() => PreviousStreeName());
 
-            FillLabels(null);
+            foreach (ItemSlot slot in System.Enum.GetValues(typeof(ItemSlot)))
+            {
+                if (slot == ItemSlot.NotSet)
+                {
+                    continue;
+                }
+                _itemButtons[slot].onClick.AddListener(() => PrefabSingleton.Instance.ItemHandler.SelectItem(slot, new Func<IItem, ItemSlot, bool>(NewItemSelected)));
+            }
+
+            FillLabels();
 
             SwitchGangPanel();
         }
@@ -62,11 +92,24 @@ namespace Menu
         /// </summary>
         public void SwitchGangPanel()
         {
-            _gangPanel.SetActive(!_gangPanel.active);
+            _gangPanel.SetActive(!_gangPanel.activeSelf);
             if (_gangPanel.activeSelf)
             {
+                _actualMember = _actualMember ?? CharacterSingleton.Instance.PlayersGang.FirstOrDefault();
+                FillLabels();
+
                 _gangPanel.transform.SetAsLastSibling();
             }
+        }
+
+        /// <summary>
+        /// This is fired if an item was selected.
+        /// </summary>
+        private bool NewItemSelected(IItem selectedItem, ItemSlot desiredSlot)
+        {
+            _actualMember.UsedItems[desiredSlot] = selectedItem;
+
+            return true;
         }
 
         /// <summary>
@@ -76,22 +119,22 @@ namespace Menu
         {
             if (_actualMember == null)
             {
-                _actualMember = CharacterSingleton.Instance.AiPlayers.FirstOrDefault();
+                _actualMember = CharacterSingleton.Instance.PlayersGang.FirstOrDefault();
             }
             else
             {
-                var index = CharacterSingleton.Instance.AiPlayers.IndexOf(_actualMember);
+                var index = CharacterSingleton.Instance.PlayersGang.IndexOf(_actualMember);
                 if (index == 0)
                 {
-                    _actualMember = CharacterSingleton.Instance.AiPlayers.LastOrDefault();
+                    _actualMember = CharacterSingleton.Instance.PlayersGang.LastOrDefault();
                 }
                 else
                 {
                     index--;
-                    _actualMember = CharacterSingleton.Instance.AiPlayers.ElementAt(index);
+                    _actualMember = CharacterSingleton.Instance.PlayersGang.ElementAt(index);
                 }
             }
-            FillLabels(_actualMember);
+            FillLabels();
         }
 
         /// <summary>
@@ -115,7 +158,7 @@ namespace Menu
                 _actualMember.ActiveStreeName = _actualMember.StreetName.ElementAt(index);
             }
 
-            FillLabels(_actualMember);
+            FillLabels();
         }
 
         /// <summary>
@@ -139,7 +182,7 @@ namespace Menu
                 _actualMember.ActiveStreeName = _actualMember.StreetName.ElementAt(index);
             }
 
-            FillLabels(_actualMember);
+            FillLabels();
         }
 
         /// <summary>
@@ -149,35 +192,61 @@ namespace Menu
         {
             if (_actualMember == null)
             {
-                _actualMember = CharacterSingleton.Instance.AiPlayers.FirstOrDefault();
+                _actualMember = CharacterSingleton.Instance.PlayersGang.FirstOrDefault();
             }
             else
             {
-                var index = CharacterSingleton.Instance.AiPlayers.IndexOf(_actualMember);
-                if (index == CharacterSingleton.Instance.AiPlayers.Count -1)
+                var index = CharacterSingleton.Instance.PlayersGang.IndexOf(_actualMember);
+                if (index == CharacterSingleton.Instance.PlayersGang.Count -1)
                 {
-                    _actualMember = CharacterSingleton.Instance.AiPlayers.FirstOrDefault();
+                    _actualMember = CharacterSingleton.Instance.PlayersGang.FirstOrDefault();
                 }
                 else
                 {
                     index++;
-                    _actualMember = CharacterSingleton.Instance.AiPlayers.ElementAt(index);
+                    _actualMember = CharacterSingleton.Instance.PlayersGang.ElementAt(index);
                 }
             }
-            FillLabels(_actualMember);
+            FillLabels();
+        }
+
+        /// <summary>
+        /// Loads actual items.
+        /// </summary>
+        private void LoadItemsFromGangster()
+        {
+            if (_actualMember == null)
+            {
+                return;
+            }
+
+            foreach (var pair in _actualMember.UsedItems)
+            {
+                var actCol = _itemTexts[pair.Key].color;
+                var textColor = new Color(actCol.r, actCol.g, actCol.b, pair.Value == null ? 69 : 255);
+                
+                _itemTexts[pair.Key].color = textColor;
+
+                Debug.Log("Ich habs " + textColor.ToString() + " gemacht, weil ich Item ja ungleich NULL ist!" + pair.Value != null);
+            }
         }
 
         /// <summary>
         /// Fills the labels.
         /// </summary>
         /// <param name="member"></param>
-        private void FillLabels(GangMember member)
+        private void FillLabels()
         {
-            _name.text = member != null ? member.Name : String.Empty;
-            _streeName.text = member != null ? member.ActiveStreeName : String.Empty;
-            _intelligence.text = member != null ? member.Intelligence.ToString() : String.Empty;
-            _strength.text = member != null ? member.Strength.ToString() : String.Empty;
-            _level.text = member != null ? member.Level.ToString() : String.Empty;
+            _gangName.text = CharacterSingleton.Instance.GangName;
+            _gangLevel.text = CharacterSingleton.Instance.GangLevel.ToString();
+
+            _name.text = _actualMember != null ? _actualMember.Name : String.Empty;
+            _streeName.text = _actualMember != null ? _actualMember.ActiveStreeName : String.Empty;
+            _intelligence.text = _actualMember != null ? _actualMember.Intelligence.ToString() : String.Empty;
+            _strength.text = _actualMember != null ? _actualMember.Strength.ToString() : String.Empty;
+            _level.text = _actualMember != null ? _actualMember.Level.ToString() : String.Empty;
+
+            LoadItemsFromGangster();
         }
     }
 }

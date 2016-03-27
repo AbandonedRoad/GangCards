@@ -9,6 +9,8 @@ namespace Enum
     {
         Accept,
         Decline,
+        Close,
+        Ok,
         Leave
     }
 }

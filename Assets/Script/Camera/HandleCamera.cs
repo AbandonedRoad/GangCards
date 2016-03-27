@@ -35,7 +35,6 @@ public class HandleCamera : MonoBehaviour
         */
         if (Input.GetMouseButton(2))
         {
-
             // Mouse control
             var vertAction = Input.GetAxis("Mouse X") * 2f;
             var horzAction = Input.GetAxis("Mouse Y") * 2f;

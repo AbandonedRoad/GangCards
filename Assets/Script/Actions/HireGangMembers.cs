@@ -52,7 +52,7 @@ namespace Assets.Script.Actions
             ActionContainer.SetMethods(this, new string[] { "AddProspectToGang", "DeclineProspect", "Leave" }, 
                 new string[]                 { ResourceSingleton.Instance.GetSpecialText(SpecialText.Accept),
                     ResourceSingleton.Instance.GetSpecialText(SpecialText.Decline),
-                    ResourceSingleton.Instance.GetSpecialText(SpecialText.Leave)});
+                    ResourceSingleton.Instance.GetSpecialText(SpecialText.Close)});
             ActionContainer.Parameters = new string[0];
 
             EvaluateMemberCount();
@@ -68,8 +68,8 @@ namespace Assets.Script.Actions
         public void AddProspectToGang()
         {
             CharacterSingleton.Instance.AddAIPlayer(_actualMember);
-            PrepareNewMember();
 
+            PrepareNewMember();
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace Assets.Script.Actions
             if (_refillStarts >= DateTime.Now)
             {
                 // No members are present.
-                _textPart1 = ResourceSingleton.Instance.CreateActionText(this.GetType().Name.ToString(), "NewMemberPart1Fail");
+                _textPart1 = ResourceSingleton.Instance.CreateActionText(this.GetType().Name.ToString(), "NewMemberFailPart1");
                 _textPart2 = String.Empty;
                 ActionContainer.MethodButtonsActive[0] = false;
                 ActionContainer.MethodButtonsActive[1] = false;
