@@ -67,9 +67,16 @@ namespace Assets.Script.Actions
         /// </summary>
         public void AddProspectToGang()
         {
-            CharacterSingleton.Instance.AddAIPlayer(_actualMember);
-
-            PrepareNewMember();
+            if (DebugSingleton.Instance.IsEnabled)
+            {
+                _actualMember = CharacterSingleton.Instance.GenerateAIPlayer(_pubLevel);
+                CharacterSingleton.Instance.AddAIPlayer(_actualMember);
+            }
+            else
+            {
+                PrepareNewMember();
+                CharacterSingleton.Instance.AddAIPlayer(_actualMember);
+            }
         }
 
         /// <summary>
@@ -77,7 +84,6 @@ namespace Assets.Script.Actions
         /// </summary>
         public void DeclineProspect()
         {
-            Debug.Log("Nope");
             PrepareNewMember();
         }
 

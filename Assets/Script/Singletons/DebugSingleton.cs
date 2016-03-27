@@ -44,9 +44,6 @@ namespace Singleton
             {
                 return;
             }
-
-            _facingDirectionText = PrefabSingleton.Instance.DebugHandler.DebugPanel.GetComponentsInChildren<Text>().First(btn => btn.name == "Facing DirectionValue");
-            _positionText = PrefabSingleton.Instance.DebugHandler.DebugPanel.GetComponentsInChildren<Text>().First(btn => btn.name == "PositionValue");
         }
 
         /// <summary>

@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
+using Assets.Script.Actions;
 
 namespace Menu
 {
@@ -13,19 +15,24 @@ namespace Menu
         public GameObject DebugPanel { get; private set; }
         public bool CreateCrossings { get { return _createCrossings.isOn; } }
 
-        private Button _duplicateBlockButton;
+        private Button _addGangMembers;
         private Toggle _createCrossings;
 
         void Awake()
         {
-            DebugPanel = GameObject.Find("DebugPanel");
+            DebugPanel = GameObject.Find("DebugPanelPrefab");
 
-            _duplicateBlockButton = DebugPanel.GetComponentsInChildren<Button>().First(btn => btn.name == "DuplicateButton");
-            _createCrossings = DebugPanel.GetComponentsInChildren<Toggle>().First(btn => btn.name == "ReplaceCrossings");
+            _addGangMembers = DebugPanel.GetComponentsInChildren<Button>().First(btn => btn.name == "AddGangMembersButton");
 
-            //_duplicateBlockButton.onClick.AddListener(() => StartCoroutine(PrefabSingleton.Instance.LevelGeneratorAftermath.DuplicateHandling(false)));
+            _addGangMembers.onClick.AddListener(() => AddGangMembers());
 
             SwitchDebugPanel();
+        }
+
+        private void AddGangMembers()
+        {
+            var hire = new HireGangMembers("1", "1", "1");
+            hire.AddProspectToGang();
         }
 
         /// <summary>

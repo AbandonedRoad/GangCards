@@ -222,12 +222,8 @@ namespace Menu
 
             foreach (var pair in _actualMember.UsedItems)
             {
-                var actCol = _itemTexts[pair.Key].color;
-                var textColor = new Color(actCol.r, actCol.g, actCol.b, pair.Value == null ? 69 : 255);
-                
-                _itemTexts[pair.Key].color = textColor;
-
-                Debug.Log("Ich habs " + textColor.ToString() + " gemacht, weil ich Item ja ungleich NULL ist!" + pair.Value != null);
+                var actCol = _itemTexts[pair.Key].color;              
+                _itemTexts[pair.Key].color = pair.Value == null ? Color.gray : Color.black;
             }
         }
 
