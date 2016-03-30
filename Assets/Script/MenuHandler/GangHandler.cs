@@ -32,6 +32,7 @@ namespace Menu
         private Text _level;
         private Text _gangName;
         private Text _gangLevel;
+        private GameObject _memberInfosContainer;
 
         /// <summary>
         /// Start this instance.
@@ -39,6 +40,8 @@ namespace Menu
         void Start()
         {
             _gangPanel = GameObject.Find("GangPanel");
+
+            _memberInfosContainer = _gangPanel.GetComponentsInChildren<Transform>().First(go => go.gameObject.name == "MemberInfos").gameObject;
 
             var texts = _gangPanel.GetComponentsInChildren<Text>();
             _name = texts.First(tx => tx.gameObject.name == "NameText");
@@ -82,6 +85,7 @@ namespace Menu
                 _itemButtons[slot].onClick.AddListener(() => PrefabSingleton.Instance.ItemHandler.SelectItem(slot, new Func<IItem, ItemSlot, bool>(NewItemSelected)));
             }
 
+            _memberInfosContainer.SetActive(false);
             FillLabels();
 
             SwitchGangPanel();
@@ -233,6 +237,8 @@ namespace Menu
         /// <param name="member"></param>
         private void FillLabels()
         {
+            _memberInfosContainer.SetActive(_actualMember != null);
+
             _gangName.text = CharacterSingleton.Instance.GangName;
             _gangLevel.text = CharacterSingleton.Instance.GangLevel.ToString();
 

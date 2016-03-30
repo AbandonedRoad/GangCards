@@ -13,6 +13,7 @@ namespace Singleton
         private static CharacterSingleton _instance;
         private NameCreator _nameCreator = new NameCreator();
 
+        public float AvailableMoney { get; set; }
         public List<GangMember> PlayersGang { get; private set; }
         public string GangName { get; set; }
         public int GangLevel { get; set; }
@@ -42,6 +43,7 @@ namespace Singleton
             PlayersGang = new List<GangMember>();
             GangName = "Crumps";
             GangLevel = 1;
+            AvailableMoney = 0;
         }
 
         /// <summary>

@@ -8,6 +8,7 @@ public class WayPoint : MonoBehaviour
 {
     public Directions[] AvailableDirections;
     public bool PlayerOnly;
+    public bool DeadEnd;
 
     private GameObject _planeRight;
     private GameObject _planeLeft;
@@ -80,7 +81,7 @@ public class WayPoint : MonoBehaviour
         {
             // This is the Players Car.
             PrefabSingleton.Instance.PlayersCarScript.SetCarBackOnTheRoad(other.gameObject.transform.position, other.gameObject.transform.rotation);
-            if (carScript.NewDirection == Directions.Forward && !possibleDirs.Contains(Directions.Forward) && possibleDirs.Any())
+            if (carScript.NewDirection == Directions.Forward && !possibleDirs.Contains(Directions.Forward) && possibleDirs.Any() && DeadEnd)
             {
                 // The user did not decide a new direction! Force it!
                 carScript.TranslateNewDirection(possibleDirs.ElementAt(Random.Range(0, possibleDirs.Count())));

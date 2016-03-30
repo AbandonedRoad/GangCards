@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using Random = UnityEngine.Random;
 using System.Linq;
 using Menu;
+using Misc;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
 
 namespace Singleton
 {
@@ -16,8 +19,13 @@ namespace Singleton
         public BuildingActionsHandler BuildingActionsHandler { get; private set; }
         public ItemHandler ItemHandler { get; private set; }
         public DebugHandler DebugHandler { get; private set; }
+        public OptionsSettingsHandler OptionsSettingsHandler { get; private set; }
+        public OptionsHandler OptionsHandler { get; private set; }
+        public ProfileSelectorHandler ProfileSelectorHandler { get; private set; }
 
         public RegularUpdate RegularUpdate { get; private set; }
+        public PlayerProfile ProfileContainer { get; set; }
+        public GameData ActualGameData { get; set; }
 
         public GameObject PlayersCar { get; set; }
         public MoveCars PlayersCarScript { get; set; }
@@ -52,9 +60,15 @@ namespace Singleton
             RegularUpdate = handlingPrefab.GetComponent<RegularUpdate>();
             ItemHandler = handlingPrefab.GetComponent<ItemHandler>();
             DebugHandler = handlingPrefab.GetComponent<DebugHandler>();
+            OptionsSettingsHandler = handlingPrefab.GetComponent<OptionsSettingsHandler>();
+            OptionsHandler = handlingPrefab.GetComponent<OptionsHandler>();
+            ProfileSelectorHandler = handlingPrefab.GetComponent<ProfileSelectorHandler>();
 
             PlayersCar = GameObject.Find("PlayerCarsPrefab");
             PlayersCarScript = PlayersCar.GetComponent<MoveCars>();
+
+            ProfileContainer = new PlayerProfile();
+            ActualGameData = new GameData();
         }
 
         /// <summary>
@@ -70,6 +84,26 @@ namespace Singleton
             result.name = result.name.Substring(0, result.name.Length - 7);
 
             return result;
+        }
+
+        /// <summary>
+        /// Load this instance.
+        /// </summary>
+        public void LoadGameData()
+        {
+            string path = Application.persistentDataPath + "/game" + PrefabSingleton.Instance.ProfileContainer.ActiveProfile + ".dat";
+            if (File.Exists(path))
+            {
+                BinaryFormatter formatter = new BinaryFormatter();
+                FileStream file = File.Open(path, FileMode.Open);
+                PrefabSingleton.Instance.ActualGameData = formatter.Deserialize(file) as GameData;
+
+                file.Close();
+            }
+            else
+            {
+                PrefabSingleton.Instance.ActualGameData = new GameData();
+            }
         }
     }
 }

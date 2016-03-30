@@ -1,0 +1,20 @@
+Item_KnifeKey	1490745523~
+Item_KnifeLevel	1~
+Item_KnifeName_Ger	Simple Knife~
+Item_KnifeType_Ger	Blade~
+Item_KnifeSlot_Ger	Knife~
+Item_KnifeProp1Val_Ger	2-6~
+Item_KnifeProp2Val_Ger	~
+Item_KnifeProp3Val_Ger	~
+Item_KnifeName_Eng	Einfaches Messer~
+Item_KnifeType_Eng	Blade~
+Item_KnifeSlot_Eng	Knife~
+Item_KnifeProp1Typ_Eng	CutDamage~
+Item_KnifeProp2Typ_Eng	~
+Item_KnifeProp3Typ_Eng	~
+Item_KnifeProp1Val_Eng	2-6~
+Item_KnifeProp2Val_Eng	~
+Item_KnifeProp3Val_Eng	~
+Item_KnifeProp1Typ_Ger	CutDamage~
+Item_KnifeProp2Typ_Ger	~
+Item_KnifeProp3Typ_Ger	~

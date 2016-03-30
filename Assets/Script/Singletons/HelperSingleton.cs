@@ -5,6 +5,7 @@ using System.Linq;
 using System.Collections;
 using Assets.Script;
 using System.Globalization;
+using Misc;
 
 namespace Singleton
 {
@@ -14,7 +15,7 @@ namespace Singleton
         private static HelperSingleton _instance;
 
         public GameObject SelectedObject { get; set; }      // The object, which is build right now.
-        public bool IsBuilding { get; set; }                // Indicates if building is in process
+        public List<LogInfo> LogMessages { get; private set; }
 
         /// <summary>
         /// Gets instance
@@ -31,7 +32,7 @@ namespace Singleton
 
                 return _instance;
             }
-        }        
+        }
 
         /// <summary>
         /// Initialize
@@ -39,6 +40,7 @@ namespace Singleton
         private void Init()
         {
             _terrainCollider = Terrain.activeTerrain.GetComponent<Collider>();
+            LogMessages = new List<LogInfo>();
         }
 
         /// <summary>

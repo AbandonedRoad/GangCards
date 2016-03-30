@@ -48,7 +48,6 @@ namespace Assets.Script.Actions
             base.ExecuteAction();
 
             ActionContainer = new ActionContainerMethod();
-            ActionContainer.TextRessourcePrefix = "HireGang";
             ActionContainer.SetMethods(this, new string[] { "AddProspectToGang", "DeclineProspect", "Leave" }, 
                 new string[]                 { ResourceSingleton.Instance.GetSpecialText(SpecialText.Accept),
                     ResourceSingleton.Instance.GetSpecialText(SpecialText.Decline),
@@ -85,14 +84,6 @@ namespace Assets.Script.Actions
         public void DeclineProspect()
         {
             PrepareNewMember();
-        }
-
-        /// <summary>
-        /// Close this shit.
-        /// </summary>
-        public void Leave()
-        {
-            PrefabSingleton.Instance.ActionAfterEffactsHandler.SwitchAfterEffectsPanel(false);
         }
 
         /// <summary>

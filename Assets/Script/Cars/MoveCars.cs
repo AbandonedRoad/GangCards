@@ -30,6 +30,11 @@ public class MoveCars : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Time.timeScale == 0)
+        {
+            return;
+        }
+
         this.transform.position = this.transform.position + (transform.forward * Speed);
 
         if (Speed > 0)

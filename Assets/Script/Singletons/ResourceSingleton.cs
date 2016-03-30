@@ -16,6 +16,7 @@ namespace Singleton
         private static ResourceSingleton _instance;
 
         private Dictionary<string, string> _texts = new Dictionary<string, string>();
+        private Dictionary<string, string> _items = new Dictionary<string, string>();
 
         /// <summary>
         /// Gets instance
@@ -54,6 +55,22 @@ namespace Singleton
                 var filteredValue = keyValuePair[1].Trim();
                 _texts.Add(filteredKey, filteredValue);
             }
+
+            texts = Resources.Load("ItemResources") as TextAsset;
+            splitUp = texts.text.Split(new string[] { "~" }, StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (var splitted in splitUp)
+            {
+                var keyValuePair = splitted.Split('\t');
+                if (keyValuePair.Count() != 2)
+                {
+                    continue;
+                }
+
+                var filteredKey = keyValuePair[0].Trim();
+                var filteredValue = keyValuePair[1].Trim();
+                _items.Add(filteredKey, filteredValue);
+            }
         }
 
         /// <summary>
@@ -64,7 +81,7 @@ namespace Singleton
         {
             List<IItem> result = new List<IItem>();
 
-            var items = _texts.Where(pair => pair.Key.StartsWith("Item_"));
+            var items = _items.Where(pair => pair.Key.StartsWith("Item_"));
             var keys = items.Where(pair => pair.Key.EndsWith("Name_Ger"));
 
             foreach (var item in keys)
@@ -72,15 +89,15 @@ namespace Singleton
                 var key = item.Key.Substring(5, item.Key.Length - ("Item_Name_Ger").Length);
                 string language = SettingsSingleton.Instance.Language == Language.English ? "Eng" : "Ger";
 
-                var name = _texts[String.Concat("Item_", key, "Name_", language)];
-                var itemType = _texts[String.Concat("Item_", key, "Type_", language)];
-                var slot = _texts[String.Concat("Item_", key, "Slot_", language)];
-                var p1Type = _texts[String.Concat("Item_", key, "Prop1Typ_", language)];
-                var p1Val = _texts[String.Concat("Item_", key, "Prop1Val_", language)];
-                var p2Type = _texts[String.Concat("Item_", key, "Prop2Typ_", language)];
-                var p2Val = _texts[String.Concat("Item_", key, "Prop2Val_", language)];
-                var p3Type = _texts[String.Concat("Item_", key, "Prop3Typ_", language)];
-                var p3Val = _texts[String.Concat("Item_", key, "Prop3Val_", language)];                
+                var name = _items[String.Concat("Item_", key, "Name_", language)];
+                var itemType = _items[String.Concat("Item_", key, "Type_", language)];
+                var slot = _items[String.Concat("Item_", key, "Slot_", language)];
+                var p1Type = _items[String.Concat("Item_", key, "Prop1Typ_", language)];
+                var p1Val = _items[String.Concat("Item_", key, "Prop1Val_", language)];
+                var p2Type = _items[String.Concat("Item_", key, "Prop2Typ_", language)];
+                var p2Val = _items[String.Concat("Item_", key, "Prop2Val_", language)];
+                var p3Type = _items[String.Concat("Item_", key, "Prop3Typ_", language)];
+                var p3Val = _items[String.Concat("Item_", key, "Prop3Val_", language)];                
 
                 if (System.Enum.GetNames(typeof(WeaponType)).Contains(itemType))
                 {

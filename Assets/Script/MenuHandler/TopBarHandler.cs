@@ -19,6 +19,8 @@ namespace Assets.Script.MenuHandler
         private GameObject _headerPanel;
         private Text _gangAmountText;
         private Text _cashText;
+        private Text _timeOfDay;
+        private DayNightController _dayNightController;
 
         /// <summary>
         /// Start this instance.
@@ -27,9 +29,13 @@ namespace Assets.Script.MenuHandler
         {
             _headerPanel = GameObject.Find("HeaderBarPrefab");
 
+            var dayNight = GameObject.Find("DayNightCycle_For SmallMaps");
+            _dayNightController = dayNight.GetComponent<DayNightController>();
+
             var texts = _headerPanel.GetComponentsInChildren<Text>();
             _gangAmountText = texts.FirstOrDefault(tx => tx.name == "GangsterAmountText");
             _cashText = texts.FirstOrDefault(tx => tx.name == "MoneyAmountText");
+            _timeOfDay = texts.FirstOrDefault(tx => tx.name == "TimeOfDayText");
         }
 
         /// <summary>
@@ -38,7 +44,8 @@ namespace Assets.Script.MenuHandler
         void Update()
         {
             _gangAmountText.text = CharacterSingleton.Instance.PlayersGang.Count.ToString();
-            _cashText.text = "1500$";
+            _cashText.text = String.Concat(CharacterSingleton.Instance.AvailableMoney.ToString(), "$");
+            _timeOfDay.text = _dayNightController.timeString;
         }
     }
 }

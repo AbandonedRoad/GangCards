@@ -6,12 +6,12 @@ Decline_Eng	Decline~
 Decline_Ger	Ablehnen~
 PubAction0_Eng	Try to find new crew members.~
 PubAction0_Ger	Versuche ein paar Mitglieder für die Gang zu finden.~
-PubEntry_Eng	"You entered a bedraggled pub - whereby you are not sure what is worse: The drinks or the guests...
+PubEntry_Eng	You entered a bedraggled pub - whereby you are not sure what is worse: The drinks or the guests...
 
-What do you want to do?"~
-PubEntry_Ger	"Du betritts eine herunter gekommen Bar - du überlegst noch was schlimmer ist: Die Getränke oder die Gäste...
+What do you want to do?~
+PubEntry_Ger	Du betritts eine herunter gekommen Bar - du überlegst noch was schlimmer ist: Die Getränke oder die Gäste...
 
-Was willst du tun?"~
+Was willst du tun?~
 HireGangMembers_Eng	Find Prospects~
 HireGangMembers_Ger	Anwärter suchen~
 HireGangMembersNewMemberFailPart1_Eng	At the moment, nobody is in the Bar who want's to talk to you - come back later.~
@@ -36,21 +36,27 @@ Ok_Eng	Ok~
 Ok_Ger	Ok~
 Close_Eng	Close~
 Close_Ger	Schließen~
-Item_KnifeName_Ger	Simple Knife~
-Item_KnifeType_Ger	Blade~
-Item_KnifeSlot_Ger	Knife~
-Item_KnifeProp1Val_Ger	2-6~
-Item_KnifeProp2Val_Ger	~
-Item_KnifeProp3Val_Ger	~
-Item_KnifeName_Eng	Einfaches Messer~
-Item_KnifeType_Eng	Blade~
-Item_KnifeSlot_Eng	Knife~
-Item_KnifeProp1Typ_Eng	CutDamage~
-Item_KnifeProp2Typ_Eng	~
-Item_KnifeProp3Typ_Eng	~
-Item_KnifeProp1Val_Eng	2-6~
-Item_KnifeProp2Val_Eng	~
-Item_KnifeProp3Val_Eng	~
-Item_KnifeProp1Typ_Ger	CutDamage~
-Item_KnifeProp2Typ_Ger	~
-Item_KnifeProp3Typ_Ger	~
+BegForMoney_Eng	Beg for money~
+BegForMoney_Ger	Um Geld betteln~
+BegForMoneyPart1_Eng	Your members fall on their knees and beg for a few coins...~
+BegForMoneyPart1_Ger	Deine Member fallen auf die Knie und betteln um ein paar Münzen...~
+BegForMoneyPart2_Eng	The owner feels pity for your members and throws you a few coins - how deep have you sunk?
+
+You got:~
+BegForMoneyPart2_Ger	Der Besitzer hat Mitleid mit deinen Membern und wirft ein paar Münzen hin - wie tief seid ihr gesunken?
+
+Ihr erbeutest:~
+BegForMoneyPart2Fail_Eng	The owner kicks all of your members out.
+
+Damage for each member~
+BegForMoneyPart2Fail_Ger	Der Besitzer verpasst all deinen Membern einen Tritt und befördert sie aus dem Laden.
+
+Schaden pro Member:~
+SupermarketEntry_Eng	You enter a Supermarket. A few customers do mind their own business.
+
+What do you want to do?~
+SupermarketEntry_Ger	Ihr betretet einen Supermarkt. Ein paar Leute befinden sich im Laden.
+
+Was wollt ihr tun?~
+SupermarketAction0_Eng	Beg for a few coins at the supermarkt owner.~
+SupermarketAction0_Ger	Bettle beim Supermarkt Besitzer um etwas Geld~
