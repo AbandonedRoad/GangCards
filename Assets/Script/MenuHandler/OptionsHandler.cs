@@ -19,6 +19,7 @@ namespace Menu
         private GameObject _blackBackground;
         private GameObject _optionsPanel;
         private Text _actualProfileText;
+        private Button _continueButton;
 
 		/// <summary>
 		/// Awake this instance.
@@ -30,6 +31,7 @@ namespace Menu
             _optionsPanel = GameObject.Find("OptionsPanelPrefab");
             _blackBackground = GameObject.Find("BlackBackgroundPanel");
             PrefabSingleton.Instance.ProfileSelectorHandler.ProfileChanged += HandleProfileChanged;
+            _continueButton = _optionsPanel.GetComponentsInChildren<Button>().First(btn => btn.gameObject.name == "ContinueButton");
 
             LoadProfiles();
 
@@ -48,8 +50,7 @@ namespace Menu
 			PrefabSingleton.Instance.LoadGameData();
             _actualProfileText.text = PrefabSingleton.Instance.ProfileContainer.ActiveProfile;
 
-            _blackBackground.SetActive(false);
-            _optionsPanel.SetActive(false);
+            _continueButton.interactable = true;
         }
 
 		/// <summary>

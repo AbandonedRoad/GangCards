@@ -96,7 +96,7 @@ namespace Assets.Script.Actions
             if (_refillStarts >= DateTime.Now)
             {
                 // No members are present.
-                _textPart1 = ResourceSingleton.Instance.CreateActionText(this.GetType().Name.ToString(), "NewMemberFailPart1");
+                _textPart1 = ResourceSingleton.Instance.CreateActionText(this.GetType().Name.ToString(), "NewMemberPart1Fail");
                 _textPart2 = String.Empty;
                 ActionContainer.MethodButtonsActive[0] = false;
                 ActionContainer.MethodButtonsActive[1] = false;

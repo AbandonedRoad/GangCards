@@ -4,22 +4,28 @@ Accept_Eng	Accept~
 Accept_Ger	Akzeptieren~
 Decline_Eng	Decline~
 Decline_Ger	Ablehnen~
-PubAction0_Eng	Try to find new crew members.~
-PubAction0_Ger	Versuche ein paar Mitglieder für die Gang zu finden.~
+Ok_Eng	Ok~
+Ok_Ger	Ok~
+Close_Eng	Close~
+Close_Ger	Schließen~
 PubEntry_Eng	You entered a bedraggled pub - whereby you are not sure what is worse: The drinks or the guests...
 
 What do you want to do?~
 PubEntry_Ger	Du betritts eine herunter gekommen Bar - du überlegst noch was schlimmer ist: Die Getränke oder die Gäste...
 
 Was willst du tun?~
+PubAction0_Eng	Try to find new crew members.~
+PubAction0_Ger	Versuche ein paar Mitglieder für die Gang zu finden.~
 HireGangMembers_Eng	Find Prospects~
 HireGangMembers_Ger	Anwärter suchen~
-HireGangMembersNewMemberFailPart1_Eng	At the moment, nobody is in the Bar who want's to talk to you - come back later.~
 HireGangMembersNewMemberPart1_Eng	A thug is coming to your table and wants to join your gang.~
-HireGangMembersNewMemberPart2_Eng	The following characteristic are obvious for you:~
-HireGangMembersNewMemberFailPart1_Ger	Momentan ist kein Gangster in der Bar, der sich dir anschließen will - komm später wieder.~
 HireGangMembersNewMemberPart1_Ger	Ein Gangster kommt zu dir an den Tisch um sich dir vorzustellen.~
+HireGangMembersNewMemberPart2_Eng	The following characteristic are obvious for you:~
 HireGangMembersNewMemberPart2_Ger	Folgende Charakterzüge sind dir aufgefallen:~
+HireGangMembersNewMemberPart1Fail_Eng	At the moment, nobody is in the Bar who want's to talk to you - come back later.~
+HireGangMembersNewMemberPart1Fail_Ger	Momentan ist kein Gangster in der Bar, der sich dir anschließen will - komm später wieder.~
+HireGangMembersNewMemberPart2Fail_Eng	~
+HireGangMembersNewMemberPart2Fail_Ger	~
 GangMemberIntelligence_Eng	Intelligence~
 GangMemberIntelligence_Ger	Intelligenz~
 GangMemberStreeName_Eng	Street Name~
@@ -32,10 +38,14 @@ UseCar_Eng	Use Car~
 UseCar_Ger	Benutze Auto~
 UseCarAction0_Eng	Drive with the car.~
 UseCarAction0_Ger	Fahre mit dem Auto.~
-Ok_Eng	Ok~
-Ok_Ger	Ok~
-Close_Eng	Close~
-Close_Ger	Schließen~
+SupermarketEntry_Eng	You enter a Supermarket. A few customers do mind their own business.
+
+What do you want to do?~
+SupermarketEntry_Ger	Ihr betretet einen Supermarkt. Ein paar Leute befinden sich im Laden.
+
+Was wollt ihr tun?~
+SupermarketAction0_Eng	Beg for a few coins at the supermarkt owner.~
+SupermarketAction0_Ger	Bettle beim Supermarkt Besitzer um etwas Geld~
 BegForMoney_Eng	Beg for money~
 BegForMoney_Ger	Um Geld betteln~
 BegForMoneyPart1_Eng	Your members fall on their knees and beg for a few coins...~
@@ -46,17 +56,11 @@ You got:~
 BegForMoneyPart2_Ger	Der Besitzer hat Mitleid mit deinen Membern und wirft ein paar Münzen hin - wie tief seid ihr gesunken?
 
 Ihr erbeutest:~
+BegForMoneyPart1Fail_Eng	~
+BegForMoneyPart1Fail_Ger	~
 BegForMoneyPart2Fail_Eng	The owner kicks all of your members out.
 
 Damage for each member~
 BegForMoneyPart2Fail_Ger	Der Besitzer verpasst all deinen Membern einen Tritt und befördert sie aus dem Laden.
 
 Schaden pro Member:~
-SupermarketEntry_Eng	You enter a Supermarket. A few customers do mind their own business.
-
-What do you want to do?~
-SupermarketEntry_Ger	Ihr betretet einen Supermarkt. Ein paar Leute befinden sich im Laden.
-
-Was wollt ihr tun?~
-SupermarketAction0_Eng	Beg for a few coins at the supermarkt owner.~
-SupermarketAction0_Ger	Bettle beim Supermarkt Besitzer um etwas Geld~
