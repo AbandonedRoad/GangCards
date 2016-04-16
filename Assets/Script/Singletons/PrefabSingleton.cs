@@ -22,6 +22,7 @@ namespace Singleton
         public OptionsSettingsHandler OptionsSettingsHandler { get; private set; }
         public OptionsHandler OptionsHandler { get; private set; }
         public ProfileSelectorHandler ProfileSelectorHandler { get; private set; }
+        public FightingHandler FightingHandler { get; private set; }
 
         public RegularUpdate RegularUpdate { get; private set; }
         public PlayerProfile ProfileContainer { get; set; }
@@ -63,12 +64,18 @@ namespace Singleton
             OptionsSettingsHandler = handlingPrefab.GetComponent<OptionsSettingsHandler>();
             OptionsHandler = handlingPrefab.GetComponent<OptionsHandler>();
             ProfileSelectorHandler = handlingPrefab.GetComponent<ProfileSelectorHandler>();
+            FightingHandler = handlingPrefab.GetComponent<FightingHandler>();
 
             PlayersCar = GameObject.Find("PlayerCarsPrefab");
             PlayersCarScript = PlayersCar.GetComponent<MoveCars>();
 
             ProfileContainer = new PlayerProfile();
             ActualGameData = new GameData();
+        }
+
+        private void LoadImages()
+        {
+
         }
 
         /// <summary>

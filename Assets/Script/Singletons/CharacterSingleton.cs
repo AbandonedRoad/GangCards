@@ -1,5 +1,6 @@
 ﻿using Assets.Script.Characters;
 using Characters;
+using Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,8 @@ namespace Singleton
         private NameCreator _nameCreator = new NameCreator();
 
         public float AvailableMoney { get; set; }
-        public List<GangMember> PlayersGang { get; private set; }
+        public List<IGangMember> PlayersGang { get; private set; }
+        public List<IGangMember> PlayerMembersInCar { get; private set; }
         public string GangName { get; set; }
         public int GangLevel { get; set; }
 
@@ -40,7 +42,8 @@ namespace Singleton
         /// </summary>
         private void Init()
         {
-            PlayersGang = new List<GangMember>();
+            PlayersGang = new List<IGangMember>();
+            PlayerMembersInCar = new List<IGangMember>();
             GangName = "Crumps";
             GangLevel = 1;
             AvailableMoney = 0;
@@ -51,9 +54,9 @@ namespace Singleton
         /// </summary>
         /// <param name="desiredLevel"></param>
         /// <returns></returns>
-        public GangMember GenerateAIPlayer(int desiredLevel)
+        public IGangMember GenerateAIPlayer(int desiredLevel)
         {
-            var member = new GangMember(desiredLevel);
+            var member = new Human(desiredLevel);
 
             var name = _nameCreator.GenerateName(UnityEngine.Random.Range(0, 2) == 0);
             member.Name = String.Concat(name[0], " ", name[1]);
@@ -65,7 +68,7 @@ namespace Singleton
         /// Adds a new AI Player
         /// </summary>
         /// <param name="desiredLevel"></param>
-        public void AddAIPlayer(GangMember newMember)
+        public void AddAIPlayer(IGangMember newMember)
         {
             PlayersGang.Add(newMember);
         }

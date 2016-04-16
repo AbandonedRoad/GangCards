@@ -1,4 +1,4 @@
-﻿namespace Assets.Script.Actions
+﻿namespace Interfaces
 {
     public interface IAction
     {

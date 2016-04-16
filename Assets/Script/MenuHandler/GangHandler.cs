@@ -1,5 +1,4 @@
-﻿using Assets.Script.Characters;
-using Enum;
+﻿using Enum;
 using Interfaces;
 using Singleton;
 using System;
@@ -17,7 +16,7 @@ namespace Menu
             get { return _gangPanel; }
         }
 
-        private GangMember _actualMember;
+        private IGangMember _actualMember;
         private GameObject _gangPanel;
         private Button _previousButton;
         private Button _nextButton;

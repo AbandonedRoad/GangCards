@@ -1,6 +1,7 @@
 ﻿using System;
 using Singleton;
 using UnityEngine;
+using Interfaces;
 
 namespace Assets.Script.Actions
 {

@@ -1,4 +1,5 @@
 ﻿using Assets.Script.Characters;
+using Interfaces;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,7 +10,7 @@ namespace Misc
     public class SceneData
     {
         public List<GOInfo> GameObjects { get; set; }
-        public List<GangMember> GangMembers { get; set; }
+        public List<IGangMember> GangMembers { get; set; }
         public float Money { get; set; }
 
         public int ActualScene;
@@ -25,7 +26,7 @@ namespace Misc
         public SceneData()
         {
             GameObjects = new List<GOInfo>();
-            GangMembers = new List<GangMember>();
+            GangMembers = new List<IGangMember>();
         }
 
         /// <summary>

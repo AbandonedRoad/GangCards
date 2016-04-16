@@ -1,6 +1,7 @@
 ﻿using Assets.Script;
 using Assets.Script.Actions;
 using Enum;
+using Interfaces;
 using Singleton;
 using System;
 using System.Collections.Generic;

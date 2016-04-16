@@ -8,6 +8,7 @@ using System.Globalization;
 using Enum;
 using Interfaces;
 using Items;
+using UnityEngine.UI;
 
 namespace Singleton
 {
@@ -17,6 +18,8 @@ namespace Singleton
 
         private Dictionary<string, string> _texts = new Dictionary<string, string>();
         private Dictionary<string, string> _items = new Dictionary<string, string>();
+
+        public Dictionary<string, Sprite> ImageFaces { get; private set; }
 
         /// <summary>
         /// Gets instance
@@ -40,6 +43,8 @@ namespace Singleton
         /// </summary>
         private void Init()
         {
+            // Load TextRessource.
+            ImageFaces = new Dictionary<string, Sprite>();
             var texts = Resources.Load("TextResources") as TextAsset;
             var splitUp = texts.text.Split(new string[] { "~" }, StringSplitOptions.RemoveEmptyEntries);
 
@@ -56,6 +61,7 @@ namespace Singleton
                 _texts.Add(filteredKey, filteredValue);
             }
 
+            // Load Item ressources.
             texts = Resources.Load("ItemResources") as TextAsset;
             splitUp = texts.text.Split(new string[] { "~" }, StringSplitOptions.RemoveEmptyEntries);
 
@@ -71,6 +77,33 @@ namespace Singleton
                 var filteredValue = keyValuePair[1].Trim();
                 _items.Add(filteredKey, filteredValue);
             }
+
+            // Load Image Ressources
+            Sprite image = Resources.Load<Sprite>(@"Faces/Shaman1");
+            int groupCounter = 2;
+            int faceCounter = 0;
+            List<string> faceGroups = new List<string> { "Shaman", "Thug" };
+            var faceToLoad = faceGroups.ElementAt(faceCounter);
+            string nameToBeSearched;
+            while (image != null)
+            {
+                nameToBeSearched = String.Concat(@"Faces/", faceToLoad, groupCounter.ToString());
+                image = Resources.Load<Sprite>(nameToBeSearched);
+                if (image == null)
+                {
+                    faceCounter++;
+                    faceToLoad = faceGroups.ElementAt(faceCounter);
+                    groupCounter = 1;
+
+                    nameToBeSearched = String.Concat(@"Faces/", faceToLoad, groupCounter.ToString());
+                    image = Resources.Load<Sprite>(nameToBeSearched);
+                }
+                else
+                {
+                    groupCounter++;
+                    ImageFaces.Add(nameToBeSearched, image);
+                }
+            }             
         }
 
         /// <summary>

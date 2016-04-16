@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Assets.Script.Interfaces
+namespace Interfaces
 {
-    public interface IPlayerCharacter
+    public interface IAnimalStrategy
     {
+        float ExecuteAttack();
     }
 }

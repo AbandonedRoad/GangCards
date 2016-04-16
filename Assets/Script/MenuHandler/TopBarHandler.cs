@@ -25,11 +25,11 @@ namespace Assets.Script.MenuHandler
         /// <summary>
         /// Start this instance.
         /// </summary>
-        void Start()
+        void Awake()
         {
             _headerPanel = GameObject.Find("HeaderBarPrefab");
 
-            var dayNight = GameObject.Find("DayNightCycle_For SmallMaps");
+            var dayNight = GameObject.Find("DayNightCycle_Sun");
             _dayNightController = dayNight.GetComponent<DayNightController>();
 
             var texts = _headerPanel.GetComponentsInChildren<Text>();

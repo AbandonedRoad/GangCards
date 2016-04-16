@@ -15,6 +15,7 @@ namespace Assets.Script.Characters
         public int Intelligence { get; set; }
         public int Strength { get; set; }
         public int Level { get; set; }
+        public string ImageName { get; set; }
 
         public Dictionary<ItemSlot, IItem> UsedItems { get; set; }
 
@@ -24,6 +25,7 @@ namespace Assets.Script.Characters
         public CharacterBase()
         {
             UsedItems = new Dictionary<ItemSlot, IItem>();
+            ImageName = "Thug1";
 
             foreach (ItemSlot item in System.Enum.GetValues(typeof(ItemSlot)))
             {

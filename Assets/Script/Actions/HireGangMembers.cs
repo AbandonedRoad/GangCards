@@ -1,6 +1,6 @@
 ﻿using Actions;
-using Assets.Script.Characters;
 using Enum;
+using Interfaces;
 using Singleton;
 using System;
 using System.Collections.Generic;
@@ -17,7 +17,7 @@ namespace Assets.Script.Actions
         public ActionContainerMethod ActionContainer { get; private set; }
         private DateTime _refillStarts = DateTime.MinValue;
         private int _membersCreated = 0;
-        private GangMember _actualMember;
+        private IGangMember _actualMember;
         private string _textPart1;
         private string _textPart2;
 
@@ -70,6 +70,7 @@ namespace Assets.Script.Actions
             {
                 _actualMember = CharacterSingleton.Instance.GenerateAIPlayer(_pubLevel);
                 CharacterSingleton.Instance.AddAIPlayer(_actualMember);
+                CharacterSingleton.Instance.PlayerMembersInCar.Add(_actualMember);
             }
             else
             {
