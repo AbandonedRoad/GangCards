@@ -79,29 +79,31 @@ namespace Singleton
             }
 
             // Load Image Ressources
-            Sprite image = Resources.Load<Sprite>(@"Faces/Shaman1");
-            int groupCounter = 2;
+            Sprite image = null;
+            int groupCounter = 1;
             int faceCounter = 0;
             List<string> faceGroups = new List<string> { "Shaman", "Thug" };
             var faceToLoad = faceGroups.ElementAt(faceCounter);
             string nameToBeSearched;
-            while (image != null)
+            while (true)
             {
                 nameToBeSearched = String.Concat(@"Faces/", faceToLoad, groupCounter.ToString());
                 image = Resources.Load<Sprite>(nameToBeSearched);
                 if (image == null)
                 {
                     faceCounter++;
-                    faceToLoad = faceGroups.ElementAt(faceCounter);
+                    faceToLoad = faceGroups.Count > faceCounter ? faceGroups.ElementAt(faceCounter) : String.Empty;
                     groupCounter = 1;
-
-                    nameToBeSearched = String.Concat(@"Faces/", faceToLoad, groupCounter.ToString());
-                    image = Resources.Load<Sprite>(nameToBeSearched);
                 }
                 else
                 {
+                    ImageFaces.Add(faceToLoad + groupCounter.ToString(), image);
                     groupCounter++;
-                    ImageFaces.Add(nameToBeSearched, image);
+                }
+
+                if (String.IsNullOrEmpty(faceToLoad))
+                {
+                    break;
                 }
             }             
         }
@@ -123,6 +125,7 @@ namespace Singleton
                 string language = SettingsSingleton.Instance.Language == Language.English ? "Eng" : "Ger";
 
                 var name = _items[String.Concat("Item_", key, "Name_", language)];
+                var itemKey = int.Parse(_items[String.Concat("Item_", key, "Key")]);
                 var itemType = _items[String.Concat("Item_", key, "Type_", language)];
                 var slot = _items[String.Concat("Item_", key, "Slot_", language)];
                 var p1Type = _items[String.Concat("Item_", key, "Prop1Typ_", language)];
@@ -161,7 +164,7 @@ namespace Singleton
                         weapon = new Weapon(d2Type.Value, new int[] { int.Parse(splitP2[0]), int.Parse(splitP2[1]) },
                             d3Type.Value, new int[] { int.Parse(splitP3[0]), int.Parse(splitP3[1]) });
                     }
-                    ((Weapon)weapon).Init(name, wType.Value, iSlot.Value, d1Type.Value, new int[] { int.Parse(splitP1[0]), int.Parse(splitP1[1]) });
+                    ((Weapon)weapon).Init(itemKey, name, wType.Value, iSlot.Value, d1Type.Value, new int[] { int.Parse(splitP1[0]), int.Parse(splitP1[1]) });
 
                     result.Add(weapon);
                 }
@@ -186,7 +189,7 @@ namespace Singleton
         /// <returns></returns>
         public string CreateActionText(string prefix, int actualAction)
         {
-            var key = string.Concat(prefix, "Action", actualAction.ToString(), SettingsSingleton.Instance.Language == Language.English ? "_Eng" : "_Ger");
+            var key = string.Concat(prefix, "Action", actualAction.ToString());
 
             return ResourceSingleton.Instance.GetText(key);
         }
@@ -199,7 +202,7 @@ namespace Singleton
         /// <returns></returns>
         public string CreateActionText(string prefix, string textType)
         {
-            var key = string.Concat(prefix, textType, SettingsSingleton.Instance.Language == Language.English ? "_Eng" : "_Ger");
+            var key = string.Concat(prefix, textType);
 
             return ResourceSingleton.Instance.GetText(key);
         }
@@ -212,6 +215,8 @@ namespace Singleton
         public string GetText(string key)
         {
             string result;
+            key += (SettingsSingleton.Instance.Language == Language.English ? "_Eng" : "_Ger");
+
             if (!_texts.TryGetValue(key, out result))
             {
                 result = String.Concat("?! Key: '", key, "' !?");

@@ -9,8 +9,8 @@ namespace Items
     public class DamageRange
     {
         public DamageType Type { get; private set; }
-        public int MinDamage { get; private set; }
-        public int MaxDamage { get; private set; }
+        public float MinDamage { get; private set; }
+        public float MaxDamage { get; private set; }
 
         /// <summary>
         /// Creates a new instance
@@ -18,7 +18,7 @@ namespace Items
         /// <param name="type"></param>
         /// <param name="minValue"></param>
         /// <param name="maxValue"></param>
-        public DamageRange(DamageType type, int minValue, int maxValue)
+        public DamageRange(DamageType type, float minValue, float maxValue)
         {
             Type = type;
             MinDamage = minValue;
@@ -29,11 +29,10 @@ namespace Items
         /// Returns the actual dmage
         /// </summary>
         /// <returns></returns>
-        public KeyValuePair<DamageType, int> GetDamage()
+        public KeyValuePair<DamageType, float> GetDamage()
         {
             var damage = UnityEngine.Random.Range(MinDamage, MaxDamage);
-
-            return new KeyValuePair<DamageType, int>(Type, damage);
+            return new KeyValuePair<DamageType, float>(Type, damage);
         }
 
         /// <summary>

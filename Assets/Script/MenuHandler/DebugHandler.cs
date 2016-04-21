@@ -24,15 +24,22 @@ namespace Menu
 
             _addGangMembers = DebugPanel.GetComponentsInChildren<Button>().First(btn => btn.name == "AddGangMembersButton");
 
-            _addGangMembers.onClick.AddListener(() => AddGangMembers());
+            _addGangMembers.onClick.AddListener(() => AddGangMembers(1));
 
             SwitchDebugPanel();
         }
 
-        private void AddGangMembers()
+        /// <summary>
+        /// Adds members to the gang
+        /// </summary>
+        public void AddGangMembers(int amount)
         {
             var hire = new HireGangMembers("1", "1", "1");
-            hire.AddProspectToGang();
+
+            for (int i = 0; i < amount; i++)
+            {
+                hire.AddProspectToGang();
+            }            
         }
 
         /// <summary>

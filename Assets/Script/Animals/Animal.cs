@@ -1,5 +1,7 @@
 ﻿using Enum;
 using Interfaces;
+using Items;
+using Singleton;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,8 +12,6 @@ namespace Assets.Script.Characters
 {
     public class Animal : CharacterBase, IGangMember
     {
-        public IAnimalStrategy AnimalStragegy { get; private set; }
-
         /// <summary>
         /// Creates new instance
         /// </summary>
@@ -34,10 +34,12 @@ namespace Assets.Script.Characters
             switch (type)
             {
                 case AnimalType.Dog:
-                    AnimalStragegy = new DogStrategy(this);
+                    UsedItems[ItemSlot.MainWeapon] = ItemSingleton.Instance.GetItem(413357241, Level);
                     Name = "Frenzy pitbull";
                     break;
                 case AnimalType.Bear:
+                    UsedItems[ItemSlot.MainWeapon] = ItemSingleton.Instance.GetItem(413357241, Level);
+                    Name = "Vicious Grizzly";
                     break;
                 case AnimalType.Harpy:
                     break;
@@ -55,6 +57,7 @@ namespace Assets.Script.Characters
             Strength = Random.Range(1, desiredLevel * 3);
             Intelligence = 1;
             Level = desiredLevel;
+            Random.Range(3, desiredLevel * 4);
         }
     }
 }
