@@ -10,6 +10,8 @@ namespace Enum
         NotSet,
         Blade,
         Pistol,
-        Rifle
+        Rifle,
+        Claws,
+        Bite
     }
 }

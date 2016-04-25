@@ -12,6 +12,7 @@ namespace Interfaces
         int Intelligence { get; set; }
         int Strength { get; set; }
         int Level { get; set; }
+        int Intiative { get; set; }
         string ImageName { get; set; }
     }
 }

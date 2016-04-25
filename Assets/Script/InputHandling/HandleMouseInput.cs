@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Singleton;
+using Debugor;
 
 namespace InputHandling
 {
@@ -24,10 +25,16 @@ namespace InputHandling
 
                     Debug.Log("Jop " + topMost.name);
 
-                    var container = HelperSingleton.Instance.SelectedObject.GetComponent<ActionContainer>();
-                    if (container != null)
+                    var actionContainer = HelperSingleton.Instance.SelectedObject.GetComponent<ActionContainer>();
+                    if (actionContainer != null)
                     {
-                        PrefabSingleton.Instance.ActionsHandler.PassActions(container);
+                        PrefabSingleton.Instance.ActionsHandler.PassActions(actionContainer);
+                    }
+
+                    var debugContainer = HelperSingleton.Instance.SelectedObject.GetComponent<IDebug>();
+                    if (debugContainer != null)
+                    {
+                        debugContainer.Execute();
                     }
                 }
                 else

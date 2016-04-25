@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using Singleton;
 using Interfaces;
 using Enum;
+using System.Collections;
+using Items;
 
 namespace Menu
 {
@@ -16,7 +18,7 @@ namespace Menu
         private Dictionary<int, Image> _nextPictures = new Dictionary<int, Image>();
         private Dictionary<int, Text> _nextNames = new Dictionary<int, Text>();
         private List<IGangMember> _allCombatants;
-        private Dictionary<int, Image> _actions = new Dictionary<int, Image>();
+        private ItemVisualizer _itemVisualizer = new ItemVisualizer();
         private IGangMember _actualMember;
         private Button _nextRoundButton;
         private Button _fleeButton;
@@ -44,9 +46,9 @@ namespace Menu
             _nextPictures.Add(3, images.First(img => img.gameObject.name == "Next4Image"));
             _nextPictures.Add(4, images.First(img => img.gameObject.name == "Next5Image"));
 
-            _actions.Add(1, images.First(img => img.gameObject.name == "ItemMainWeapon"));
-            _actions.Add(2, images.First(img => img.gameObject.name == "ItemPistol"));
-            _actions.Add(3, images.First(img => img.gameObject.name == "ItemKnife"));
+            _itemVisualizer.AddItem(ItemSlot.MainWeapon, images.First(img => img.gameObject.name == "ItemMainWeapon"));
+            _itemVisualizer.AddItem(ItemSlot.Pistol, images.First(img => img.gameObject.name == "ItemPistol"));
+            _itemVisualizer.AddItem(ItemSlot.Knife, images.First(img => img.gameObject.name == "ItemKnife"));
 
             var buttons = _fightingPanel.GetComponentsInChildren<Button>();
             _nextRoundButton = buttons.First(btn => btn.gameObject.name == "NextRoundButton");
@@ -56,44 +58,59 @@ namespace Menu
         }
 
         /// <summary>
-        /// Updates.
-        /// </summary>
-        void Update()
-        {
-
-        }
-
-        /// <summary>
         /// An action was clicked.
         /// </summary>
         /// <param name="slot"></param>
         public void ActionClicked(int slot)
         {
-            var text = ResourceSingleton.Instance.GetText("FightAction" + slot.ToString());
+            StartCoroutine(HandleAttack(slot, true));
+        }
+
+        /// <summary>
+        /// First part of the player attack fight
+        /// </summary>
+        /// <returns></returns>
+        private IEnumerator HandleAttack(int slot, bool isPlayer)
+        {
+            var textKey = isPlayer 
+                ? "FightAction" + slot.ToString() 
+                : "FightActionAI" + slot.ToString();
+            var text = ResourceSingleton.Instance.GetText(textKey);
             _combatLog.text = text + Environment.NewLine + _combatLog.text;
 
-            float damage = 0f;
-            ItemSlot type = ItemSlot.NotSet;
-            switch (slot)
+            yield return new WaitForSeconds(1f);
+
+            if (isPlayer)
             {
-                case 1:     // Main Weapon
-                    type = ItemSlot.MainWeapon;
-                    break;
-                case 2:     // Pistol
-                    type = ItemSlot.Pistol;
-                    break;
-                case 3:     // Knife
-                    type = ItemSlot.Knife;
-                    break;
-                default:
-                    Debug.LogError("FightingHandler.ActionClicked(int slot): Number " + slot + " is not valid!");
-                    break;
+                ItemSlot type = ItemSlot.NotSet;
+                switch (slot)
+                {
+                    case 1:     // Main Weapon
+                        type = ItemSlot.MainWeapon;
+                        break;
+                    case 2:     // Pistol
+                        type = ItemSlot.Pistol;
+                        break;
+                    case 3:     // Knife
+                        type = ItemSlot.Knife;
+                        break;
+                    default:
+                        Debug.LogError("FightingHandler.ActionClicked(int slot): Number " + slot + " is not valid!");
+                        break;
+                }
+
+                bool attackSuccessful = _actualMember.UsedItems[type].ItemStragegy.ExecuteAction();
+                var result = _actualMember.UsedItems[type].ItemStragegy.GetOutpt(true);
+                _combatLog.text = result.Message + Environment.NewLine + _combatLog.text;
             }
+            else
+            {
+                _actualMember.UsedItems[ItemSlot.MainWeapon].ItemStragegy.ExecuteAction();
+                var result = _actualMember.UsedItems[ItemSlot.MainWeapon].ItemStragegy.GetOutpt(false);
+                _combatLog.text = result.Message + Environment.NewLine + _combatLog.text;
 
-            bool attackSuccessful = _actualMember.UsedItems[type].ItemStragegy.ExecuteAction();
-            var result = _actualMember.UsedItems[type].ItemStragegy.GetOutpt();
-
-            _combatLog.text = result.Message;
+                _nextRoundButton.interactable = true;
+            }
         }
 
         /// <summary>
@@ -104,6 +121,7 @@ namespace Menu
             _fightingPanel.SetActive(newVisibility);
             if (_fightingPanel.activeSelf)
             {
+                _combatLog.text = String.Empty;
                 _fightingPanel.transform.SetAsLastSibling();
             }
         }
@@ -113,15 +131,33 @@ namespace Menu
         /// </summary>
         public void NextRound()
         {
-            _isPlayersTurn = !_isPlayersTurn;
+            _nextRoundButton.interactable = false;
+
             var nextIndex = _allCombatants.IndexOf(_actualMember) + 1;
-            _actualMember = _allCombatants.Count >= nextIndex ? _allCombatants.First() : _allCombatants.ElementAt(nextIndex);
+            _actualMember = _allCombatants.Count > nextIndex ?  _allCombatants.ElementAt(nextIndex) : _allCombatants.First();
             UpdateActionBar();
             UpdateButtons();
+            UpdateItemSlots();
 
             if (!_isPlayersTurn)
             {
-                HanldeAIPlayers();
+                StartCoroutine(HandleAttack(1, false));
+            }
+        }
+
+        /// <summary>
+        /// Update the item slot
+        /// </summary>
+        private void UpdateItemSlots()
+        { 
+            foreach (var image in _itemVisualizer.ItemImages)
+            {
+                image.Value.gameObject.SetActive(_isPlayersTurn);
+            }
+
+            if (_isPlayersTurn)
+            {
+                _itemVisualizer.VisualizeWeapons(_actualMember);
             }
         }
 
@@ -147,18 +183,9 @@ namespace Menu
 
             UpdateActionBar();
             UpdateButtons();
+            UpdateItemSlots();
 
             SwitchFightingPanel(true);
-        }
-
-        /// <summary>
-        /// Handle attacks from AI Players.
-        /// </summary>
-        private void HanldeAIPlayers()
-        {
-            _actualMember.UsedItems[ItemSlot.MainWeapon].ItemStragegy.ExecuteAction();
-            var result = _actualMember.UsedItems[ItemSlot.MainWeapon].ItemStragegy.GetOutpt();
-            _combatLog.text = result.Message;
         }
 
         /// <summary>
@@ -167,12 +194,6 @@ namespace Menu
         private void UpdateButtons()
         {
             _fleeButton.interactable = _isPlayersTurn;
-            // _nextRoundButton.interactable = _isPlayersTurn;
-
-            foreach (var pair in _actions)
-            {
-                pair.Value.gameObject.SetActive(_isPlayersTurn);
-            }
         }
 
         /// <summary>

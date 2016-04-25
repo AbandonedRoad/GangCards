@@ -14,6 +14,7 @@ namespace Assets.Script.Characters
         public List<string> StreetName { get; set; }
         public int Intelligence { get; set; }
         public int Strength { get; set; }
+        public int Intiative { get; set; }
         public int Level { get; set; }
         public string ImageName { get; set; }
 

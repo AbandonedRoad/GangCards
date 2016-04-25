@@ -26,6 +26,7 @@ namespace Assets.Script.Characters
             Strength = Random.Range(1, desiredLevel * 3);
             Intelligence = Random.Range(1, desiredLevel * 3);
             Level = desiredLevel;
+            Random.Range(1, desiredLevel * 3);
         }
     }
 }

@@ -35,17 +35,19 @@ namespace Items
         /// Perpares the output
         /// </summary>
         /// <returns></returns>
-        public IItemStrategyOutput GetOutpt()
+        public IItemStrategyOutput GetOutpt(bool isPlayer)
         {
+
             var text = _attackSuccessful
-                ? ResourceSingleton.Instance.GetText("FightActionSuccess")
-                : ResourceSingleton.Instance.GetText("FightActionFail");
+                ? ResourceSingleton.Instance.GetText(isPlayer ? "FightActionSuccess" : "FightActionAISuccess")
+                : ResourceSingleton.Instance.GetText(isPlayer ? "FightActionFail" : "FightActionAIFail");
 
             var damage = _attackSuccessful
                 ? _parent.DamageRanges[ItemIdentifiers.Property1Val].GetDamage()
                 : new KeyValuePair<DamageType, float>(DamageType.NotSet, 0);
 
-            text = text.Replace("@damage", damage.Value.ToString());
+            var rounded = Math.Round(damage.Value);
+            text = text.Replace("@damage", rounded.ToString());
 
             return new WeaponStrategyOutput(text, damage.Key, damage.Value);
         }

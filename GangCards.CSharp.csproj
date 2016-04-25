@@ -123,6 +123,7 @@
     <Compile Include="Assets\Script\Interfaces\IItemStrategyOutput.cs" />
     <Compile Include="Assets\Script\Items\Armor.cs" />
     <Compile Include="Assets\Script\Items\DamageRange.cs" />
+    <Compile Include="Assets\Script\Items\ItemVisualizer.cs" />
     <Compile Include="Assets\Script\Items\Weapon.cs" />
     <Compile Include="Assets\Script\Items\WeaponStrategy.cs" />
     <Compile Include="Assets\Script\Items\WeaponStrategyOutput.cs" />

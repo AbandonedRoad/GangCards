@@ -64,3 +64,23 @@ Damage for each member~
 BegForMoneyPart2Fail_Ger	Der Besitzer verpasst all deinen Membern einen Tritt und befördert sie aus dem Laden.
 
 Schaden pro Member:~
+FightAction1_Ger	Du attackierst mit deiner primären Waffe.~
+FightAction1_Eng	You are attachking the enemey your primary weapon.~
+FightAction2_Ger	Du schießt aus deiner Pistole auf den Gegner.~
+FightAction2_Eng	You are attachking the enemey with you pistol.~ 
+FightAction3_Ger	Du stichst mit dem Messer auf den Gegner ein.~
+FightAction3_Eng	You are stabbing the enemey with your knife.~
+FightActionFail_Ger	Du hast den Gegner verfehlt!~
+FightActionFail_Eng	You miss the enemey!~
+FightActionSuccess_Ger	Du fügst dem Gegner @damage Schadenspunkte zu.~
+FightActionSuccess_Eng	You hit the the enemey for @damage damage.~
+FightActionAI1_Ger	Der Gegner attackierst dich mit seiner primären Waffe.~
+FightActionAI1_Eng	The enemey is attachking you with his your primary weapon.~
+FightActionAI2_Ger	Der Gegner schießt mit seiner Pistole auf Dich.~
+FightActionAI2_Eng	The enemy is attachking you with his pistol.~ 
+FightActionAI3_Ger	Der Gegner stichst mit dem Messer auf Dich ein.~
+FightActionAI3_Eng	The enemey is stabbing You with his knife.~
+FightActionAIFail_Ger	Der Gegner hat dich verfehlt!~
+FightActionAIFail_Eng	The enemey missed you!~
+FightActionAISuccess_Ger	Der Gegner fügt Dir @damage Schadenspunkte zu.~
+FightActionAISuccess_Eng	The enemey hits you for @damage damage.~

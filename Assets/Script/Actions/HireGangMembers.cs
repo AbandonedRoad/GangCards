@@ -64,7 +64,7 @@ namespace Assets.Script.Actions
         /// <summary>
         /// A new Player will be added.
         /// </summary>
-        public void AddProspectToGang()
+        public IGangMember AddProspectToGang()
         {
             if (DebugSingleton.Instance.IsEnabled)
             {
@@ -77,6 +77,8 @@ namespace Assets.Script.Actions
                 PrepareNewMember();
                 CharacterSingleton.Instance.AddAIPlayer(_actualMember);
             }
+
+            return _actualMember;
         }
 
         /// <summary>

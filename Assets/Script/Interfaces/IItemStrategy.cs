@@ -5,8 +5,10 @@ using System.Text;
 
 namespace Interfaces
 {
-    public interface IWeaponStrategy
+    public interface IItemStrategy
     {
-        float ExecuteAttack();
+        bool ExecuteAction();
+
+        IItemStrategyOutput GetOutpt(bool isPlayer);
     }
 }

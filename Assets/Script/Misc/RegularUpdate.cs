@@ -7,7 +7,7 @@ public class RegularUpdate : MonoBehaviour
 {
     private Dictionary<int, Action> _listeners;
 
-    void Start()
+    void Awake()
     {
         _listeners = new Dictionary<int, Action>();
     }

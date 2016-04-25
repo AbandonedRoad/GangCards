@@ -9,6 +9,7 @@ namespace Items
 {
     public class Weapon : IItem
     {
+
         public int Key { get; private set; }
         public string Name { get; set; }
         public int Level { get; set; }

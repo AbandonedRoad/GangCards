@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using Assets.Script.Actions;
+using Enum;
 
 namespace Menu
 {
@@ -38,7 +39,8 @@ namespace Menu
 
             for (int i = 0; i < amount; i++)
             {
-                hire.AddProspectToGang();
+                var member = hire.AddProspectToGang();
+                member.UsedItems[ItemSlot.MainWeapon] = ItemSingleton.Instance.GetItem(1277109520, member.Level);
             }            
         }
 

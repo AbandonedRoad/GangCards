@@ -7,6 +7,8 @@ namespace Enum
 {
     public enum DamageType
     {
-        CutDamage
+        CutDamage,
+        BulletDamage,
+        NotSet
     }
 }
