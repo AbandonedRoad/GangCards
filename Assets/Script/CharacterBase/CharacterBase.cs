@@ -17,6 +17,9 @@ namespace Assets.Script.Characters
         public int Intiative { get; set; }
         public int Level { get; set; }
         public string ImageName { get; set; }
+        public int Health { get; set; }
+        public int MaxHealth { get; set; }
+        public Gangs GangAssignment { get; set; }
 
         public Dictionary<ItemSlot, IItem> UsedItems { get; set; }
 
@@ -37,6 +40,15 @@ namespace Assets.Script.Characters
 
                 UsedItems.Add(item, null);
             }
+        }
+
+        /// <summary>
+        /// Post process initialisation
+        /// </summary>
+        /// <param name="desiredGang"></param>
+        public virtual void PostProcessInit(Gangs desiredGang)
+        {
+            GangAssignment = desiredGang;
         }
     }
 }

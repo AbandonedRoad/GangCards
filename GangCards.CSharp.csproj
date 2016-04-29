@@ -103,6 +103,7 @@
     <Compile Include="Assets\Script\Enum\ArmorType.cs" />
     <Compile Include="Assets\Script\Enum\DamageType.cs" />
     <Compile Include="Assets\Script\Enum\Directions.cs" />
+    <Compile Include="Assets\Script\Enum\Gangs.cs" />
     <Compile Include="Assets\Script\Enum\GOType.cs" />
     <Compile Include="Assets\Script\Enum\ItemIdentifiers.cs" />
     <Compile Include="Assets\Script\Enum\ItemSlot.cs" />
@@ -238,6 +239,5 @@
     <None Include="Assets\Standard Assets\Fonts\OpenSans\License!.txt" />
     <None Include="Assets\Wispy Sky\ReadMe.txt" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>

@@ -1,4 +1,5 @@
 ﻿using Assets.Script.Characters;
+using Enum;
 using Interfaces;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ namespace Misc
         public List<GOInfo> GameObjects { get; set; }
         public List<IGangMember> GangMembers { get; set; }
         public float Money { get; set; }
+        public Gangs GangOfPlayer { get; set; }
 
         public int ActualScene;
 

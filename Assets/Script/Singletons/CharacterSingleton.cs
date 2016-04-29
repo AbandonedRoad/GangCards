@@ -1,5 +1,6 @@
 ﻿using Assets.Script.Characters;
 using Characters;
+using Enum;
 using Interfaces;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ namespace Singleton
         private static CharacterSingleton _instance;
         private NameCreator _nameCreator = new NameCreator();
 
+        public Gangs GangOfPlayer { get; set; }
         public float AvailableMoney { get; set; }
         public List<IGangMember> PlayersGang { get; private set; }
         public List<IGangMember> PlayerMembersInCar { get; private set; }
@@ -45,6 +47,7 @@ namespace Singleton
             PlayersGang = new List<IGangMember>();
             PlayerMembersInCar = new List<IGangMember>();
             GangName = "Crumps";
+            GangOfPlayer = Gangs.Wheels;
             GangLevel = 1;
             AvailableMoney = 0;
         }

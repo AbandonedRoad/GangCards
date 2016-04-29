@@ -1,6 +1,9 @@
-﻿using Interfaces;
+﻿using Enum;
+using Interfaces;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Assets.Script.Characters
 {
@@ -26,7 +29,10 @@ namespace Assets.Script.Characters
             Strength = Random.Range(1, desiredLevel * 3);
             Intelligence = Random.Range(1, desiredLevel * 3);
             Level = desiredLevel;
-            Random.Range(1, desiredLevel * 3);
+
+            var factor = (Level > 1 ? Level * 0.75f * Level : 1);
+            MaxHealth = (int)Math.Round(25 + (Strength * factor));
+            Health = MaxHealth;
         }
     }
 }

@@ -17,6 +17,7 @@ namespace Menu
         private Text _combatLog;
         private Dictionary<int, Image> _nextPictures = new Dictionary<int, Image>();
         private Dictionary<int, Text> _nextNames = new Dictionary<int, Text>();
+        private Dictionary<int, Text> _nextHPs = new Dictionary<int, Text>();
         private List<IGangMember> _allCombatants;
         private ItemVisualizer _itemVisualizer = new ItemVisualizer();
         private IGangMember _actualMember;
@@ -32,19 +33,15 @@ namespace Menu
             _fightingPanel = GameObject.Find("FightPanelPrefab");
 
             var texts = _fightingPanel.GetComponentsInChildren<Text>();
-            _combatLog = texts.First(tx => tx.name == "CombatLogText");
-            _nextNames.Add(0, texts.First(img => img.gameObject.name == "NameNext1Text"));
-            _nextNames.Add(1, texts.First(img => img.gameObject.name == "NameNext2Text"));
-            _nextNames.Add(2, texts.First(img => img.gameObject.name == "NameNext3Text"));
-            _nextNames.Add(3, texts.First(img => img.gameObject.name == "NameNext4Text"));
-            _nextNames.Add(4, texts.First(img => img.gameObject.name == "NameNext5Text"));
-
             var images = _fightingPanel.GetComponentsInChildren<Image>();
-            _nextPictures.Add(0, images.First(img => img.gameObject.name == "Next1Image"));
-            _nextPictures.Add(1, images.First(img => img.gameObject.name == "Next2Image"));
-            _nextPictures.Add(2, images.First(img => img.gameObject.name == "Next3Image"));
-            _nextPictures.Add(3, images.First(img => img.gameObject.name == "Next4Image"));
-            _nextPictures.Add(4, images.First(img => img.gameObject.name == "Next5Image"));
+            for (int i = 0; i < 10; i++)
+            {
+                _nextNames.Add(i, texts.First(img => img.gameObject.name == String.Concat("NameNext", (i + 1), "Text")));
+                _nextPictures.Add(i, images.First(img => img.gameObject.name == String.Concat("Next", (i + 1), "Image")));
+                _nextHPs.Add(i, texts.First(img => img.gameObject.name == String.Concat("LifeText", (i + 1))));
+            }
+
+            _combatLog = texts.First(tx => tx.name == "CombatLogText");
 
             _itemVisualizer.AddItem(ItemSlot.MainWeapon, images.First(img => img.gameObject.name == "ItemMainWeapon"));
             _itemVisualizer.AddItem(ItemSlot.Pistol, images.First(img => img.gameObject.name == "ItemPistol"));
@@ -207,11 +204,12 @@ namespace Menu
             var actualMember = _actualMember;
 
             var personIndex = _allCombatants.IndexOf(actualMember);
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 10; i++)
             {
                 actualMember = _allCombatants.Count > personIndex ? _allCombatants.ElementAt(personIndex) : _allCombatants.First();
                 _nextNames[i].text = actualMember.Name;
                 _nextPictures[i].sprite = ResourceSingleton.Instance.ImageFaces[actualMember.ImageName];
+                _nextHPs[i].text = String.Concat("HP: ", actualMember.MaxHealth.ToString(), "/", actualMember.MaxHealth.ToString());
 
                 personIndex = _allCombatants.IndexOf(actualMember) + 1;
             }

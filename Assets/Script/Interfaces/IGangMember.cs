@@ -14,5 +14,10 @@ namespace Interfaces
         int Level { get; set; }
         int Intiative { get; set; }
         string ImageName { get; set; }
+        int Health { get; set; }
+        int MaxHealth { get; set; }
+        Gangs GangAssignment { get; set; }
+
+        void PostProcessInit(Gangs desiredGang);
     }
 }

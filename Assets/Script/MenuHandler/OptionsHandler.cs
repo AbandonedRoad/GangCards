@@ -1,9 +1,7 @@
 using UnityEngine;
-using System.Collections;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using System.Linq;
-using System.Xml.Serialization;
 using Singleton;
 using System.Collections.Generic;
 using System;
@@ -20,6 +18,7 @@ namespace Menu
         private GameObject _optionsPanel;
         private Text _actualProfileText;
         private Button _continueButton;
+        private List<FileInfo> _files;
 
 		/// <summary>
 		/// Awake this instance.
@@ -32,6 +31,9 @@ namespace Menu
             _blackBackground = GameObject.Find("BlackBackgroundPanel");
             PrefabSingleton.Instance.ProfileSelectorHandler.ProfileChanged += HandleProfileChanged;
             _continueButton = _optionsPanel.GetComponentsInChildren<Button>().First(btn => btn.gameObject.name == "ContinueButton");
+
+            DirectoryInfo dir = new DirectoryInfo("Assets/Resources/");
+            _files = dir.GetFiles("*.*", SearchOption.AllDirectories).ToList();
 
             LoadProfiles();
 
@@ -113,9 +115,10 @@ namespace Menu
 			}
 
             sceneData.Money = CharacterSingleton.Instance.AvailableMoney;
+            sceneData.GangOfPlayer = CharacterSingleton.Instance.GangOfPlayer;
 
-			// Save Camera Data
-			sceneData.SetVector(SceneVectorProperty.MainCameraPosition, Camera.main.transform.position);
+            // Save Camera Data
+            sceneData.SetVector(SceneVectorProperty.MainCameraPosition, Camera.main.transform.position);
 			sceneData.SetVector(SceneVectorProperty.MainCameraRotation, Camera.main.transform.rotation.eulerAngles);
 			// sceneData.SetVector(SceneVectorProperty.MiniMapCameraPosition, PrefabSingleton.Instance.MiniMapCamera.transform.position);
 			// sceneData.SetVector(SceneVectorProperty.MiniMapCameraRotation, PrefabSingleton.Instance.MiniMapCamera.transform.rotation.eulerAngles);
@@ -250,8 +253,21 @@ namespace Menu
 			{
 				try 
 				{
-					GameObject createdGO = null;
-                    createdGO = Resources.Load(String.Concat(@"\", go.PrefabName)) as GameObject;
+                    var fullPath = _files.FirstOrDefault(path => path.FullName.Contains(go.PrefabName));
+
+                    var removedExt = Path.ChangeExtension(fullPath.FullName, String.Empty);
+                    removedExt = removedExt.Substring(0, removedExt.Length - 1);
+                    var splitUp = removedExt.Split(Path.DirectorySeparatorChar).ToList();
+
+                    var index = splitUp.IndexOf("Resources") + 1;
+                    var prefabPath = String.Empty;
+                    for (int i = index ; i < splitUp.Count; i++)
+                    {
+                        prefabPath = Path.Combine(prefabPath, splitUp[i]);
+                    }
+
+                    GameObject createdGO = null;
+                    createdGO = Resources.Load(prefabPath, typeof(GameObject)) as GameObject;
                     createdGO.transform.position = go.GetVector(GOVectorProperty.Position);
                     createdGO.transform.rotation = Quaternion.Euler(go.GetVector(GOVectorProperty.Rotation));
                 } 
