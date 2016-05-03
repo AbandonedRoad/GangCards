@@ -5,9 +5,9 @@ namespace Enum
     [Serializable]
     public enum Gangs
     {
-        Shamans,    // The Shamans
-        Wheels,     // The Weels of Doom
-        CGN9,       // CGN9
-        Tragosa     // Tragosa Mafia
+        Shamans = 2,    // The Shamans
+        Wheelers = 1,   // The Wheelers of Doom
+        CGN9 = 8,       // CGN9
+        Tragosa = 4     // Tragosa Mafia
     }
 }

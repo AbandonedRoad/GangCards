@@ -1,11 +1,7 @@
 ﻿using Singleton;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 using Assets.Script.Actions;
 using Enum;
 
@@ -14,10 +10,8 @@ namespace Menu
     public class DebugHandler : MonoBehaviour
     {
         public GameObject DebugPanel { get; private set; }
-        public bool CreateCrossings { get { return _createCrossings.isOn; } }
 
         private Button _addGangMembers;
-        private Toggle _createCrossings;
 
         void Awake()
         {
@@ -40,6 +34,7 @@ namespace Menu
             for (int i = 0; i < amount; i++)
             {
                 var member = hire.AddProspectToGang();
+                member.PostProcessInit(Gangs.Wheelers);
                 member.UsedItems[ItemSlot.MainWeapon] = ItemSingleton.Instance.GetItem(1277109520, member.Level);
             }            
         }

@@ -1,11 +1,9 @@
 ﻿using Enum;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 using Interfaces;
+using System.Linq;
 
 namespace Items
 {
@@ -68,6 +66,27 @@ namespace Items
             _itemsViaSlot[slot].Add(ItemIdentifiers.Property1Val, itemTexts.First(tx => tx.gameObject.name == "Property1Text"));
             _itemsViaSlot[slot].Add(ItemIdentifiers.Property2Val, itemTexts.First(tx => tx.gameObject.name == "Property2Text"));
             _itemsViaSlot[slot].Add(ItemIdentifiers.Property3Val, itemTexts.First(tx => tx.gameObject.name == "Property3Text"));
+        }
+
+        /// <summary>
+        /// Selects or DeSelects an item
+        /// </summary>
+        /// <param name="slot"></param>
+        /// <param name="isSelected"></param>
+        public void SelectItem(ItemSlot slot)
+        {
+            _itemsViaSlot[slot].Values.ToList().ForEach(tx => tx.fontStyle = FontStyle.BoldAndItalic);
+        }
+
+        /// <summary>
+        /// DeSelects all items
+        /// </summary>
+        public void DeSelectAll()
+        {
+            foreach (var key in _itemsViaSlot.Keys)
+            {
+                _itemsViaSlot[key].Values.ToList().ForEach(tx => tx.fontStyle = FontStyle.Normal);
+            }            
         }
 
         /// <summary>

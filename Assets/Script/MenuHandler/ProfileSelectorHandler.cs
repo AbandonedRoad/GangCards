@@ -89,6 +89,7 @@ namespace Menu
             if (_profileButtons[profileNumber].text == "Create")
             {
                 PrefabSingleton.Instance.ProfileContainer.Profile[profileNumber] = _profileFields[profileNumber].text;
+                PrefabSingleton.Instance.ChooseYourGangHandler.SwitchChooseYourGangPanel();
             }
 
             PrefabSingleton.Instance.ProfileContainer.ActiveProfile = _profileFields[profileNumber].text;

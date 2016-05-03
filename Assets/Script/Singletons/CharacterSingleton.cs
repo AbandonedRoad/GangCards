@@ -47,7 +47,7 @@ namespace Singleton
             PlayersGang = new List<IGangMember>();
             PlayerMembersInCar = new List<IGangMember>();
             GangName = "Crumps";
-            GangOfPlayer = Gangs.Wheels;
+            GangOfPlayer = Gangs.Wheelers;
             GangLevel = 1;
             AvailableMoney = 0;
         }

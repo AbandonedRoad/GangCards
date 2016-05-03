@@ -6,6 +6,8 @@ using System.Collections;
 using Assets.Script;
 using System.Globalization;
 using Misc;
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
 namespace Singleton
 {
@@ -250,6 +252,37 @@ namespace Singleton
             }
 
             return Vector3.one;
+        }
+
+        public void AddEventTrigger(EventTrigger eventTrigger, UnityAction action, EventTriggerType triggerType)
+        {
+            // Create a nee TriggerEvent and add a listener
+            EventTrigger.TriggerEvent trigger = new EventTrigger.TriggerEvent();
+            trigger.AddListener((eventData) => action()); // you can capture and pass the event data to the listener
+
+            // Create and initialise EventTrigger.Entry using the created TriggerEvent
+            EventTrigger.Entry entry = new EventTrigger.Entry() { callback = trigger, eventID = triggerType };
+
+            // Add the EventTrigger.Entry to delegates list on the EventTrigger
+            eventTrigger.triggers.Add(entry);
+        }
+
+        /// <summary>
+        /// Add event Trigger
+        /// </summary>
+        /// <param name="action"></param>
+        /// <param name="triggerType"></param>
+        public void AddEventTrigger(EventTrigger eventTrigger, UnityAction<BaseEventData> action, EventTriggerType triggerType)
+        {
+            // Create a nee TriggerEvent and add a listener
+            EventTrigger.TriggerEvent trigger = new EventTrigger.TriggerEvent();
+            trigger.AddListener((eventData) => action(eventData)); // you can capture and pass the event data to the listener
+
+            // Create and initialise EventTrigger.Entry using the created TriggerEvent
+            EventTrigger.Entry entry = new EventTrigger.Entry() { callback = trigger, eventID = triggerType };
+
+            // Add the EventTrigger.Entry to delegates list on the EventTrigger
+            eventTrigger.triggers.Add(entry);
         }
     }
 }

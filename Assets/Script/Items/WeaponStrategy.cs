@@ -37,7 +37,6 @@ namespace Items
         /// <returns></returns>
         public IItemStrategyOutput GetOutpt(bool isPlayer)
         {
-
             var text = _attackSuccessful
                 ? ResourceSingleton.Instance.GetText(isPlayer ? "FightActionSuccess" : "FightActionAISuccess")
                 : ResourceSingleton.Instance.GetText(isPlayer ? "FightActionFail" : "FightActionAIFail");

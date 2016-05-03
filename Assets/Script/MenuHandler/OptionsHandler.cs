@@ -284,9 +284,11 @@ namespace Menu
             }
 
             CharacterSingleton.Instance.AvailableMoney = sceneData.Money;
+            CharacterSingleton.Instance.GangOfPlayer = sceneData.GangOfPlayer;
 
-			// Read Camera data
-			Camera.main.transform.position = sceneData.GetVector(SceneVectorProperty.MainCameraPosition);
+
+            // Read Camera data
+            Camera.main.transform.position = sceneData.GetVector(SceneVectorProperty.MainCameraPosition);
 			Camera.main.transform.rotation = Quaternion.Euler (sceneData.GetVector(SceneVectorProperty.MainCameraRotation));
 			// PrefabSingleton.Instance.MiniMapCamera.transform.position = sceneData.GetVector(SceneVectorProperty.MiniMapCameraPosition);
 			// PrefabSingleton.Instance.MiniMapCamera.transform.rotation = Quaternion.Euler (sceneData.GetVector(SceneVectorProperty.MiniMapCameraRotation));
