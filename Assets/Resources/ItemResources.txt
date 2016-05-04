@@ -1,4 +1,5 @@
 Item_KnifeKey	1493956787~
+Item_KnifeSkill	Thrusting~
 Item_KnifeName_Ger	Messer~
 Item_KnifeType_Ger	Blade~
 Item_KnifeSlot_Ger	Knife~
@@ -17,12 +18,13 @@ Item_KnifeProp3Val_Eng	~
 Item_KnifeProp1Typ_Ger	CutDamage~
 Item_KnifeProp2Typ_Ger	~
 Item_KnifeProp3Typ_Ger	~
+Item_ClawsKey	413357241~
+Item_ClawsSkill	Thrusting~
 Item_ClawsName_Ger	Klauen~
 Item_ClawsType_Ger	Claws~
 Item_ClawsProp1Val_Ger	1-3~
 Item_ClawsProp2Val_Ger	~
 Item_ClawsProp3Val_Ger	~
-Item_ClawsKey	413357241~
 Item_ClawsName_Eng	Claws~
 Item_ClawsType_Eng	Claws~
 Item_ClawsSlot_Eng	MainWeapon~
@@ -37,6 +39,7 @@ Item_ClawsProp1Typ_Ger	CutDamage~
 Item_ClawsProp2Typ_Ger	~
 Item_ClawsProp3Typ_Ger	~
 Item_PumpgunName_Ger	Schrotflinte~
+Item_PumpgunSkill	HeavyMachineGuns~
 Item_PumpgunType_Ger	Rifle~
 Item_PumpgunProp1Val_Ger	6-9~
 Item_PumpgunProp2Val_Ger	~

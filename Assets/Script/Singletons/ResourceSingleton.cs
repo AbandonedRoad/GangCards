@@ -126,6 +126,7 @@ namespace Singleton
 
                 var name = _items[String.Concat("Item_", key, "Name_", language)];
                 var itemKey = int.Parse(_items[String.Concat("Item_", key, "Key")]);
+                var skill = _items[String.Concat("Item_", key, "Skill")];
                 var itemType = _items[String.Concat("Item_", key, "Type_", language)];
                 var slot = _items[String.Concat("Item_", key, "Slot_", language)];
                 var p1Type = _items[String.Concat("Item_", key, "Prop1Typ_", language)];
@@ -147,6 +148,7 @@ namespace Singleton
                     var d2Type = String.IsNullOrEmpty(p2Type) ? null : System.Enum.Parse(typeof(DamageType), p2Type, true) as DamageType?;
                     var d3Type = String.IsNullOrEmpty(p3Type) ? null : System.Enum.Parse(typeof(DamageType), p3Type, true) as DamageType?;
                     var iSlot = String.IsNullOrEmpty(slot) ? null : System.Enum.Parse(typeof(ItemSlot), slot, true) as ItemSlot?;
+                    var neededSkill = String.IsNullOrEmpty(skill) ? Skills.None : System.Enum.Parse(typeof(Skills), skill, true) as Skills?;
 
                     IItem weapon = null;
                     if (splitP2.Length == 1)
@@ -164,7 +166,7 @@ namespace Singleton
                         weapon = new Weapon(d2Type.Value, new int[] { int.Parse(splitP2[0]), int.Parse(splitP2[1]) },
                             d3Type.Value, new int[] { int.Parse(splitP3[0]), int.Parse(splitP3[1]) });
                     }
-                    ((Weapon)weapon).Init(itemKey, name, wType.Value, iSlot.Value, d1Type.Value, new int[] { int.Parse(splitP1[0]), int.Parse(splitP1[1]) });
+                    ((Weapon)weapon).Init(itemKey, name, neededSkill.Value, wType.Value, iSlot.Value, d1Type.Value, new int[] { int.Parse(splitP1[0]), int.Parse(splitP1[1]) });
 
                     result.Add(weapon);
                 }

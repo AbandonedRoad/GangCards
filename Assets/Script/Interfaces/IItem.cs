@@ -14,8 +14,10 @@ namespace Interfaces
 
         IItemStrategy ItemStragegy { get; }
 
+        Skills NeededSkill { get; }
+
         string GetValue(ItemIdentifiers identifier);
 
-        void ApplyLevel(int level);
+        void ApplyParamters(int level, IGangMember assignedTo);
     }
 }

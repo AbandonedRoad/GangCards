@@ -9,7 +9,6 @@ namespace Items
 {
     public class Weapon : IItem
     {
-
         public int Key { get; private set; }
         public string Name { get; set; }
         public int Level { get; set; }
@@ -17,6 +16,8 @@ namespace Items
         public ItemSlot UsedInSlot { get; private set; }
         public Dictionary<ItemIdentifiers, DamageRange> DamageRanges { get; private set; }
         public IItemStrategy ItemStragegy { get; private set; }
+        public Skills NeededSkill { get; private set; }
+        public IGangMember AssignedTo { get; private set; }
 
         /// <summary>
         /// Creates new instance
@@ -54,10 +55,11 @@ namespace Items
         /// <param name="type"></param>
         /// <param name="damageTypeP1"></param>
         /// <param name="dmgRangeP1"></param>
-        public void Init(int key, string name, WeaponType type, ItemSlot slot, DamageType damageTypeP1, int[] dmgRangeP1)
+        public void Init(int key, string name, Skills neededSkill, WeaponType type, ItemSlot slot, DamageType damageTypeP1, int[] dmgRangeP1)
         {
             Key = key;
             Name = name;
+            NeededSkill = neededSkill;
             WeaponType = type;
             DamageRanges = new Dictionary<ItemIdentifiers, DamageRange>();
             UsedInSlot = slot;
@@ -104,8 +106,9 @@ namespace Items
         /// Applies a new level.
         /// </summary>
         /// <param name="level">Level to be used.</param>
-        public void ApplyLevel(int level)
+        public void ApplyParamters(int level, IGangMember assignTo)
         {
+            AssignedTo = assignTo;
             Level = level;
             if (Level > 1)
             {

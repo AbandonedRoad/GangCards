@@ -12,13 +12,16 @@ namespace Assets.Script.Characters
         public string Name { get; set;}
         public string ActiveStreeName { get; set; }
         public List<string> StreetName { get; set; }
-        public int Intelligence { get; set; }
-        public int Strength { get; set; }
-        public int Intiative { get; set; }
+
         public int Level { get; set; }
-        public string ImageName { get; set; }
         public int Health { get; set; }
         public int MaxHealth { get; set; }
+        public int Intelligence { get; set; }
+        public int Strength { get; set; }
+        public int Initiative { get; set; }
+        public int Accuracy { get; set; }
+        public int Courage { get; set; }
+
         public Gangs GangAssignment { get; set; }
 
         public Dictionary<ItemSlot, IItem> UsedItems { get; set; }
@@ -29,7 +32,6 @@ namespace Assets.Script.Characters
         public CharacterBase()
         {
             UsedItems = new Dictionary<ItemSlot, IItem>();
-            ImageName = "Thug1";
 
             foreach (ItemSlot item in System.Enum.GetValues(typeof(ItemSlot)))
             {

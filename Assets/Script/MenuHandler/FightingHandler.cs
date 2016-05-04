@@ -140,7 +140,7 @@ namespace Menu
         {
             _allCombatants = opponents.ToList();
             _allCombatants.AddRange(CharacterSingleton.Instance.PlayerMembersInCar);
-            _allCombatants = _allCombatants.OrderBy(mem => mem.Intiative).ToList();
+            _allCombatants = _allCombatants.OrderBy(mem => mem.Initiative).ToList();
             _actualMember = _allCombatants.First();
 
             _isPlayersTurn = CharacterSingleton.Instance.PlayerMembersInCar.Contains(_actualMember);

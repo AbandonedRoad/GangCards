@@ -70,17 +70,17 @@ FightActionPistol_Ger	Du schießt aus deiner Pistole auf @enemey.~
 FightActionPistol_Eng	You are attachking @enemey with you pistol.~ 
 FightActionKnife_Ger	Du stichst mit dem Messer auf @enemey ein.~
 FightActionKnife_Eng	You are stabbing @enemey with your knife.~
-FightActionFail_Ger	Du hast @enemey verfehlt!~
-FightActionFail_Eng	You missed @enemey!~
-FightActionSuccess_Ger	Du fügst @enemey @damage Schadenspunkte zu.~
-FightActionSuccess_Eng	You hit @enemey for @damage damage.~
+FightActionFail_Ger	Du hast @enemey verfehlt!  (@diceResult)~
+FightActionFail_Eng	You missed @enemey!  (@diceResult)~
+FightActionSuccess_Ger	Du fügst @enemey @damage Schadenspunkte zu.  (@diceResult)~
+FightActionSuccess_Eng	You hit @enemey for @damage damage.  (@diceResult)~
 FightActionAIMainWeapon_Ger	@enemey attackierst dich mit seiner primären Waffe.~
 FightActionAIMainWeapon_Eng	@enemey is attachking you with his your primary weapon.~
 FightActionAIPistol_Ger	@enemey schießt mit seiner Pistole auf Dich.~
 FightActionAIPistol_Eng	@enemey is attachking you with his pistol.~ 
 FightActionAIKnife_Ger	@enemey stichst mit dem Messer auf Dich ein.~
 FightActionAIKnife_Eng	@enemey is stabbing You with his knife.~
-FightActionAIFail_Ger	@enemey hat dich verfehlt!~
-FightActionAIFail_Eng	@enemey missed you!~
-FightActionAISuccess_Ger	@enemey fügt Dir @damage Schadenspunkte zu.~
-FightActionAISuccess_Eng	@enemey hits you for @damage damage.~
+FightActionAIFail_Ger	@enemey hat dich verfehlt!  (@diceResult)~
+FightActionAIFail_Eng	@enemey missed you!  (@diceResult)~
+FightActionAISuccess_Ger	@enemey fügt Dir @damage Schadenspunkte zu.  (@diceResult)~
+FightActionAISuccess_Eng	@enemey hits you for @damage damage.  (@diceResult)~

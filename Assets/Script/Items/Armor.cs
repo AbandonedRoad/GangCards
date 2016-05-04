@@ -11,10 +11,9 @@ namespace Items
         public int Level { get; private set; }
         public ArmorType ArmorType { get; private set; }
         public int DamageAbsorb { get; private set; }
-
         public ItemSlot UsedInSlot { get; private set; }
-
         public IItemStrategy ItemStragegy { get; private set; }
+        public Skills NeededSkill { get; private set; }
 
         /// <summary>
         /// 
@@ -27,6 +26,7 @@ namespace Items
             Name = name;
             ArmorType = type;
             DamageAbsorb = damageAbsorb;
+            NeededSkill = Skills.None;
         }
 
         public string GetValue(ItemIdentifiers identifier)
@@ -34,7 +34,7 @@ namespace Items
             throw new NotImplementedException();
         }
 
-        public void ApplyLevel(int level)
+        public void ApplyParamters(int level, IGangMember assignTo)
         {
             throw new NotImplementedException();
         }

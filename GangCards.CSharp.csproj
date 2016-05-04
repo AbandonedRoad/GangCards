@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.3.4f1</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion Condition=" '$(VisualStudioVersion)' != '10.0' ">4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -96,6 +98,7 @@
     <Compile Include="Assets\Script\Cars\StopCar.cs" />
     <Compile Include="Assets\Script\CharacterBase\CharacterBase.cs" />
     <Compile Include="Assets\Script\CharacterBase\NameCreator.cs" />
+    <Compile Include="Assets\Script\CharacterBase\SkillDicingOutput.cs" />
     <Compile Include="Assets\Script\Debug\IDebug.cs" />
     <Compile Include="Assets\Script\Debug\StartAFight.cs" />
     <Compile Include="Assets\Script\Enum\AnimalType.cs" />
@@ -108,6 +111,7 @@
     <Compile Include="Assets\Script\Enum\ItemSlot.cs" />
     <Compile Include="Assets\Script\Enum\ItemType.cs" />
     <Compile Include="Assets\Script\Enum\Rarity.cs" />
+    <Compile Include="Assets\Script\Enum\Skills.cs" />
     <Compile Include="Assets\Script\Enum\SpecialText.cs" />
     <Compile Include="Assets\Script\Enum\WeaponType.cs" />
     <Compile Include="Assets\Script\Humans\Human.cs" />

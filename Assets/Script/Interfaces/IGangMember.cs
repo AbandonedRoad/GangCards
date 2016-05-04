@@ -11,9 +11,10 @@ namespace Interfaces
         List<string> StreetName { get; set; }
         int Intelligence { get; set; }
         int Strength { get; set; }
+        int Initiative { get; set; }
+        int Accuracy { get; set; }
+        int Courage { get; set; }
         int Level { get; set; }
-        int Intiative { get; set; }
-        string ImageName { get; set; }
         int Health { get; set; }
         int MaxHealth { get; set; }
         Gangs GangAssignment { get; set; }

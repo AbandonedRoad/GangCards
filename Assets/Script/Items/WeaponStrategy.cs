@@ -1,4 +1,5 @@
-﻿using Enum;
+﻿using CharacterBase;
+using Enum;
 using Interfaces;
 using Items;
 using Singleton;
@@ -12,23 +13,26 @@ namespace Items
     public class WeaponStrategy : IItemStrategy
     {
         private readonly Weapon _parent;
-        private bool _attackSuccessful;
+        private SkillDicingOutput _attackResult;
 
+        /// <summary>
+        /// CTZOR
+        /// </summary>
+        /// <param name="parent"></param>
         public WeaponStrategy(Weapon parent)
         {
             _parent = parent;
         }
 
         /// <summary>
-        /// Determines if teh attack is successful.
+        /// Determines if the attack is successful.
         /// </summary>
         /// <returns></returns>
         public bool ExecuteAction()
         {
-            var value = UnityEngine.Random.Range(1f, 10f);
-            _attackSuccessful = value < 6;
+            _attackResult = CharacterSingleton.Instance.CheckSkill(_parent.NeededSkill, _parent.AssignedTo);
 
-            return _attackSuccessful;
+            return _attackResult.Successful;
         }
 
         /// <summary>
@@ -37,11 +41,12 @@ namespace Items
         /// <returns></returns>
         public IItemStrategyOutput GetOutpt(bool isPlayer)
         {
-            var text = _attackSuccessful
+            var text = _attackResult.Successful
                 ? ResourceSingleton.Instance.GetText(isPlayer ? "FightActionSuccess" : "FightActionAISuccess")
                 : ResourceSingleton.Instance.GetText(isPlayer ? "FightActionFail" : "FightActionAIFail");
+            text = text.Replace("@diceResult", _attackResult.GetOutput());
 
-            var damage = _attackSuccessful
+            var damage = _attackResult.Successful
                 ? _parent.DamageRanges[ItemIdentifiers.Property1Val].GetDamage()
                 : new KeyValuePair<DamageType, float>(DamageType.NotSet, 0);
 

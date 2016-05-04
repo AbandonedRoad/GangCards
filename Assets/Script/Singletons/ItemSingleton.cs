@@ -39,7 +39,7 @@ namespace Singleton
         /// <param name="name"></param>
         /// <param name="level"></param>
         /// <returns></returns>
-        public IItem GetItem(int key, int level)
+        public IItem GetItem(int key, int level, IGangMember assignTo)
         {
             var result = Items.FirstOrDefault(typ => typ.Key == key);
 
@@ -48,7 +48,7 @@ namespace Singleton
                 Debug.LogError("Following item is not found!  Key: " + key);
             }
 
-            result.ApplyLevel(level);
+            result.ApplyParamters(level, assignTo);
 
             return result;
         }
