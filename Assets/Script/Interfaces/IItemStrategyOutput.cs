@@ -15,6 +15,6 @@ namespace Interfaces
         /// <summary>
         /// A value, e.g. damage value
         /// </summary>
-        float Value { get; }
+        int Value { get; }
     }
 }

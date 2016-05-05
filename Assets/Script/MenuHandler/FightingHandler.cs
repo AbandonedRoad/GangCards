@@ -186,15 +186,27 @@ namespace Menu
                 bool attackSuccessful = _actualMember.UsedItems[slot].ItemStragegy.ExecuteAction();
                 var result = _actualMember.UsedItems[slot].ItemStragegy.GetOutpt(true);
                 _combatLog.text = ReplaceVariables(result.Message, clickedGangMember) + Environment.NewLine + _combatLog.text;
+
+                if (attackSuccessful)
+                {
+                    clickedGangMember.Health -= result.Value;
+                }
             }
             else
             {
-                _actualMember.UsedItems[ItemSlot.MainWeapon].ItemStragegy.ExecuteAction();
+                bool attackSuccessful = _actualMember.UsedItems[ItemSlot.MainWeapon].ItemStragegy.ExecuteAction();
                 var result = _actualMember.UsedItems[ItemSlot.MainWeapon].ItemStragegy.GetOutpt(false);
                 _combatLog.text = ReplaceVariables(result.Message) + Environment.NewLine + _combatLog.text;
 
                 _nextRoundButton.interactable = true;
+
+                if (attackSuccessful)
+                {
+                    _actualMember.Health -= result.Value;
+                }
             }
+
+            UpdateActionBar();
         }
 
         /// <summary>
@@ -316,7 +328,7 @@ namespace Menu
                 _combatantsViaKey[i] = actualMember;
                 _nextNames[i].text = actualMember.Name;
                 _nextPictureText[i].text = actualMember.GangAssignment.ToString();
-                _nextHPs[i].text = String.Concat("HP: ", actualMember.MaxHealth.ToString(), "/", actualMember.MaxHealth.ToString());
+                _nextHPs[i].text = String.Concat("HP: ", actualMember.Health.ToString(), "/", actualMember.MaxHealth.ToString(), Environment.NewLine, actualMember.HealthStatus.ToString());
 
                 personIndex = _allCombatants.IndexOf(actualMember) + 1;
             }

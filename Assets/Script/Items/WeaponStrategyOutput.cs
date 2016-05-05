@@ -7,7 +7,7 @@ namespace Items
     {
         public string Message { get; private set; }
 
-        public float Value { get; private set; }
+        public int Value { get; private set; }
 
         public DamageType DamageType { get; private set; }
 
@@ -17,7 +17,7 @@ namespace Items
         /// <param name="message"></param>
         /// <param name="damageType"></param>
         /// <param name="value"></param>
-        public WeaponStrategyOutput(string message, DamageType damageType, float value)
+        public WeaponStrategyOutput(string message, DamageType damageType, int value)
         {
             Message = message;
             Value = value;

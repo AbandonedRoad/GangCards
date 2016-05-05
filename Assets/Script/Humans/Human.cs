@@ -1,8 +1,6 @@
-﻿using Enum;
-using Interfaces;
+﻿using Interfaces;
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace Assets.Script.Characters
@@ -26,8 +24,12 @@ namespace Assets.Script.Characters
         /// <param name="desiredLevel"></param>
         private void CreateHuman(int desiredLevel)
         {
-            Strength = Random.Range(1, desiredLevel * 3);
-            Intelligence = Random.Range(1, desiredLevel * 3);
+            Strength = 8 + Random.Range(0, desiredLevel + 1);
+            Intelligence = 8 + Random.Range(0, desiredLevel + 1);
+            Initiative = 8 + Random.Range(0, desiredLevel + 1);
+            Accuracy = 8 + Random.Range(0, desiredLevel + 1);
+            Courage = 8 + Random.Range(0, desiredLevel + 1);
+
             Level = desiredLevel;
 
             var factor = (Level > 1 ? Level * 0.75f * Level : 1);

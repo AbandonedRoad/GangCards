@@ -48,10 +48,9 @@ namespace Items
 
             var damage = _attackResult.Successful
                 ? _parent.DamageRanges[ItemIdentifiers.Property1Val].GetDamage()
-                : new KeyValuePair<DamageType, float>(DamageType.NotSet, 0);
+                : new KeyValuePair<DamageType, int>(DamageType.NotSet, 0);
 
-            var rounded = Math.Round(damage.Value);
-            text = text.Replace("@damage", rounded.ToString());
+            text = text.Replace("@damage", damage.Value.ToString());
 
             return new WeaponStrategyOutput(text, damage.Key, damage.Value);
         }

@@ -118,7 +118,7 @@ namespace Items
                 foreach (var identifierKey in keys)
                 {
                     var actual = DamageRanges[identifierKey];
-                    actual = new DamageRange(actual.Type, actual.MinDamage * factor, actual.MaxDamage * factor);
+                    actual = new DamageRange(actual.Type, (int)Math.Round(actual.MinDamage * factor), (int)Math.Round(actual.MaxDamage * factor));
                 }
             }
         }

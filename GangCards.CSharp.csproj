@@ -107,6 +107,7 @@
     <Compile Include="Assets\Script\Enum\Directions.cs" />
     <Compile Include="Assets\Script\Enum\GOType.cs" />
     <Compile Include="Assets\Script\Enum\Gangs.cs" />
+    <Compile Include="Assets\Script\Enum\HealthStatus.cs" />
     <Compile Include="Assets\Script\Enum\ItemIdentifiers.cs" />
     <Compile Include="Assets\Script\Enum\ItemSlot.cs" />
     <Compile Include="Assets\Script\Enum\ItemType.cs" />

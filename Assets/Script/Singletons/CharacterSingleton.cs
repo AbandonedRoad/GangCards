@@ -63,7 +63,7 @@ namespace Singleton
         {
             var member = new Human(desiredLevel);
 
-            var name = _nameCreator.GenerateName(UnityEngine.Random.Range(0, 2) == 0);
+            var name = _nameCreator.GenerateName(Random.Range(0, 2) == 0);
             member.Name = String.Concat(name[0], " ", name[1]);
 
             return member;
@@ -136,7 +136,7 @@ namespace Singleton
             total = total + value2 - skill2;
             total = total + value3 - skill3;
 
-            return new SkillDicingOutput(skills, new int[] { value1, value2, value3 }, new int[] { skill1, skill2, skill3 }, total >= 0);
+            return new SkillDicingOutput(skillToCheck, modifikator, skills, new int[] { value1, value2, value3 }, new int[] { skill1, skill2, skill3 }, total >= 0);
         }
     }
 }

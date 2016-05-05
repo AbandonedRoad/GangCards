@@ -18,6 +18,7 @@ namespace Interfaces
         int Health { get; set; }
         int MaxHealth { get; set; }
         Gangs GangAssignment { get; set; }
+        HealthStatus HealthStatus { get; }
 
         void PostProcessInit(Gangs desiredGang);
     }

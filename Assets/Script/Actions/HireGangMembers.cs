@@ -112,7 +112,7 @@ namespace Assets.Script.Actions
 
             var type = _actualMember.GetType();
             var properties = type.GetProperties();
-            List<string> blackList = new List<string> { "Name", "ActiveStreeName", "StreetName" };
+            List<string> whiteList = new List<string> { "Intelligence", "Strength", "Initiative", "Accuracy", "Courage", "Level", "Health" };
 
             _textPart2 = ResourceSingleton.Instance.CreateActionText(this.GetType().Name.ToString(), "NewMemberPart2");
             _textPart2 = String.Concat(_textPart2, "\n", "Name: ", "\t\t\t", _actualMember.Name,
@@ -120,9 +120,9 @@ namespace Assets.Script.Actions
 
             foreach (var prop in properties)
             {
-                if (blackList.Contains(prop.Name))
+                if (!whiteList.Contains(prop.Name))
                 {
-                    // Do not show Blacklist entries.
+                    // Only show Whitelist entries.
                     continue;
                 }
 
