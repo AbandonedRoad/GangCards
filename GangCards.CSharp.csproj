@@ -103,7 +103,7 @@
     <Compile Include="Assets\Script\Debug\StartAFight.cs" />
     <Compile Include="Assets\Script\Enum\AnimalType.cs" />
     <Compile Include="Assets\Script\Enum\ArmorType.cs" />
-    <Compile Include="Assets\Script\Enum\DamageType.cs" />
+    <Compile Include="Assets\Script\Enum\PropertyType.cs" />
     <Compile Include="Assets\Script\Enum\Directions.cs" />
     <Compile Include="Assets\Script\Enum\GOType.cs" />
     <Compile Include="Assets\Script\Enum\Gangs.cs" />

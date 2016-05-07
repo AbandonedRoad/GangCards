@@ -1,9 +1,6 @@
 ﻿using Enum;
 using Interfaces;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Assets.Script.Characters
 {
@@ -22,6 +19,7 @@ namespace Assets.Script.Characters
             set
             {
                 _health = value;
+                _health = _health < 0 ? 0 : _health;
                 UpdateHealthStatus();
             }
         }
@@ -32,6 +30,7 @@ namespace Assets.Script.Characters
         public int Accuracy { get; set; }
         public int Courage { get; set; }
         public HealthStatus HealthStatus { get; private set; }
+        public int ActionPoints { get; protected set; }
 
         public Gangs GangAssignment { get; set; }
 

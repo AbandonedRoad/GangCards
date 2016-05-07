@@ -48,7 +48,7 @@ namespace Items
 
             var damage = _attackResult.Successful
                 ? _parent.DamageRanges[ItemIdentifiers.Property1Val].GetDamage()
-                : new KeyValuePair<DamageType, int>(DamageType.NotSet, 0);
+                : new KeyValuePair<PropertyType, int>(PropertyType.NotSet, 0);
 
             text = text.Replace("@damage", damage.Value.ToString());
 

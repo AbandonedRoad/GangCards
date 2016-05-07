@@ -18,12 +18,7 @@ namespace Items
         public IItemStrategy ItemStragegy { get; private set; }
         public Skills NeededSkill { get; private set; }
         public IGangMember AssignedTo { get; private set; }
-
-        /// <summary>
-        /// Creates new instance
-        /// </summary>
-        public Weapon()
-        { }
+        public int ActionCosts { get; private set; }
 
         /// <summary>
         /// Creates a new Weapon
@@ -31,9 +26,10 @@ namespace Items
         /// <param name="type"></param>
         /// <param name="damageTypeP1"></param>
         /// <param name="dmgRangeP1"></param>
-        public Weapon(DamageType damageTypeP2, int[] dmgRangeP2)
+        public Weapon(PropertyType damageTypeP1, int[] dmgRangeP1)
         {
-            DamageRanges.Add(ItemIdentifiers.Property2Val, new DamageRange(damageTypeP2, dmgRangeP2[0], dmgRangeP2[1]));
+            DamageRanges = new Dictionary<ItemIdentifiers, DamageRange>();
+            DamageRanges.Add(ItemIdentifiers.Property1Val, new DamageRange(damageTypeP1, dmgRangeP1[0], dmgRangeP1[1]));
         }
 
         /// <summary>
@@ -42,10 +38,11 @@ namespace Items
         /// <param name="type"></param>
         /// <param name="damageTypeP1"></param>
         /// <param name="dmgRangeP1"></param>
-        public Weapon(DamageType damageTypeP2, int[] dmgRangeP2, DamageType damageTypeP3, int[] dmgRangeP3)
+        public Weapon(PropertyType damageTypeP1, int[] dmgRangeP1, PropertyType damageTypeP2, int[] dmgRangeP2)
         {
+            DamageRanges = new Dictionary<ItemIdentifiers, DamageRange>();
+            DamageRanges.Add(ItemIdentifiers.Property1Val, new DamageRange(damageTypeP1, dmgRangeP1[0], dmgRangeP1[1]));
             DamageRanges.Add(ItemIdentifiers.Property2Val, new DamageRange(damageTypeP2, dmgRangeP2[0], dmgRangeP2[1]));
-            DamageRanges.Add(ItemIdentifiers.Property3Val, new DamageRange(damageTypeP3, dmgRangeP3[0], dmgRangeP3[1]));
         }
 
         /// <summary>
@@ -55,17 +52,15 @@ namespace Items
         /// <param name="type"></param>
         /// <param name="damageTypeP1"></param>
         /// <param name="dmgRangeP1"></param>
-        public void Init(int key, string name, Skills neededSkill, WeaponType type, ItemSlot slot, DamageType damageTypeP1, int[] dmgRangeP1)
+        public void Init(int key, string name, Skills neededSkill, WeaponType type, ItemSlot slot, int actionPointsCost)
         {
             Key = key;
             Name = name;
             NeededSkill = neededSkill;
             WeaponType = type;
-            DamageRanges = new Dictionary<ItemIdentifiers, DamageRange>();
+            ActionCosts = actionPointsCost;
             UsedInSlot = slot;
             ItemStragegy = new WeaponStrategy(this);
-
-            DamageRanges.Add(ItemIdentifiers.Property1Val, new DamageRange(damageTypeP1, dmgRangeP1[0], dmgRangeP1[1]));
         }
 
         /// <summary>
@@ -85,16 +80,15 @@ namespace Items
                     return GetDisplayType(ItemIdentifiers.Property1Val);
                 case ItemIdentifiers.Property2Type:
                     return GetDisplayType(ItemIdentifiers.Property2Val);
-                case ItemIdentifiers.Property3Type:
-                    return GetDisplayType(ItemIdentifiers.Property3Val);
                 case ItemIdentifiers.Property1Val:
                 case ItemIdentifiers.Property2Val:
-                case ItemIdentifiers.Property3Val:
                     if (!DamageRanges.ContainsKey(identifier))
                     {
                         return string.Empty;
                     }
                     return DamageRanges[identifier].CreateDisplayValue();
+                case ItemIdentifiers.Property3Val:
+                    return ActionCosts.ToString();
             }
 
             Debug.LogError("ItemIdentifier is unknown!");

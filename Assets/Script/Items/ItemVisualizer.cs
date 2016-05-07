@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Interfaces;
 using System.Linq;
+using Singleton;
 
 namespace Items
 {
@@ -145,7 +146,7 @@ namespace Items
             itemSlot[ItemIdentifiers.Name].text = item.Name;
             itemSlot[ItemIdentifiers.Property1Type].text = item.GetValue(ItemIdentifiers.Property1Type);
             itemSlot[ItemIdentifiers.Property2Type].text = item.GetValue(ItemIdentifiers.Property2Type);
-            itemSlot[ItemIdentifiers.Property3Type].text = item.GetValue(ItemIdentifiers.Property3Type);
+            itemSlot[ItemIdentifiers.Property3Type].text = ResourceSingleton.Instance.GetText("FightAPCost");
             itemSlot[ItemIdentifiers.Property1Val].text = item.GetValue(ItemIdentifiers.Property1Val);
             itemSlot[ItemIdentifiers.Property2Val].text = item.GetValue(ItemIdentifiers.Property2Val);
             itemSlot[ItemIdentifiers.Property3Val].text = item.GetValue(ItemIdentifiers.Property3Val);

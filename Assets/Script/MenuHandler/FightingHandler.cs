@@ -87,7 +87,16 @@ namespace Menu
             _nextRoundButton.interactable = false;
 
             var nextIndex = _allCombatants.IndexOf(_actualMember) + 1;
-            _actualMember = _allCombatants.Count > nextIndex ? _allCombatants.ElementAt(nextIndex) : _allCombatants.First();
+
+            while (true)
+            {
+                _actualMember = _allCombatants.Count > nextIndex ? _allCombatants.ElementAt(nextIndex) : _allCombatants.First();
+                if (_actualMember.HealthStatus != HealthStatus.Dead)
+                {
+                    break;
+                }
+            }
+            
             UpdateActionBar();
             UpdateButtons();
             UpdateItemSlots();
@@ -206,7 +215,26 @@ namespace Menu
                 }
             }
 
+            IsFightOver();
+
             UpdateActionBar();
+        }
+
+        /// <summary>
+        /// Check if the fight is over!
+        /// </summary>
+        private void IsFightOver()
+        {
+            if (_allCombatants.Where(comb => comb.GangAssignment == CharacterSingleton.Instance.GangOfPlayer).All(comb => comb.HealthStatus == HealthStatus.Dead))
+            {
+                // All Players gang members are dead! Player lost!
+                Debug.Log("YOU LOST!");
+            }
+            else if (_allCombatants.Where(comb => comb.GangAssignment != CharacterSingleton.Instance.GangOfPlayer).All(comb => comb.HealthStatus == HealthStatus.Dead))
+            {
+                // All Enemey gang members are dead! Player won!
+                Debug.Log("YOU WON!");
+            }
         }
 
         /// <summary>
@@ -254,16 +282,23 @@ namespace Menu
         /// </summary>
         private void EnterImage()
         {
-            if (_isPlayersTurn)
+            if (!_isPlayersTurn)
             {
-                var go = GetNextImageViaRayCast();
-                if (go != null)
+                return;
+            }
+
+            var go = GetNextImageViaRayCast();
+            if (go != null)
+            {
+                var key = _imageKeys[go.GetComponent<Image>()];
+                if (_combatantsViaKey[key].HealthStatus == HealthStatus.Dead)
                 {
-                    var key = _imageKeys[go.GetComponent<Image>()];
-                    _nextNames[key].fontStyle = FontStyle.Italic;
-                    _nextPictureText[key].fontStyle = FontStyle.Italic;
-                    _nextHPs[key].fontStyle = FontStyle.Italic;
+                    // Dead already! Leave!
+                    return;
                 }
+                _nextNames[key].fontStyle = FontStyle.Italic;
+                _nextPictureText[key].fontStyle = FontStyle.Italic;
+                _nextHPs[key].fontStyle = FontStyle.Italic;
             }
         }
 
@@ -327,10 +362,16 @@ namespace Menu
                 actualMember = _allCombatants.Count > personIndex ? _allCombatants.ElementAt(personIndex) : _allCombatants.First();
                 _combatantsViaKey[i] = actualMember;
                 _nextNames[i].text = actualMember.Name;
-                _nextPictureText[i].text = actualMember.GangAssignment.ToString();
+                _nextPictureText[i].text = actualMember.HealthStatus == HealthStatus.Dead
+                    ? String.Empty
+                    : actualMember.GangAssignment.ToString();
                 _nextHPs[i].text = String.Concat("HP: ", actualMember.Health.ToString(), "/", actualMember.MaxHealth.ToString(), Environment.NewLine, actualMember.HealthStatus.ToString());
-
                 personIndex = _allCombatants.IndexOf(actualMember) + 1;
+
+                _imageKeys.First(pr => pr.Value == i).Key.sprite = actualMember.HealthStatus == HealthStatus.Dead
+                    ? PrefabSingleton.Instance.FightingSkullSprite
+                    : PrefabSingleton.Instance.FightingRegularSprite;
+
             }
         }
     }

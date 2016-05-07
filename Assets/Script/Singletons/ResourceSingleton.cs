@@ -141,12 +141,11 @@ namespace Singleton
                     // Its a weapon
                     var splitP1 = p1Val.Split('-');
                     var splitP2 = p2Val.Split('-');
-                    var splitP3 = p3Val.Split('-');
+                    var actionPointCosts = int.Parse(p3Val);
 
                     var wType = String.IsNullOrEmpty(itemType) ? null : System.Enum.Parse(typeof(WeaponType), itemType, true) as WeaponType?;
-                    var d1Type = String.IsNullOrEmpty(p1Type) ? null : System.Enum.Parse(typeof(DamageType), p1Type, true) as DamageType?;
-                    var d2Type = String.IsNullOrEmpty(p2Type) ? null : System.Enum.Parse(typeof(DamageType), p2Type, true) as DamageType?;
-                    var d3Type = String.IsNullOrEmpty(p3Type) ? null : System.Enum.Parse(typeof(DamageType), p3Type, true) as DamageType?;
+                    var pt1Type = String.IsNullOrEmpty(p1Type) ? null : System.Enum.Parse(typeof(PropertyType), p1Type, true) as PropertyType?;
+                    var pt2Type = String.IsNullOrEmpty(p2Type) ? null : System.Enum.Parse(typeof(PropertyType), p2Type, true) as PropertyType?;
                     var iSlot = String.IsNullOrEmpty(slot) ? null : System.Enum.Parse(typeof(ItemSlot), slot, true) as ItemSlot?;
                     var neededSkill = String.IsNullOrEmpty(skill) ? Skills.None : System.Enum.Parse(typeof(Skills), skill, true) as Skills?;
 
@@ -154,19 +153,16 @@ namespace Singleton
                     if (splitP2.Length == 1)
                     {
                         // Only one Property
-                        weapon = new Weapon();
-                    }
-                    else if (splitP3.Length == 1)
-                    {
-                        // Two Properties
-                        weapon = new Weapon(d2Type.Value, new int[] { int.Parse(splitP2[0]), int.Parse(splitP2[1]) });
+                        weapon = new Weapon(pt1Type.Value, new int[] { int.Parse(splitP1[0]), int.Parse(splitP1[1]) });
                     }
                     else
                     {
-                        weapon = new Weapon(d2Type.Value, new int[] { int.Parse(splitP2[0]), int.Parse(splitP2[1]) },
-                            d3Type.Value, new int[] { int.Parse(splitP3[0]), int.Parse(splitP3[1]) });
+                        // Two Properties
+                        weapon = new Weapon(pt1Type.Value, new int[] { int.Parse(splitP1[0]), int.Parse(splitP1[1]) },
+                            pt2Type.Value, new int[] { int.Parse(splitP2[0]), int.Parse(splitP2[1]) });
                     }
-                    ((Weapon)weapon).Init(itemKey, name, neededSkill.Value, wType.Value, iSlot.Value, d1Type.Value, new int[] { int.Parse(splitP1[0]), int.Parse(splitP1[1]) });
+                    
+                    ((Weapon)weapon).Init(itemKey, name, neededSkill.Value, wType.Value, iSlot.Value, actionPointCosts);
 
                     result.Add(weapon);
                 }

@@ -84,3 +84,11 @@ FightActionAIFail_Ger	@enemey hat dich verfehlt!  (@diceResult)~
 FightActionAIFail_Eng	@enemey missed you!  (@diceResult)~
 FightActionAISuccess_Ger	@enemey fügt Dir @damage Schadenspunkte zu.  (@diceResult)~
 FightActionAISuccess_Eng	@enemey hits you for @damage damage.  (@diceResult)~
+FightCutDamage_Ger	Schnittwunde~
+FightCutDamage_Eng	Cutting Damage~
+FightBulletDamage_Ger	Schusswunde~
+FightBulletDamage_Eng	Gunshot~
+FightDamage_Ger	Schaden~
+FightDamage_Eng	Damage~
+FightAPCost_Ger	Aktionspunkte (Kosten)~
+FightAPCost_Eng	Action points (costs)~

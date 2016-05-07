@@ -28,6 +28,8 @@ namespace Singleton
         public RegularUpdate RegularUpdate { get; private set; }
         public PlayerProfile ProfileContainer { get; set; }
         public GameData ActualGameData { get; set; }
+        public Sprite FightingSkullSprite { get; private set; }
+        public Sprite FightingRegularSprite { get; private set; }
 
         public GameObject PlayersCar { get; set; }
         public MoveCars PlayersCarScript { get; set; }
@@ -43,6 +45,7 @@ namespace Singleton
                 {
                     _instance = new PrefabSingleton();
                     _instance.Init();
+                    _instance.LoadImages();
                 }
 
                 return _instance;
@@ -75,9 +78,14 @@ namespace Singleton
             ActualGameData = new GameData();
         }
 
+        /// <summary>
+        /// Loads relevant images
+        /// </summary>
         private void LoadImages()
         {
-
+            var sprites = Resources.LoadAll<Sprite>("Faces");
+            FightingSkullSprite = sprites.First(spr => spr.name == "Skull");
+            FightingRegularSprite = sprites.First(spr => spr.name == "EnemyBorder");
         }
 
         /// <summary>

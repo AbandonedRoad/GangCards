@@ -1,4 +1,5 @@
 ﻿using Enum;
+using Singleton;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ namespace Items
 {
     public class DamageRange
     {
-        public DamageType Type { get; private set; }
+        public PropertyType Type { get; private set; }
         public int MinDamage { get; private set; }
         public int MaxDamage { get; private set; }
 
@@ -18,7 +19,7 @@ namespace Items
         /// <param name="type"></param>
         /// <param name="minValue"></param>
         /// <param name="maxValue"></param>
-        public DamageRange(DamageType type, int minValue, int maxValue)
+        public DamageRange(PropertyType type, int minValue, int maxValue)
         {
             Type = type;
             MinDamage = minValue;
@@ -29,10 +30,10 @@ namespace Items
         /// Returns the actual dmage
         /// </summary>
         /// <returns></returns>
-        public KeyValuePair<DamageType, int> GetDamage()
+        public KeyValuePair<PropertyType, int> GetDamage()
         {
             var damage = UnityEngine.Random.Range(MinDamage, MaxDamage);
-            return new KeyValuePair<DamageType, int>(Type, damage);
+            return new KeyValuePair<PropertyType, int>(Type, damage);
         }
 
         /// <summary>
@@ -41,17 +42,7 @@ namespace Items
         /// <returns></returns>
         public string CreateDisplayType()
         {
-            string damgeType = String.Empty;
-            switch (Type)
-            {
-                case DamageType.CutDamage:
-                    damgeType = "Cutting Damage";
-                    break;
-                default:
-                    break;
-            }
-
-            return damgeType;
+            return String.Concat(ResourceSingleton.Instance.GetText(String.Concat("Fight", Type.ToString())), " (", ResourceSingleton.Instance.GetText("FightDamage"), ")");
         }
 
         /// <summary>

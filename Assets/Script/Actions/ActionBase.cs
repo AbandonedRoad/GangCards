@@ -1,5 +1,4 @@
-﻿using System;
-using Singleton;
+﻿using Singleton;
 using UnityEngine;
 using Interfaces;
 
