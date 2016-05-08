@@ -17,7 +17,8 @@ namespace Interfaces
         int Level { get; set; }
         int Health { get; set; }
         int MaxHealth { get; set; }
-        int ActionPoints { get; }
+        int ActionPoints { get; set; }
+        int MaxActionPoints { get; }
         Gangs GangAssignment { get; set; }
         HealthStatus HealthStatus { get; }
 

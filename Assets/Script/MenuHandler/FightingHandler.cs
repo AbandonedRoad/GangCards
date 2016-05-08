@@ -84,8 +84,6 @@ namespace Menu
         /// </summary>
         public void NextRound()
         {
-            _nextRoundButton.interactable = false;
-
             var nextIndex = _allCombatants.IndexOf(_actualMember) + 1;
 
             while (true)
@@ -101,10 +99,33 @@ namespace Menu
             UpdateButtons();
             UpdateItemSlots();
 
+            _nextRoundButton.interactable = _isPlayersTurn;
             if (!_isPlayersTurn)
             {
-                StartCoroutine(HandleAttack(ItemSlot.MainWeapon, false));
+                StartCoroutine(HandleAIAttack());
             }
+        }
+
+        /// <summary>
+        /// Handle AI Attack
+        /// </summary>
+        /// <returns></returns>
+        private IEnumerator HandleAIAttack()
+        {
+            var actionPoints = ((Weapon)_actualMember.UsedItems[ItemSlot.MainWeapon]).ActionCosts;
+            for (int i = 0; i < 25; i++)
+            {
+                _actualMember.ActionPoints -= actionPoints;
+                if (_actualMember.ActionPoints >= 0)
+                {
+                    StartCoroutine(HandleAttack(ItemSlot.MainWeapon, false));
+                    yield return new WaitForSeconds(1f);
+                }
+                else
+                {
+                    yield break;
+                }
+            }            
         }
 
         /// <summary>
@@ -118,7 +139,10 @@ namespace Menu
                 return;
             }
 
-            StartCoroutine(HandleAttack(_slotClicked, true));
+            if (_slotClicked != ItemSlot.NotSet)
+            {
+                StartCoroutine(HandleAttack(_slotClicked, true));
+            }
         }
 
         /// <summary>
@@ -127,9 +151,16 @@ namespace Menu
         /// <param name="slot"></param>
         public void ActionClicked(int slot)
         {
-            var type = ConvertIdToSlot(slot);
-
             _slotClicked = ConvertIdToSlot(slot);
+
+            if ((_actualMember.UsedItems[_slotClicked] as Weapon).ActionCosts > _actualMember.ActionPoints)
+            {
+                _combatLog.text = ResourceSingleton.Instance.GetText("FightNotEnoughPoints") + Environment.NewLine + _combatLog.text;
+                _itemVisualizer.DeSelectAll();
+                _slotClicked = ItemSlot.NotSet;
+                return;
+            }
+
             _itemVisualizer.DeSelectAll();
             _itemVisualizer.SelectItem(_slotClicked);
         }
@@ -192,28 +223,35 @@ namespace Menu
 
             if (isPlayer)
             {
-                bool attackSuccessful = _actualMember.UsedItems[slot].ItemStragegy.ExecuteAction();
-                var result = _actualMember.UsedItems[slot].ItemStragegy.GetOutpt(true);
+                Weapon weapon = _actualMember.UsedItems[slot] as Weapon;
+                bool attackSuccessful = weapon.ItemStragegy.ExecuteAction();
+                var result = weapon.ItemStragegy.GetOutpt(true);
                 _combatLog.text = ReplaceVariables(result.Message, clickedGangMember) + Environment.NewLine + _combatLog.text;
 
                 if (attackSuccessful)
                 {
                     clickedGangMember.Health -= result.Value;
                 }
+                _actualMember.ActionPoints -= weapon.ActionCosts;
             }
             else
             {
-                bool attackSuccessful = _actualMember.UsedItems[ItemSlot.MainWeapon].ItemStragegy.ExecuteAction();
-                var result = _actualMember.UsedItems[ItemSlot.MainWeapon].ItemStragegy.GetOutpt(false);
+                Weapon weapon = _actualMember.UsedItems[ItemSlot.MainWeapon] as Weapon;
+                bool attackSuccessful = weapon.ItemStragegy.ExecuteAction();
+                var result = weapon.ItemStragegy.GetOutpt(false);
                 _combatLog.text = ReplaceVariables(result.Message) + Environment.NewLine + _combatLog.text;
-
-                _nextRoundButton.interactable = true;
 
                 if (attackSuccessful)
                 {
                     _actualMember.Health -= result.Value;
                 }
+
+                _nextRoundButton.interactable = true;
+                _actualMember.ActionPoints -= weapon.ActionCosts;
             }
+
+            _slotClicked = ItemSlot.NotSet;
+            _itemVisualizer.DeSelectAll();
 
             IsFightOver();
 

@@ -30,7 +30,8 @@ namespace Assets.Script.Characters
         public int Accuracy { get; set; }
         public int Courage { get; set; }
         public HealthStatus HealthStatus { get; private set; }
-        public int ActionPoints { get; protected set; }
+        public int ActionPoints { get; set; }
+        public int MaxActionPoints { get; protected set; }
 
         public Gangs GangAssignment { get; set; }
 

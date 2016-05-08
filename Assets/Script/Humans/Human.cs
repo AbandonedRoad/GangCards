@@ -30,6 +30,7 @@ namespace Assets.Script.Characters
             Accuracy = 8 + Random.Range(0, desiredLevel + 1);
             Courage = 8 + Random.Range(0, desiredLevel + 1);
             ActionPoints = 8 + (Initiative + desiredLevel);
+            MaxActionPoints = ActionPoints;
 
             Level = desiredLevel;
 

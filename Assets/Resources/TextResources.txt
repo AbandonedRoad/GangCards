@@ -92,3 +92,5 @@ FightDamage_Ger	Schaden~
 FightDamage_Eng	Damage~
 FightAPCost_Ger	Aktionspunkte (Kosten)~
 FightAPCost_Eng	Action points (costs)~
+FightNotEnoughPoints_Eng	You don't have enough Action Points~
+FightNotEnoughPoints_Ger	You don't have enough Action Points~
