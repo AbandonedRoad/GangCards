@@ -112,16 +112,18 @@ namespace Items
         /// <summary>
         /// Show all weapons
         /// </summary>
-        /// <param name="_actualMember"></param>
-        public void VisualizeWeapons(IGangMember _actualMember)
+        /// <param name="actualMember"></param>
+        public void VisualizeWeapons(IGangMember actualMember)
         {
-            foreach (var pair in _actualMember.UsedItems)
+            foreach (var pair in actualMember.UsedItems)
             {
-                if (pair.Value != null)
+                if (pair.Value == null)
                 {
-                    var itemToBeFilled = _itemsViaSlot[pair.Key];
-                    FillItem(itemToBeFilled, pair.Value);
+                    HideShowItems(pair.Key, false);
+                    continue;
                 }
+                var itemToBeFilled = _itemsViaSlot[pair.Key];
+                FillItem(itemToBeFilled, pair.Value);
             }
         }
 
@@ -134,6 +136,22 @@ namespace Items
         {
             var itemToBeFilled = _items[key];
             FillItem(itemToBeFilled, item);
+        }
+
+        /// <summary>
+        /// Hides or shows a slot. If "NotSet" is passed, everything is hidden/shown.
+        /// </summary>
+        /// <param name="itemToManipulate"></param>
+        public void HideShowItems(ItemSlot itemToManipulate, bool newStatus)
+        {
+            if (itemToManipulate == ItemSlot.NotSet)
+            {
+                ItemImagesViaSlot.Values.ToList().ForEach(go => go.gameObject.SetActive(newStatus));
+            }
+            else if (ItemImagesViaSlot.ContainsKey(itemToManipulate))
+            {
+                ItemImagesViaSlot[itemToManipulate].gameObject.SetActive(newStatus);
+            }
         }
 
         /// <summary>

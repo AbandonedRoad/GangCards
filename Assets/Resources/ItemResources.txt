@@ -22,7 +22,7 @@ Item_ClawsKey	413357241~
 Item_ClawsSkill	Thrusting~
 Item_ClawsName_Ger	Klauen~
 Item_ClawsType_Ger	Claws~
-Item_ClawsProp1Val_Ger	1-3~
+Item_ClawsProp1Val_Ger	3-5~
 Item_ClawsProp2Val_Ger	~
 Item_ClawsProp3Val_Ger	4~
 Item_ClawsName_Eng	Claws~
@@ -31,7 +31,7 @@ Item_ClawsSlot_Eng	MainWeapon~
 Item_ClawsProp1Typ_Eng	CutDamage~
 Item_ClawsProp2Typ_Eng	~
 Item_ClawsProp3Typ_Eng	ActionPoints~
-Item_ClawsProp1Val_Eng	1-3~
+Item_ClawsProp1Val_Eng	3-5~
 Item_ClawsProp2Val_Eng	~
 Item_ClawsProp3Val_Eng	4~
 Item_ClawsSlot_Ger	MainWeapon~

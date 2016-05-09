@@ -21,6 +21,7 @@ namespace Menu
         private Dictionary<int, Text> _nextNames = new Dictionary<int, Text>();
         private Dictionary<int, Text> _nextHPs = new Dictionary<int, Text>();
         private Dictionary<int, EventTrigger> _eventTrigger = new Dictionary<int, EventTrigger>();
+        private Text _actionPoints;
         private Dictionary<Image, int> _imageKeys = new Dictionary<Image, int>();
         private List<IGangMember> _allCombatants;
         private ItemVisualizer _itemVisualizer = new ItemVisualizer();
@@ -49,6 +50,9 @@ namespace Menu
                 _eventTrigger.Add(i, eventT.First(es => es.gameObject.name == String.Concat("Next", (i + 1), "Image")));
                 _combatantsViaKey.Add(i, null);
             }
+
+            // Get Special text which are only preent for the actual character
+            _actionPoints = texts.First(img => img.gameObject.name == "ActionPointsText");
 
             _eventTrigger.Values.ToList().ForEach(et => HelperSingleton.Instance.AddEventTrigger(et, EnterImage, EventTriggerType.PointerEnter));
             _eventTrigger.Values.ToList().ForEach(et => HelperSingleton.Instance.AddEventTrigger(et, LeaveImage, EventTriggerType.PointerExit));
@@ -84,13 +88,28 @@ namespace Menu
         /// </summary>
         public void NextRound()
         {
+            // Reset Action Points
+            _actualMember.ActionPoints = _actualMember.MaxActionPoints;
+
             var nextIndex = _allCombatants.IndexOf(_actualMember) + 1;
 
+            int counter = 0;
             while (true)
             {
+                counter++;
                 _actualMember = _allCombatants.Count > nextIndex ? _allCombatants.ElementAt(nextIndex) : _allCombatants.First();
-                if (_actualMember.HealthStatus != HealthStatus.Dead)
+                if (_actualMember.HealthStatus != HealthStatus.Dead && _actualMember.HealthStatus != HealthStatus.Unconscious)
                 {
+                    break;
+                }
+                else
+                {
+                    nextIndex = _allCombatants.Count > (nextIndex + 1) ? nextIndex + 1 : 0;
+                }
+
+                if (counter > 100)
+                {
+                    Debug.LogError("Exited after 100 loop!");
                     break;
                 }
             }
@@ -100,32 +119,15 @@ namespace Menu
             UpdateItemSlots();
 
             _nextRoundButton.interactable = _isPlayersTurn;
+
+            _combatLog.text = 
+                String.Concat(_isPlayersTurn ? ResourceSingleton.Instance.GetText("FightNextRoundYou") : ResourceSingleton.Instance.GetText("FightNextRoundEnemey"),
+                Environment.NewLine, _combatLog.text);
+
             if (!_isPlayersTurn)
             {
                 StartCoroutine(HandleAIAttack());
             }
-        }
-
-        /// <summary>
-        /// Handle AI Attack
-        /// </summary>
-        /// <returns></returns>
-        private IEnumerator HandleAIAttack()
-        {
-            var actionPoints = ((Weapon)_actualMember.UsedItems[ItemSlot.MainWeapon]).ActionCosts;
-            for (int i = 0; i < 25; i++)
-            {
-                _actualMember.ActionPoints -= actionPoints;
-                if (_actualMember.ActionPoints >= 0)
-                {
-                    StartCoroutine(HandleAttack(ItemSlot.MainWeapon, false));
-                    yield return new WaitForSeconds(1f);
-                }
-                else
-                {
-                    yield break;
-                }
-            }            
         }
 
         /// <summary>
@@ -151,6 +153,12 @@ namespace Menu
         /// <param name="slot"></param>
         public void ActionClicked(int slot)
         {
+            if (!_isPlayersTurn)
+            {
+                // We are not in charge!
+                return;
+            }
+
             _slotClicked = ConvertIdToSlot(slot);
 
             if ((_actualMember.UsedItems[_slotClicked] as Weapon).ActionCosts > _actualMember.ActionPoints)
@@ -200,23 +208,50 @@ namespace Menu
         {
             IGangMember clickedGangMember = null;
             string textKey = String.Empty;
+            string text = String.Empty;
+            IGangMember playerToBeAttacked = null;
             if (isPlayer)
             {
                 textKey = "FightAction" + slot.ToString();
-                var clickedEnemey = GetNextImageViaRayCast();
-                if (clickedEnemey != null)
+                var enemeyToBeAttacked = GetNextImageViaRayCast();
+                if (enemeyToBeAttacked != null)
                 {
-                    var key = _imageKeys[clickedEnemey.GetComponent<Image>()];
+                    var key = _imageKeys[enemeyToBeAttacked.GetComponent<Image>()];
                     clickedGangMember = _combatantsViaKey[key];
                 }
+
+                if (clickedGangMember.HealthStatus == HealthStatus.Dead)
+                {
+                    // Bereits tot? Kann nicht mehr drauf ballern!
+                    text = ReplaceVariables(ResourceSingleton.Instance.GetText("FightAlreadyDead"), _actualMember, clickedGangMember);
+                    _combatLog.text = text + Environment.NewLine + _combatLog.text;
+                    _slotClicked = ItemSlot.NotSet;
+                    _itemVisualizer.DeSelectAll();
+                    yield break;
+                }
+                else if (clickedGangMember.HealthStatus == HealthStatus.Unconscious)
+                {
+                    // Puh wie machen wir das?!?!
+                    // TODO: Wie kann man da eine Frage stellen?
+                    text = ReplaceVariables(ResourceSingleton.Instance.GetText(textKey), _actualMember, clickedGangMember);
+                }
+                else
+                {
+                    text = ReplaceVariables(ResourceSingleton.Instance.GetText(textKey), _actualMember, clickedGangMember);
+                }                
             }
             else
             {
+                // Evalute who is to be attached!
+                playerToBeAttacked = _allCombatants.Where(pay => pay.GangAssignment == CharacterSingleton.Instance.GangOfPlayer
+                    && pay.HealthStatus != HealthStatus.Dead)
+                    .OrderBy(pay => pay.Health).FirstOrDefault();
+
                 textKey = "FightActionAI" + slot.ToString();
+                text = ReplaceVariables(ResourceSingleton.Instance.GetText(textKey), playerToBeAttacked, _actualMember);
             }
 
-            // Replace to the name of the enemey, if needed
-            var text = ReplaceVariables(ResourceSingleton.Instance.GetText(textKey), clickedGangMember);
+            // Add to combat log
             _combatLog.text = text + Environment.NewLine + _combatLog.text;
 
             yield return new WaitForSeconds(1f);
@@ -226,7 +261,7 @@ namespace Menu
                 Weapon weapon = _actualMember.UsedItems[slot] as Weapon;
                 bool attackSuccessful = weapon.ItemStragegy.ExecuteAction();
                 var result = weapon.ItemStragegy.GetOutpt(true);
-                _combatLog.text = ReplaceVariables(result.Message, clickedGangMember) + Environment.NewLine + _combatLog.text;
+                _combatLog.text = ReplaceVariables(result.Message, _actualMember, clickedGangMember) + Environment.NewLine + _combatLog.text;
 
                 if (attackSuccessful)
                 {
@@ -237,13 +272,19 @@ namespace Menu
             else
             {
                 Weapon weapon = _actualMember.UsedItems[ItemSlot.MainWeapon] as Weapon;
+                if (playerToBeAttacked == null)
+                {
+                    Debug.LogWarning("Nobody to attack");
+                    yield break;
+                }
+
                 bool attackSuccessful = weapon.ItemStragegy.ExecuteAction();
                 var result = weapon.ItemStragegy.GetOutpt(false);
-                _combatLog.text = ReplaceVariables(result.Message) + Environment.NewLine + _combatLog.text;
+                _combatLog.text = ReplaceVariables(result.Message, playerToBeAttacked, _actualMember) + Environment.NewLine + _combatLog.text;
 
                 if (attackSuccessful)
                 {
-                    _actualMember.Health -= result.Value;
+                    playerToBeAttacked.Health -= result.Value;
                 }
 
                 _nextRoundButton.interactable = true;
@@ -256,6 +297,30 @@ namespace Menu
             IsFightOver();
 
             UpdateActionBar();
+        }
+
+        /// <summary>
+        /// Handle AI Attack
+        /// </summary>
+        /// <returns></returns>
+        private IEnumerator HandleAIAttack()
+        {
+            var actionPoints = ((Weapon)_actualMember.UsedItems[ItemSlot.MainWeapon]).ActionCosts;
+            for (int i = 0; i < 25; i++)
+            {
+                _actualMember.ActionPoints -= actionPoints;
+                if (_actualMember.ActionPoints > 0)
+                {
+                    StartCoroutine(HandleAttack(ItemSlot.MainWeapon, false));
+                    yield return new WaitForSeconds(1f);
+                }
+                else
+                {
+                    yield break;
+                }
+            }
+
+            Debug.LogWarning("25 Loops done!");
         }
 
         /// <summary>
@@ -306,13 +371,15 @@ namespace Menu
         /// Replace all known variables
         /// </summary>
         /// <param name="text">Text to be replaced</param>
-        /// <param name="memberToUse">Member to use. If null, actual member in charge is used</param>
+        /// <param name="personWhoAttacks">Person who is attacking right now.</param>
+        /// <param name="personWhoIsAttacked">Person who is attacked right now.</param>
         /// <returns></returns>
-        private string ReplaceVariables(string text, IGangMember memberToUse = null)
+        private string ReplaceVariables(string text, IGangMember personWhoAttacks, IGangMember personWhoIsAttacked)
         {
-            return text.Replace("@enemey", memberToUse != null 
-                ? memberToUse.Name
-                : _actualMember.Name);
+            var result = text.Replace("@enemey", personWhoIsAttacked.Name);
+            result = result.Replace("@player", personWhoAttacks.Name);
+
+            return result;
         }
 
         /// <summary>
@@ -337,6 +404,11 @@ namespace Menu
                 _nextNames[key].fontStyle = FontStyle.Italic;
                 _nextPictureText[key].fontStyle = FontStyle.Italic;
                 _nextHPs[key].fontStyle = FontStyle.Italic;
+
+                if (key == 0)
+                {
+                    _actionPoints.fontStyle = FontStyle.Italic;
+                }
             }
         }
 
@@ -359,6 +431,7 @@ namespace Menu
         /// </summary>
         private void LeaveImage()
         {
+            _actionPoints.fontStyle = FontStyle.Normal;
             _nextNames.Values.ToList().ForEach(tx => tx.fontStyle = FontStyle.Normal);
             _nextPictureText.Values.ToList().ForEach(tx => tx.fontStyle = FontStyle.Normal);
             _nextHPs.Values.ToList().ForEach(tx => tx.fontStyle = FontStyle.Normal);
@@ -370,10 +443,7 @@ namespace Menu
         private void UpdateItemSlots()
         {
             _itemVisualizer.ItemImages.ToList().ForEach(itm => itm.Value.gameObject.SetActive(_isPlayersTurn));
-            if (_isPlayersTurn)
-            {
-                _itemVisualizer.VisualizeWeapons(_actualMember);
-            }
+            _itemVisualizer.VisualizeWeapons(_actualMember);
         }
 
         /// <summary>
@@ -395,6 +465,10 @@ namespace Menu
             var actualMember = _actualMember;
 
             var personIndex = _allCombatants.IndexOf(actualMember);
+
+            // Set Special text fields
+            _actionPoints.text = String.Concat("AP: ", actualMember.ActionPoints.ToString(), "/", actualMember.MaxActionPoints.ToString());
+
             for (int i = 0; i < 10; i++)
             {
                 actualMember = _allCombatants.Count > personIndex ? _allCombatants.ElementAt(personIndex) : _allCombatants.First();
@@ -403,13 +477,12 @@ namespace Menu
                 _nextPictureText[i].text = actualMember.HealthStatus == HealthStatus.Dead
                     ? String.Empty
                     : actualMember.GangAssignment.ToString();
-                _nextHPs[i].text = String.Concat("HP: ", actualMember.Health.ToString(), "/", actualMember.MaxHealth.ToString(), Environment.NewLine, actualMember.HealthStatus.ToString());
+                _nextHPs[i].text = String.Concat("HP: ", actualMember.Health.ToString(), "/", actualMember.MaxHealth.ToString(), " ", actualMember.HealthStatus.ToString());
                 personIndex = _allCombatants.IndexOf(actualMember) + 1;
 
                 _imageKeys.First(pr => pr.Value == i).Key.sprite = actualMember.HealthStatus == HealthStatus.Dead
                     ? PrefabSingleton.Instance.FightingSkullSprite
                     : PrefabSingleton.Instance.FightingRegularSprite;
-
             }
         }
     }

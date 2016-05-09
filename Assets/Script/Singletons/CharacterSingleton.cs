@@ -85,41 +85,41 @@ namespace Singleton
         /// <returns></returns>
         public SkillDicingOutput CheckSkill(Skills skillToCheck, IGangMember memberToCheck, int modifikator = 0)
         {
-            int value1 = 0;
-            int value2 = 0;
-            int value3 = 0;
+            int skill1 = 0;
+            int skill2 = 0;
+            int skill3 = 0;
 
             string[] skills = new string[1];
             switch (skillToCheck)
             {
                 case Skills.Thrusting:
-                    value1 = memberToCheck.Accuracy;
-                    value2 = memberToCheck.Strength;
-                    value3 = memberToCheck.Initiative;
+                    skill1 = memberToCheck.Accuracy;
+                    skill2 = memberToCheck.Strength;
+                    skill3 = memberToCheck.Initiative;
                     skills = new string[] { "Accuracy", "Strength", "Initiative" };
                     break;
                 case Skills.Pistols:
-                    value1 = memberToCheck.Accuracy;
-                    value2 = memberToCheck.Intelligence;
-                    value3 = memberToCheck.Courage;
+                    skill1 = memberToCheck.Accuracy;
+                    skill2 = memberToCheck.Intelligence;
+                    skill3 = memberToCheck.Courage;
                     skills = new string[] { "Accuracy", "Intelligence", "Courage" };
                     break;
                 case Skills.SubMachineGuns:
-                    value1 = memberToCheck.Accuracy;
-                    value2 = memberToCheck.Strength;
-                    value3 = memberToCheck.Intelligence;
+                    skill1 = memberToCheck.Accuracy;
+                    skill2 = memberToCheck.Strength;
+                    skill3 = memberToCheck.Intelligence;
                     skills = new string[] { "Accuracy", "Strength", "Intelligence" };
                     break;
                 case Skills.HeavyMachineGuns:
-                    value1 = memberToCheck.Accuracy;
-                    value2 = memberToCheck.Strength;
-                    value3 = memberToCheck.Strength;
+                    skill1 = memberToCheck.Accuracy;
+                    skill2 = memberToCheck.Strength;
+                    skill3 = memberToCheck.Strength;
                     skills = new string[] { "Accuracy", "Strength", "Strength" };
                     break;
                 case Skills.Explosives:
-                    value1 = memberToCheck.Accuracy;
-                    value2 = memberToCheck.Accuracy;
-                    value3 = memberToCheck.Intelligence;
+                    skill1 = memberToCheck.Accuracy;
+                    skill2 = memberToCheck.Accuracy;
+                    skill3 = memberToCheck.Intelligence;
                     skills = new string[] { "Accuracy", "Accuracy", "Intelligence" };
                     break;
                 default:
@@ -127,15 +127,17 @@ namespace Singleton
                     break;
             }
 
-            int skill1 = Random.Range(1, 20);
-            int skill2 = Random.Range(1, 20);
-            int skill3 = Random.Range(1, 20);
+            int diced1 = Random.Range(1, 20);
+            int diced2 = Random.Range(1, 20);
+            int diced3 = Random.Range(1, 20);
 
-            var total = value1 - skill1;
-            total = total + value2 - skill2;
-            total = total + value3 - skill3;
+            var total1 = diced1 - skill1;
+            var total2 = diced2 - skill2;
+            var total3 = diced3 - skill3;
 
-            return new SkillDicingOutput(skillToCheck, modifikator, skills, new int[] { value1, value2, value3 }, new int[] { skill1, skill2, skill3 }, total >= 0);
+            var total = total1 + total2 + total3;
+
+            return new SkillDicingOutput(skillToCheck, modifikator, skills, new int[] { skill1, skill2, skill3 }, new int[] { diced1, diced2, diced3 }, total >= 0);
         }
     }
 }

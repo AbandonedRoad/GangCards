@@ -64,26 +64,26 @@ Damage for each member~
 BegForMoneyPart2Fail_Ger	Der Besitzer verpasst all deinen Membern einen Tritt und befördert sie aus dem Laden.
 
 Schaden pro Member:~
-FightActionMainWeapon_Ger	Du attackierst @enemey mit deiner primären Waffe.~
-FightActionMainWeapon_Eng	You are attachking @enemey with your primary weapon.~
-FightActionPistol_Ger	Du schießt aus deiner Pistole auf @enemey.~
-FightActionPistol_Eng	You are attachking @enemey with you pistol.~ 
-FightActionKnife_Ger	Du stichst mit dem Messer auf @enemey ein.~
-FightActionKnife_Eng	You are stabbing @enemey with your knife.~
-FightActionFail_Ger	Du hast @enemey verfehlt!  (@diceResult)~
-FightActionFail_Eng	You missed @enemey!  (@diceResult)~
-FightActionSuccess_Ger	Du fügst @enemey @damage Schadenspunkte zu.  (@diceResult)~
-FightActionSuccess_Eng	You hit @enemey for @damage damage.  (@diceResult)~
-FightActionAIMainWeapon_Ger	@enemey attackierst dich mit seiner primären Waffe.~
-FightActionAIMainWeapon_Eng	@enemey is attachking you with his your primary weapon.~
-FightActionAIPistol_Ger	@enemey schießt mit seiner Pistole auf Dich.~
-FightActionAIPistol_Eng	@enemey is attachking you with his pistol.~ 
-FightActionAIKnife_Ger	@enemey stichst mit dem Messer auf Dich ein.~
-FightActionAIKnife_Eng	@enemey is stabbing You with his knife.~
-FightActionAIFail_Ger	@enemey hat dich verfehlt!  (@diceResult)~
-FightActionAIFail_Eng	@enemey missed you!  (@diceResult)~
-FightActionAISuccess_Ger	@enemey fügt Dir @damage Schadenspunkte zu.  (@diceResult)~
-FightActionAISuccess_Eng	@enemey hits you for @damage damage.  (@diceResult)~
+FightActionMainWeapon_Ger	@player attackierst @enemey mit deiner primären Waffe.~
+FightActionMainWeapon_Eng	@player are attachking @enemey with your primary weapon.~
+FightActionPistol_Ger	@player schießt aus deiner Pistole auf @enemey.~
+FightActionPistol_Eng	@player are attachking @enemey with you pistol.~ 
+FightActionKnife_Ger	@player stichst mit dem Messer auf @enemey ein.~
+FightActionKnife_Eng	@player are stabbing @enemey with your knife.~
+FightActionFail_Ger	@player hast @enemey verfehlt!  (@diceResult)~
+FightActionFail_Eng	@player missed @enemey!  (@diceResult)~
+FightActionSuccess_Ger	@player fügst @enemey @damage Schadenspunkte zu.  (@diceResult)~
+FightActionSuccess_Eng	@player hit @enemey for @damage damage.  (@diceResult)~
+FightActionAIMainWeapon_Ger	@enemey attackierst @player mit seiner primären Waffe.~
+FightActionAIMainWeapon_Eng	@enemey is attachking @player with his your primary weapon.~
+FightActionAIPistol_Ger	@enemey schießt mit seiner Pistole auf @player.~
+FightActionAIPistol_Eng	@enemey is attachking @player with his pistol.~ 
+FightActionAIKnife_Ger	@enemey stichst mit dem Messer auf @player ein.~
+FightActionAIKnife_Eng	@enemey is stabbing @player with his knife.~
+FightActionAIFail_Ger	@enemey hat @player verfehlt!  (@diceResult)~
+FightActionAIFail_Eng	@enemey missed @player!  (@diceResult)~
+FightActionAISuccess_Ger	@enemey fügt @player @damage Schadenspunkte zu.  (@diceResult)~
+FightActionAISuccess_Eng	@enemey hits @player for @damage damage.  (@diceResult)~
 FightCutDamage_Ger	Schnittwunde~
 FightCutDamage_Eng	Cutting Damage~
 FightBulletDamage_Ger	Schusswunde~
@@ -92,5 +92,11 @@ FightDamage_Ger	Schaden~
 FightDamage_Eng	Damage~
 FightAPCost_Ger	Aktionspunkte (Kosten)~
 FightAPCost_Eng	Action points (costs)~
+FightAlreadyDead_Ger	@enemey ist bereits tot...~
+FightAlreadyDead_Eng	@enemey is already dead...~
 FightNotEnoughPoints_Eng	You don't have enough Action Points~
-FightNotEnoughPoints_Ger	You don't have enough Action Points~
+FightNotEnoughPoints_Ger	Nicht genug Aktionspunkte übrig!~
+FightNextRoundYou_End	------ Your turn! --------------------------------~
+FightNextRoundYou_Ger	------ Du bist am Zug! --------------------------------~
+FightNextRoundEnemey_Eng	------ Opponents turn! --------------------------------~
+FightNextRoundEnemey_Ger	------ Der Gegner ist am Zug! --------------------------------~
