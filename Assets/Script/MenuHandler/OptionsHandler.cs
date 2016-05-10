@@ -268,8 +268,9 @@ namespace Menu
 
                     GameObject createdGO = null;
                     createdGO = Resources.Load(prefabPath, typeof(GameObject)) as GameObject;
-                    createdGO.transform.position = go.GetVector(GOVectorProperty.Position);
-                    createdGO.transform.rotation = Quaternion.Euler(go.GetVector(GOVectorProperty.Rotation));
+
+
+                    Instantiate(createdGO, go.GetVector(GOVectorProperty.Position), Quaternion.Euler(go.GetVector(GOVectorProperty.Rotation)));
                 } 
 
 				catch (Exception ex) 

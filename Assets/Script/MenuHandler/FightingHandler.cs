@@ -231,8 +231,8 @@ namespace Menu
                 }
                 else if (clickedGangMember.HealthStatus == HealthStatus.Unconscious)
                 {
-                    // Puh wie machen wir das?!?!
-                    // TODO: Wie kann man da eine Frage stellen?
+                    PrefabSingleton.Instance.InputHandler.AddQuestion("FightQuestUnconscious");
+                    yield return StartCoroutine(PrefabSingleton.Instance.InputHandler.WaitForAnswer());
                     text = ReplaceVariables(ResourceSingleton.Instance.GetText(textKey), _actualMember, clickedGangMember);
                 }
                 else
@@ -329,9 +329,10 @@ namespace Menu
         private void IsFightOver()
         {
             if (_allCombatants.Where(comb => comb.GangAssignment == CharacterSingleton.Instance.GangOfPlayer).All(comb => comb.HealthStatus == HealthStatus.Dead))
-            {
-                // All Players gang members are dead! Player lost!
-                Debug.Log("YOU LOST!");
+            {   
+                // Player lost!
+                // All members are dead!
+                CharacterSingleton.Instance.PlayerMembersInCar.Clear();
             }
             else if (_allCombatants.Where(comb => comb.GangAssignment != CharacterSingleton.Instance.GangOfPlayer).All(comb => comb.HealthStatus == HealthStatus.Dead))
             {

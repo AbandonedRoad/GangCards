@@ -24,6 +24,7 @@ namespace Singleton
         public ProfileSelectorHandler ProfileSelectorHandler { get; private set; }
         public FightingHandler FightingHandler { get; private set; }
         public ChooseYourGangHandler ChooseYourGangHandler { get; private set; }
+        public InputHandler InputHandler { get; private set; }
 
         public RegularUpdate RegularUpdate { get; private set; }
         public PlayerProfile ProfileContainer { get; set; }
@@ -70,6 +71,7 @@ namespace Singleton
             ProfileSelectorHandler = handlingPrefab.GetComponent<ProfileSelectorHandler>();
             FightingHandler = handlingPrefab.GetComponent<FightingHandler>();
             ChooseYourGangHandler = handlingPrefab.GetComponent<ChooseYourGangHandler>();
+            InputHandler = handlingPrefab.GetComponent<InputHandler>();
 
             PlayersCar = GameObject.Find("PlayerCarsPrefab");
             PlayersCarScript = PlayersCar.GetComponent<MoveCars>();

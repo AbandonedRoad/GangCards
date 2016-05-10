@@ -138,6 +138,7 @@
     <Compile Include="Assets\Script\MenuHandler\DebugHandler.cs" />
     <Compile Include="Assets\Script\MenuHandler\FightingHandler.cs" />
     <Compile Include="Assets\Script\MenuHandler\GangHandler.cs" />
+    <Compile Include="Assets\Script\MenuHandler\InputHandler.cs" />
     <Compile Include="Assets\Script\MenuHandler\ItemHandler.cs" />
     <Compile Include="Assets\Script\MenuHandler\OptionsHandler.cs" />
     <Compile Include="Assets\Script\MenuHandler\OptionsSettingsHandler.cs" />

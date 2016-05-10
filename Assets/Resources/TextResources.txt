@@ -100,3 +100,11 @@ FightNextRoundYou_End	------ Your turn! --------------------------------~
 FightNextRoundYou_Ger	------ Du bist am Zug! --------------------------------~
 FightNextRoundEnemey_Eng	------ Opponents turn! --------------------------------~
 FightNextRoundEnemey_Ger	------ Der Gegner ist am Zug! --------------------------------~
+FightQuestUnconscious_Eng	This enemey is already unconscious and may not attack anymore - really attack further?~
+FightQuestUnconscious_Ger	Dieser Gegner ist bereits bewusstlos und kann nicht mehr angreifen - wirklich angreifen?~
+FightQuestUnconsciousTitle_Eng	Attack further?~
+FightQuestUnconsciousTitle_Ger	Weiter angreifen?~
+FightQuestUnconsciousA1_Eng	Yes~
+FightQuestUnconsciousA1_Ger	Ja~
+FightQuestUnconsciousA2_Eng	No~
+FightQuestUnconsciousA2_Ger	Nein~
