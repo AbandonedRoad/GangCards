@@ -16,14 +16,6 @@ namespace InputHandling
 
         public void Update()
         {
-            if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))
-            {
-                if (Input.GetKeyDown(KeyCode.D))
-                {
-                    PrefabSingleton.Instance.DebugHandler.SwitchDebugPanel();
-                }
-            }
-
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 PrefabSingleton.Instance.OptionsHandler.SwitchOptionsPanel();

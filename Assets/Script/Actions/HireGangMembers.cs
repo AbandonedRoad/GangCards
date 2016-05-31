@@ -70,7 +70,11 @@ namespace Assets.Script.Actions
             {
                 _actualMember = CharacterSingleton.Instance.GenerateAIPlayer(_pubLevel);
                 CharacterSingleton.Instance.AddAIPlayer(_actualMember);
-                CharacterSingleton.Instance.PlayerMembersInCar.Add(_actualMember);
+
+                if (CharacterSingleton.Instance.PlayerMembersInCar.Count < 3)
+                {
+                    CharacterSingleton.Instance.PlayerMembersInCar.Add(_actualMember);
+                }                
             }
             else
             {

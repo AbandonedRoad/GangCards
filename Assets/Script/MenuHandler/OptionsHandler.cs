@@ -94,9 +94,8 @@ namespace Menu
 
 			// Save all Buildings
 			SceneData sceneData = new SceneData();
-            List<GameObject> allCars = new List<GameObject>(GameObject.FindGameObjectsWithTag("Car"));
-            allCars.AddRange(GameObject.FindGameObjectsWithTag("PlayersCar").ToList());
-			foreach (GameObject car in allCars) 
+            var cars = new List<GameObject>(GameObject.FindGameObjectsWithTag("PlayersCar"));
+			foreach (GameObject car in cars) 
 			{
 				GOInfo goInfo = new GOInfo();
 
@@ -147,8 +146,8 @@ namespace Menu
 		/// <param name="level">Level.</param>
 		void OnLevelWasLoaded(int level) 
 		{
-			LoadSceneData();
-		}
+            LoadSceneData();
+        }
 
         /// <summary>
         /// Load Profiles
@@ -178,6 +177,8 @@ namespace Menu
         /// </summary>
         public void LoadSceneData()
 		{
+            HelperSingleton.Instance.CreateSeed();
+
             if (String.IsNullOrEmpty(PrefabSingleton.Instance.ProfileContainer.ActiveProfile))
             {
                 // No active user - nothing to load.
@@ -209,9 +210,10 @@ namespace Menu
 			{
 				HelperSingleton.Instance.LogMessages.Add(new LogInfo("The Save game for Zone '" + SceneManager.GetActiveScene().name + "' does not exist! Abort"));
 			}
-				
-			// Init all Singletons.
-		}
+
+            // Init Singletons, do aftermath
+            WorldHelperSingleton.Instance.CreateCars(10);
+        }
 
 		/// <summary>
 		/// Saves the game data.
@@ -253,7 +255,7 @@ namespace Menu
 			{
 				try 
 				{
-                    var fullPath = _files.FirstOrDefault(path => path.FullName.Contains(go.PrefabName));
+                    var fullPath = _files.FirstOrDefault(path => path.FullName.Contains(go.PrefabName.Replace("(Clone)", String.Empty)));
 
                     var removedExt = Path.ChangeExtension(fullPath.FullName, String.Empty);
                     removedExt = removedExt.Substring(0, removedExt.Length - 1);
@@ -269,8 +271,8 @@ namespace Menu
                     GameObject createdGO = null;
                     createdGO = Resources.Load(prefabPath, typeof(GameObject)) as GameObject;
 
-
-                    Instantiate(createdGO, go.GetVector(GOVectorProperty.Position), Quaternion.Euler(go.GetVector(GOVectorProperty.Rotation)));
+                    var result = Instantiate(createdGO, go.GetVector(GOVectorProperty.Position), Quaternion.Euler(go.GetVector(GOVectorProperty.Rotation)));
+                    result.name = result.name.Replace("(Clone)", string.Empty);
                 } 
 
 				catch (Exception ex) 

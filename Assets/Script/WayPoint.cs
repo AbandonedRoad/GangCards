@@ -3,11 +3,12 @@ using System.Collections;
 using Enum;
 using System.Linq;
 using Singleton;
+using System.Collections.Generic;
 
 public class WayPoint : MonoBehaviour
 {
     public Directions[] AvailableDirections;
-    public bool PlayerOnly;
+    public bool[] PlayerOnly;
     public bool DeadEnd;
 
     private GameObject _planeRight;
@@ -41,11 +42,21 @@ public class WayPoint : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         var carScript = other.gameObject.GetComponent<MoveCars>();
-        if (other.gameObject.tag == "Car" && PlayerOnly)
+        /*
+        if (other.gameObject.tag == "Car")
         {
-            // AI car was hit, but this is a Player Only WayPoint
-            return;
+            // AI car was hit, so filter directions which are not allowed for the AI.
+            var filterredResult = new Directions[PlayerOnly.Where(po => !po).Count()];
+            for (int i = 0; i < PlayerOnly.Length; i++)
+            {
+                if (PlayerOnly[i])
+                {
+                    continue;
+                }
+                filterredResult[i] = AvailableDirections[i];
+            }
         }
+        */
         if (other.gameObject.tag == "PlayersCar")
         {
             // This is the Players Car.
@@ -58,8 +69,6 @@ public class WayPoint : MonoBehaviour
                 _planeLeft.SetActive(AvailableDirections.Contains(Directions.Left));
                 _planeForward.SetActive(AvailableDirections.Contains(Directions.Forward));
             }
-
-            return;
         }
     }
 
@@ -70,13 +79,21 @@ public class WayPoint : MonoBehaviour
     public void OnTriggerExit(Collider other)
     {
         var carScript = other.gameObject.GetComponent<MoveCars>();
-        if (other.gameObject.tag == "Car" && PlayerOnly)
+        List<Directions> possibleDirs = new List<Directions>();
+        if (other.gameObject.tag == "Car")
         {
-            // AI car was hit, but this is a Player Only WayPoint
-            return;
+            // AI car was hit, so filter directions which are not allowed for the AI.
+            for (int i = 0; i < PlayerOnly.Length; i++)
+            {
+                if (PlayerOnly[i])
+                {
+                    continue;
+                }
+                possibleDirs.Add(AvailableDirections[i]);
+            }
         }
 
-        var possibleDirs = AvailableDirections.Where(dir => dir != Directions.NotSet);
+        possibleDirs = possibleDirs.Where(dir => dir != Directions.NotSet).ToList();
         if (other.gameObject.tag == "PlayersCar")
         {
             // This is the Players Car.

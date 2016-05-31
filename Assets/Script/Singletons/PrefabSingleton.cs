@@ -25,12 +25,12 @@ namespace Singleton
         public FightingHandler FightingHandler { get; private set; }
         public ChooseYourGangHandler ChooseYourGangHandler { get; private set; }
         public InputHandler InputHandler { get; private set; }
+        public HQHandler HQHandler { get; private set; }
 
         public RegularUpdate RegularUpdate { get; private set; }
         public PlayerProfile ProfileContainer { get; set; }
         public GameData ActualGameData { get; set; }
-        public Sprite FightingSkullSprite { get; private set; }
-        public Sprite FightingRegularSprite { get; private set; }
+        public List<GameObject> AllCars { get; private set; }
 
         public GameObject PlayersCar { get; set; }
         public MoveCars PlayersCarScript { get; set; }
@@ -46,7 +46,6 @@ namespace Singleton
                 {
                     _instance = new PrefabSingleton();
                     _instance.Init();
-                    _instance.LoadImages();
                 }
 
                 return _instance;
@@ -72,22 +71,15 @@ namespace Singleton
             FightingHandler = handlingPrefab.GetComponent<FightingHandler>();
             ChooseYourGangHandler = handlingPrefab.GetComponent<ChooseYourGangHandler>();
             InputHandler = handlingPrefab.GetComponent<InputHandler>();
+            HQHandler = handlingPrefab.GetComponent<HQHandler>();
 
             PlayersCar = GameObject.Find("PlayerCarsPrefab");
             PlayersCarScript = PlayersCar.GetComponent<MoveCars>();
 
+            AllCars = Resources.LoadAll<GameObject>("Vehicles").ToList();
+
             ProfileContainer = new PlayerProfile();
             ActualGameData = new GameData();
-        }
-
-        /// <summary>
-        /// Loads relevant images
-        /// </summary>
-        private void LoadImages()
-        {
-            var sprites = Resources.LoadAll<Sprite>("Faces");
-            FightingSkullSprite = sprites.First(spr => spr.name == "Skull");
-            FightingRegularSprite = sprites.First(spr => spr.name == "EnemyBorder");
         }
 
         /// <summary>

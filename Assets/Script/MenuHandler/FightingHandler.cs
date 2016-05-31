@@ -482,8 +482,8 @@ namespace Menu
                 personIndex = _allCombatants.IndexOf(actualMember) + 1;
 
                 _imageKeys.First(pr => pr.Value == i).Key.sprite = actualMember.HealthStatus == HealthStatus.Dead
-                    ? PrefabSingleton.Instance.FightingSkullSprite
-                    : PrefabSingleton.Instance.FightingRegularSprite;
+                    ? ResourceSingleton.Instance.FightingSkullSprite
+                    : ResourceSingleton.Instance.FightingRegularSprite;
             }
         }
     }

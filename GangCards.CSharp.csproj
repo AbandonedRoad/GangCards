@@ -103,7 +103,6 @@
     <Compile Include="Assets\Script\Debug\StartAFight.cs" />
     <Compile Include="Assets\Script\Enum\AnimalType.cs" />
     <Compile Include="Assets\Script\Enum\ArmorType.cs" />
-    <Compile Include="Assets\Script\Enum\PropertyType.cs" />
     <Compile Include="Assets\Script\Enum\Directions.cs" />
     <Compile Include="Assets\Script\Enum\GOType.cs" />
     <Compile Include="Assets\Script\Enum\Gangs.cs" />
@@ -111,10 +110,13 @@
     <Compile Include="Assets\Script\Enum\ItemIdentifiers.cs" />
     <Compile Include="Assets\Script\Enum\ItemSlot.cs" />
     <Compile Include="Assets\Script\Enum\ItemType.cs" />
+    <Compile Include="Assets\Script\Enum\PropertyType.cs" />
     <Compile Include="Assets\Script\Enum\Rarity.cs" />
     <Compile Include="Assets\Script\Enum\Skills.cs" />
     <Compile Include="Assets\Script\Enum\SpecialText.cs" />
     <Compile Include="Assets\Script\Enum\WeaponType.cs" />
+    <Compile Include="Assets\Script\Humans\GangMemberSkill.cs" />
+    <Compile Include="Assets\Script\Humans\GangVisualizer.cs" />
     <Compile Include="Assets\Script\Humans\Human.cs" />
     <Compile Include="Assets\Script\InputHandling\HandleCamera.cs" />
     <Compile Include="Assets\Script\InputHandling\HandleKeyInput.cs" />
@@ -138,6 +140,7 @@
     <Compile Include="Assets\Script\MenuHandler\DebugHandler.cs" />
     <Compile Include="Assets\Script\MenuHandler\FightingHandler.cs" />
     <Compile Include="Assets\Script\MenuHandler\GangHandler.cs" />
+    <Compile Include="Assets\Script\MenuHandler\HQHandler.cs" />
     <Compile Include="Assets\Script\MenuHandler\InputHandler.cs" />
     <Compile Include="Assets\Script\MenuHandler\ItemHandler.cs" />
     <Compile Include="Assets\Script\MenuHandler\OptionsHandler.cs" />
@@ -149,6 +152,7 @@
     <Compile Include="Assets\Script\Misc\GameData.cs" />
     <Compile Include="Assets\Script\Misc\Language.cs" />
     <Compile Include="Assets\Script\Misc\LogInfo.cs" />
+    <Compile Include="Assets\Script\Misc\OpenPanel.cs" />
     <Compile Include="Assets\Script\Misc\PlayerProfile.cs" />
     <Compile Include="Assets\Script\Misc\RegularUpdate.cs" />
     <Compile Include="Assets\Script\Misc\SceneData.cs" />
@@ -162,6 +166,7 @@
     <Compile Include="Assets\Script\Singletons\PrefabSingleton.cs" />
     <Compile Include="Assets\Script\Singletons\ResourceSingleton.cs" />
     <Compile Include="Assets\Script\Singletons\SettingsSingleton.cs" />
+    <Compile Include="Assets\Script\Singletons\WorldHelperSingleton.cs" />
     <Compile Include="Assets\Script\WayPoint.cs" />
   </ItemGroup>
   <ItemGroup>

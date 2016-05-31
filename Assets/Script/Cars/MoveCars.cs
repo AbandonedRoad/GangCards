@@ -10,6 +10,7 @@ public class MoveCars : MonoBehaviour
     private bool _isPlayersCar;
     private bool _isTurning;
     private Vector3 _newDirectionRotation;
+    private float _startSpeed;
 
     public float Speed;
     public bool AllowExecute { get; set; }
@@ -21,6 +22,8 @@ public class MoveCars : MonoBehaviour
     /// </summary>
     void Start()
     {
+        _startSpeed = Speed;
+
         _newDirectionRotation = this.transform.rotation.eulerAngles;
         _isPlayersCar = this.gameObject.tag == "PlayersCar";
         NewDirection = Directions.Forward;

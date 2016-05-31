@@ -2,13 +2,9 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
-using System.Collections;
-using Assets.Script;
-using System.Globalization;
 using Enum;
 using Interfaces;
 using Items;
-using UnityEngine.UI;
 
 namespace Singleton
 {
@@ -20,6 +16,10 @@ namespace Singleton
         private Dictionary<string, string> _items = new Dictionary<string, string>();
 
         public Dictionary<string, Sprite> ImageFaces { get; private set; }
+        public Sprite BackgroundSelected { get; private set; }
+        public Sprite BackgroundDeSelected { get; private set; }
+        public Sprite FightingSkullSprite { get; private set; }
+        public Sprite FightingRegularSprite { get; private set; }
 
         /// <summary>
         /// Gets instance
@@ -32,6 +32,7 @@ namespace Singleton
                 {
                     _instance = new ResourceSingleton();
                     _instance.Init();
+                    _instance.LoadImages();
                 }
 
                 return _instance;
@@ -76,7 +77,15 @@ namespace Singleton
                 var filteredKey = keyValuePair[0].Trim();
                 var filteredValue = keyValuePair[1].Trim();
                 _items.Add(filteredKey, filteredValue);
-            }
+            }    
+        }
+
+        /// <summary>
+        /// Loads relevant images
+        /// </summary>
+        private void LoadImages()
+        {
+            var sprites = Resources.LoadAll<Sprite>(String.Empty);
 
             // Load Image Ressources
             Sprite image = null;
@@ -87,8 +96,8 @@ namespace Singleton
             string nameToBeSearched;
             while (true)
             {
-                nameToBeSearched = String.Concat(@"Faces/", faceToLoad, groupCounter.ToString());
-                image = Resources.Load<Sprite>(nameToBeSearched);
+                nameToBeSearched = String.Concat(faceToLoad, groupCounter.ToString());
+                image = sprites.FirstOrDefault(spr => spr.name == nameToBeSearched);
                 if (image == null)
                 {
                     faceCounter++;
@@ -105,7 +114,14 @@ namespace Singleton
                 {
                     break;
                 }
-            }             
+            }
+
+            // Special Sprites
+            FightingSkullSprite = sprites.First(spr => spr.name == "Skull");
+            FightingRegularSprite = sprites.First(spr => spr.name == "EnemyBorder");
+
+            BackgroundDeSelected = sprites.First(spr => spr.name == "BackgroundGray");
+            BackgroundSelected = sprites.First(spr => spr.name == "BackgroundSelected");
         }
 
         /// <summary>
