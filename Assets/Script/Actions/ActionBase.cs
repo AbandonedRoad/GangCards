@@ -1,6 +1,8 @@
 ﻿using Singleton;
 using UnityEngine;
 using Interfaces;
+using Enum;
+using System.Collections;
 
 namespace Assets.Script.Actions
 {
@@ -17,7 +19,15 @@ namespace Assets.Script.Actions
         }
 
         public virtual void ExecuteAction()
-        { }
+        {
+        }
+
+        /// <summary>
+        /// Will be fire once the ActionAfterEffactsHandler closes
+        /// </summary>
+        public virtual void ExecuteAfterClose()
+        {
+        }
 
         /// <summary>
         /// Close this shit.
@@ -25,6 +35,7 @@ namespace Assets.Script.Actions
         public void Leave()
         {
             PrefabSingleton.Instance.ActionAfterEffactsHandler.SwitchAfterEffectsPanel(false);
+            ExecuteAfterClose();
         }
 
         /// <summary>
@@ -32,9 +43,9 @@ namespace Assets.Script.Actions
         /// </summary>
         /// <param name="buildingLevel"></param>
         /// <returns>TRUE if success!</returns>
-        public virtual bool ActionSucceeds(int buildingLevel)
+        public virtual DicingResult ActionSucceeds(int buildingLevel)
         {
-            var factor = buildingLevel - CharacterSingleton.Instance.GangLevel;
+            var factor = buildingLevel - CharacterSingleton.Instance.GangCarLevel;
             var chance = 0;
             if (factor < -3)
             {
@@ -54,8 +65,24 @@ namespace Assets.Script.Actions
             }
             Debug.Log("Your chance at " + this.GetType().ToString() + ": " + chance.ToString());
 
-            float value = UnityEngine.Random.Range(0f, 100f);
-            return (value <= chance);
+            float value = Random.Range(0f, 100f);
+
+            if (value < 6)
+            {
+                return DicingResult.GreatSuccess;
+            }
+            else if (value > 94)
+            {
+                return DicingResult.EpicFailure;
+            }
+            else if (value <= chance)
+            {
+                return DicingResult.Success;
+            }
+            else
+            {
+                return DicingResult.Failure;
+            }
         }
     }
 }

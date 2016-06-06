@@ -30,8 +30,14 @@ GangMemberIntelligence_Eng	Intelligence~
 GangMemberIntelligence_Ger	Intelligenz~
 GangMemberStreeName_Eng	Street Name~
 GangMemberStreeName_Ger	Straßenname~
-GangMemberStrength_Eng	Strength~
-GangMemberStrength_Ger	Stärke~
+GangMemberHealth_Eng	Health~
+GangMemberHealth_Ger	Gesundheit~
+GangMemberInitiative_Eng	Initiative~
+GangMemberInitiative_Ger	Initiative~
+GangMemberCourage_Eng	Courage~
+GangMemberCourage_Ger	Mut~
+GangMemberAccuracy_Eng	Accuracy~
+GangMemberAccuracy_Ger	Genauigkeit~
 GangMemberLevel_Eng	Level~
 GangMemberLevel_Ger	Level~
 UseCar_Eng	Use Car~
@@ -45,7 +51,9 @@ SupermarketEntry_Ger	Ihr betretet einen Supermarkt. Ein paar Leute befinden sich
 
 Was wollt ihr tun?~
 SupermarketAction0_Eng	Beg for a few coins at the supermarkt owner.~
-SupermarketAction0_Ger	Bettle beim Supermarkt Besitzer um etwas Geld~
+SupermarketAction0_Ger	Bettle beim Supermarkt Besitzer um etwas Geld.~
+SupermarketAction1_Eng	Start assualt on the supermarket.~
+SupermarketAction1_Ger	Überfalle den Supermarkt.~
 BegForMoney_Eng	Beg for money~
 BegForMoney_Ger	Um Geld betteln~
 BegForMoneyPart1_Eng	Your members fall on their knees and beg for a few coins...~
@@ -64,6 +72,20 @@ Damage for each member~
 BegForMoneyPart2Fail_Ger	Der Besitzer verpasst all deinen Membern einen Tritt und befördert sie aus dem Laden.
 
 Schaden pro Member:~
+RobShop_Eng	Rob this shop~
+RobShop_Ger	Laden überfallen~
+RobShopPart1_Eng	Your members get their weapons ready and threaten the employee - this is an assault!~
+RobShopPart1_Ger	Deine Member machen ihre Waffen bereit und bedrohen den Angestellten - das ist ein Überfall!~
+RobShopPart2_Eng	The employee tremble with fear and opens the register for you.
+
+You got:~
+RobShopPart2_Ger	Der Besitzer zittert vor Angst und lehrt seine Kasse vor deinen Füssen aus!
+
+Ihr erbeutest:~
+RobShopPart1Fail_Eng	~
+RobShopPart1Fail_Ger	~
+RobShopPart2Fail_Eng	The employee is not as freightend as expected - grabs a weapon and attacks!~
+RobShopPart2Fail_Ger	Der Besitzer ist überhaupt nicht beeindruckt - zieht eine Waffe und attackiert!~
 FightActionMainWeapon_Ger	@player attackierst @enemey mit deiner primären Waffe.~
 FightActionMainWeapon_Eng	@player are attachking @enemey with your primary weapon.~
 FightActionPistol_Ger	@player schießt aus deiner Pistole auf @enemey.~
@@ -100,6 +122,10 @@ FightNextRoundYou_End	------ Your turn! --------------------------------~
 FightNextRoundYou_Ger	------ Du bist am Zug! --------------------------------~
 FightNextRoundEnemey_Eng	------ Opponents turn! --------------------------------~
 FightNextRoundEnemey_Ger	------ Der Gegner ist am Zug! --------------------------------~
+FightYouWon_Eng	------ Victory! --------------------------------~
+FightYouWon_Ger	------ Sieg! --------------------------------~
+FightYouLose_Eng	------ Failure! --------------------------------~
+FightYouLose_Ger	------ Niederlage! --------------------------------~
 FightQuestUnconscious_Eng	This enemey is already unconscious and may not attack anymore - really attack further?~
 FightQuestUnconscious_Ger	Dieser Gegner ist bereits bewusstlos und kann nicht mehr angreifen - wirklich angreifen?~
 FightQuestUnconsciousTitle_Eng	Attack further?~
@@ -108,3 +134,13 @@ FightQuestUnconsciousA1_Eng	Yes~
 FightQuestUnconsciousA1_Ger	Ja~
 FightQuestUnconsciousA2_Eng	No~
 FightQuestUnconsciousA2_Ger	Nein~
+FightQuestTakeBodies_Eng	You killed @bodies enemies - do you want to take them with you to avoid leaving marks? 
+Note: You have space for @space bodies.~
+FightQuestTakeBodies_Ger	Ihr habt @bodies Feinde getötet - die Leichen mitnehmen um weniger Spuren zu hinterlassen?
+Hinweis: Es ist Platz für @space Leichen.~
+FightQuestTakeBodiesTitle_Eng	Take bodies with you?~
+FightQuestTakeBodiesTitle_Ger	Leichen mitnehmen?~
+FightQuestTakeBodiesA1_Eng	Yes~
+FightQuestTakeBodiesA1_Ger	Ja~
+FightQuestTakeBodiesA2_Eng	No~
+FightQuestTakeBodiesA2_Ger	Nein~

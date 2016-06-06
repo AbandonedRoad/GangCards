@@ -28,8 +28,10 @@ namespace Menu
         private IGangMember _actualMember;
         private Button _nextRoundButton;
         private Button _fleeButton;
+        private Text _fleeText;
         private bool _isPlayersTurn;
         private ItemSlot _slotClicked;
+        private Delegate _callBack;
 
         /// <summary>
         /// Start this instance.
@@ -58,6 +60,7 @@ namespace Menu
             _eventTrigger.Values.ToList().ForEach(et => HelperSingleton.Instance.AddEventTrigger(et, LeaveImage, EventTriggerType.PointerExit));
 
             _combatLog = texts.First(tx => tx.name == "CombatLogText");
+            _fleeText = texts.First(tx => tx.name == "FleeText");
 
             _itemVisualizer.AddItem(ItemSlot.MainWeapon, images.First(img => img.gameObject.name == "ItemMainWeapon"));
             _itemVisualizer.AddItem(ItemSlot.Pistol, images.First(img => img.gameObject.name == "ItemPistol"));
@@ -80,6 +83,11 @@ namespace Menu
             {
                 _combatLog.text = String.Empty;
                 _fightingPanel.transform.SetAsLastSibling();
+            }
+            else
+            {
+                // Reset stuff which may have changed.
+                _fleeText.text = "Flee";
             }
         }
 
@@ -178,13 +186,24 @@ namespace Menu
         /// </summary>
         public void FleeFromBattle()
         {
+            if (_fleeText.text == "Flee")
+            {
+                PrefabSingleton.Instance.PlayersCarScript.SetCarBackOnTheRoadWithTurn();
+            }
+            else
+            {
+                // TODO: Alle tot - was nun?
+            }
+            
             SwitchFightingPanel(false);
         }
 
         /// <summary>
-        /// Starts a fight!
+        /// Starts a fight
         /// </summary>
-        public void StartFight(List<IGangMember> opponents)
+        /// <param name="opponents">All opponents</param>
+        /// <param name="callBack">Action which is fired after the fight is over.</param>
+        public void StartFight(List<IGangMember> opponents, Delegate callBack)
         {
             _allCombatants = opponents.ToList();
             _allCombatants.AddRange(CharacterSingleton.Instance.PlayerMembersInCar);
@@ -192,6 +211,7 @@ namespace Menu
             _actualMember = _allCombatants.First();
 
             _isPlayersTurn = CharacterSingleton.Instance.PlayerMembersInCar.Contains(_actualMember);
+            _callBack = callBack;
 
             UpdateActionBar();
             UpdateButtons();
@@ -208,7 +228,7 @@ namespace Menu
         {
             IGangMember clickedGangMember = null;
             string textKey = String.Empty;
-            string text = String.Empty;
+            string nextCombatLogEntry = String.Empty;
             IGangMember playerToBeAttacked = null;
             if (isPlayer)
             {
@@ -223,8 +243,8 @@ namespace Menu
                 if (clickedGangMember.HealthStatus == HealthStatus.Dead)
                 {
                     // Bereits tot? Kann nicht mehr drauf ballern!
-                    text = ReplaceVariables(ResourceSingleton.Instance.GetText("FightAlreadyDead"), _actualMember, clickedGangMember);
-                    _combatLog.text = text + Environment.NewLine + _combatLog.text;
+                    nextCombatLogEntry = ReplaceVariables(ResourceSingleton.Instance.GetText("FightAlreadyDead"), _actualMember, clickedGangMember);
+                    _combatLog.text = nextCombatLogEntry + Environment.NewLine + _combatLog.text;
                     _slotClicked = ItemSlot.NotSet;
                     _itemVisualizer.DeSelectAll();
                     yield break;
@@ -233,11 +253,17 @@ namespace Menu
                 {
                     PrefabSingleton.Instance.InputHandler.AddQuestion("FightQuestUnconscious");
                     yield return StartCoroutine(PrefabSingleton.Instance.InputHandler.WaitForAnswer());
-                    text = ReplaceVariables(ResourceSingleton.Instance.GetText(textKey), _actualMember, clickedGangMember);
+
+                    if (PrefabSingleton.Instance.InputHandler.AnswerGiven == 2)
+                    {
+                        // User decided to stop fire.
+                        yield break;
+                    }
+                    nextCombatLogEntry = ReplaceVariables(ResourceSingleton.Instance.GetText(textKey), _actualMember, clickedGangMember);
                 }
                 else
                 {
-                    text = ReplaceVariables(ResourceSingleton.Instance.GetText(textKey), _actualMember, clickedGangMember);
+                    nextCombatLogEntry = ReplaceVariables(ResourceSingleton.Instance.GetText(textKey), _actualMember, clickedGangMember);
                 }                
             }
             else
@@ -248,11 +274,11 @@ namespace Menu
                     .OrderBy(pay => pay.Health).FirstOrDefault();
 
                 textKey = "FightActionAI" + slot.ToString();
-                text = ReplaceVariables(ResourceSingleton.Instance.GetText(textKey), playerToBeAttacked, _actualMember);
+                nextCombatLogEntry = ReplaceVariables(ResourceSingleton.Instance.GetText(textKey), playerToBeAttacked, _actualMember);
             }
 
             // Add to combat log
-            _combatLog.text = text + Environment.NewLine + _combatLog.text;
+            _combatLog.text = nextCombatLogEntry + Environment.NewLine + _combatLog.text;
 
             yield return new WaitForSeconds(1f);
 
@@ -294,7 +320,7 @@ namespace Menu
             _slotClicked = ItemSlot.NotSet;
             _itemVisualizer.DeSelectAll();
 
-            IsFightOver();
+            StartCoroutine(IsFightOver());
 
             UpdateActionBar();
         }
@@ -326,18 +352,44 @@ namespace Menu
         /// <summary>
         /// Check if the fight is over!
         /// </summary>
-        private void IsFightOver()
+        private IEnumerator IsFightOver()
         {
             if (_allCombatants.Where(comb => comb.GangAssignment == CharacterSingleton.Instance.GangOfPlayer).All(comb => comb.HealthStatus == HealthStatus.Dead))
             {   
                 // Player lost!
                 // All members are dead!
                 CharacterSingleton.Instance.PlayerMembersInCar.Clear();
+                _nextRoundButton.gameObject.SetActive(false);
+                _fleeText.text = "Close";
+                _combatLog.text = String.Concat(ResourceSingleton.Instance.GetText("FightYouLost"), Environment.NewLine, _combatLog.text);
+                
+                _callBack.DynamicInvoke(false);
             }
             else if (_allCombatants.Where(comb => comb.GangAssignment != CharacterSingleton.Instance.GangOfPlayer).All(comb => comb.HealthStatus == HealthStatus.Dead))
             {
                 // All Enemey gang members are dead! Player won!
-                Debug.Log("YOU WON!");
+                _combatLog.text = String.Concat(ResourceSingleton.Instance.GetText("FightYouWon"), Environment.NewLine, _combatLog.text);
+
+                Dictionary<string, string> parameters = new Dictionary<string, string>();
+                parameters.Add("bodies",
+                    _allCombatants.Where(mem => mem.GangAssignment != CharacterSingleton.Instance.GangOfPlayer && mem.HealthStatus == HealthStatus.Dead).Count().ToString());
+                parameters.Add("space", (6 - CharacterSingleton.Instance.PlayerMembersInCar.Count()).ToString());
+                PrefabSingleton.Instance.InputHandler.AddQuestion("FightQuestTakeBodies", parameters);
+                yield return StartCoroutine(PrefabSingleton.Instance.InputHandler.WaitForAnswer());
+
+                if (PrefabSingleton.Instance.InputHandler.AnswerGiven == 1)
+                {
+                    Debug.Log("Leichen mitnehmen");
+                }
+                else
+                {
+                    Debug.Log("Leichen da lassen");
+                }
+
+                SwitchFightingPanel(false);
+                PrefabSingleton.Instance.PlayersCarScript.SetCarBackOnTheRoadWithTurn();
+
+                _callBack.DynamicInvoke(true);
             }
         }
 
@@ -475,7 +527,7 @@ namespace Menu
                 actualMember = _allCombatants.Count > personIndex ? _allCombatants.ElementAt(personIndex) : _allCombatants.First();
                 _combatantsViaKey[i] = actualMember;
                 _nextNames[i].text = actualMember.Name;
-                _nextPictureText[i].text = actualMember.HealthStatus == HealthStatus.Dead
+                _nextPictureText[i].text = (actualMember.HealthStatus == HealthStatus.Dead || actualMember.GangAssignment == Gangs.NotSet)
                     ? String.Empty
                     : actualMember.GangAssignment.ToString();
                 _nextHPs[i].text = String.Concat("HP: ", actualMember.Health.ToString(), "/", actualMember.MaxHealth.ToString(), " ", actualMember.HealthStatus.ToString());

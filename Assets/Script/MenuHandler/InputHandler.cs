@@ -1,5 +1,6 @@
 ﻿using Singleton;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
@@ -56,7 +57,7 @@ namespace Menu
         /// <summary>
         /// Adds a question.
         /// </summary>
-        public void AddQuestion(string questionKey)
+        public void AddQuestion(string questionKey, Dictionary<string, string> parameters = null)
         {
             SwitchPanel();
             AnswerGiven = 0;
@@ -65,6 +66,14 @@ namespace Menu
             _question.text = ResourceSingleton.Instance.GetText(questionKey);
             _answer1Text.text = ResourceSingleton.Instance.GetText(string.Concat(questionKey, "A1"));
             _answer2Text.text = ResourceSingleton.Instance.GetText(string.Concat(questionKey, "A2"));
+
+            if (parameters != null)
+            {
+                foreach (var pair in parameters)
+                {
+                    _question.text = _question.text.Replace(pair.Key, pair.Value);
+                }
+            }
         }
 
         /// <summary>

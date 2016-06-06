@@ -21,7 +21,8 @@ namespace Singleton
         public List<IGangMember> PlayersGang { get; private set; }
         public List<IGangMember> PlayerMembersInCar { get; private set; }
         public string GangName { get; set; }
-        public int GangLevel { get; set; }
+        public int GangLevel { get { return GetGangLevel(false); } }
+        public int GangCarLevel { get { return GetGangLevel(true); } }
 
         /// <summary>
         /// Gets instance
@@ -40,16 +41,12 @@ namespace Singleton
             }
         }
 
-        /// <summary>
-        /// Init this instance
-        /// </summary>
         private void Init()
         {
             PlayersGang = new List<IGangMember>();
             PlayerMembersInCar = new List<IGangMember>();
             GangName = "Crumps";
             GangOfPlayer = Gangs.Wheelers;
-            GangLevel = 1;
             AvailableMoney = 0;
         }
 
@@ -138,6 +135,26 @@ namespace Singleton
             var total = total1 + total2 + total3;
 
             return new SkillDicingOutput(skillToCheck, modifikator, skills, new int[] { skill1, skill2, skill3 }, new int[] { diced1, diced2, diced3 }, total >= 0);
+        }
+
+        /// <summary>
+        /// Init this instance
+        /// </summary>
+        private int GetGangLevel(bool returnForCarOnly)
+        {
+            float average;
+            if (returnForCarOnly)
+            {
+                var totalLevel = Instance.PlayerMembersInCar.Sum(gm => gm.Level);
+                average = totalLevel / (Instance.PlayerMembersInCar.Any() ? Instance.PlayerMembersInCar.Count : 1);
+            }
+            else
+            {
+                var totalLevel = Instance.PlayersGang.Sum(gm => gm.Level);
+                average = totalLevel / (Instance.PlayersGang.Any() ? Instance.PlayersGang.Count : 1);
+            }
+
+            return (int)Math.Round(average, 0);
         }
     }
 }

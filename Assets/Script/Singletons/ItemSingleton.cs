@@ -54,17 +54,26 @@ namespace Singleton
         }
 
         /// <summary>
+        /// Returns an appropriate Weapon for a level
+        /// </summary>
+        /// <returns></returns>
+        public IItem ReturnAppropiateWeapon(int level)
+        {
+            var weapon = ItemSingleton.Instance.Items.FirstOrDefault(itm => itm.UsedInSlot == ItemSlot.MainWeapon
+                && itm.Level == level);
+
+            Debug.LogWarning("WARNING! No weapon found for Level " + level.ToString());
+
+            return weapon;
+        }
+
+        /// <summary>
         /// Initialize
         /// </summary>
         private void Init()
         {
             Items = ResourceSingleton.Instance.GetItems();
             OwnedItems = ResourceSingleton.Instance.GetItems();
-
-            foreach (var item in Items)
-            {
-
-            }
         }
     }
 }

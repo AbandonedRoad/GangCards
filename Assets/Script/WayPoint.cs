@@ -4,6 +4,7 @@ using Enum;
 using System.Linq;
 using Singleton;
 using System.Collections.Generic;
+using Cars;
 
 public class WayPoint : MonoBehaviour
 {
@@ -42,21 +43,7 @@ public class WayPoint : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         var carScript = other.gameObject.GetComponent<MoveCars>();
-        /*
-        if (other.gameObject.tag == "Car")
-        {
-            // AI car was hit, so filter directions which are not allowed for the AI.
-            var filterredResult = new Directions[PlayerOnly.Where(po => !po).Count()];
-            for (int i = 0; i < PlayerOnly.Length; i++)
-            {
-                if (PlayerOnly[i])
-                {
-                    continue;
-                }
-                filterredResult[i] = AvailableDirections[i];
-            }
-        }
-        */
+
         if (other.gameObject.tag == "PlayersCar")
         {
             // This is the Players Car.
@@ -80,17 +67,15 @@ public class WayPoint : MonoBehaviour
     {
         var carScript = other.gameObject.GetComponent<MoveCars>();
         List<Directions> possibleDirs = new List<Directions>();
-        if (other.gameObject.tag == "Car")
+        
+        for (int i = 0; i < PlayerOnly.Length; i++)
         {
-            // AI car was hit, so filter directions which are not allowed for the AI.
-            for (int i = 0; i < PlayerOnly.Length; i++)
+            if (PlayerOnly[i] && other.gameObject.tag == "Car")
             {
-                if (PlayerOnly[i])
-                {
-                    continue;
-                }
-                possibleDirs.Add(AvailableDirections[i]);
+                // AI car was hit, so filter directions which are not allowed for the AI.
+                continue;
             }
+            possibleDirs.Add(AvailableDirections[i]);
         }
 
         possibleDirs = possibleDirs.Where(dir => dir != Directions.NotSet).ToList();

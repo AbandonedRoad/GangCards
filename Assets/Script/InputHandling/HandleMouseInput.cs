@@ -23,8 +23,6 @@ namespace InputHandling
                     var topMost = HelperSingleton.Instance.GetTopMostGO(result.transform.gameObject, true);
                     HelperSingleton.Instance.SelectedObject = topMost;
 
-                    Debug.Log("Jop " + topMost.name);
-
                     var actionContainer = HelperSingleton.Instance.SelectedObject.GetComponent<ActionContainer>();
                     if (actionContainer != null)
                     {

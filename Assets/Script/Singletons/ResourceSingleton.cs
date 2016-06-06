@@ -246,9 +246,7 @@ namespace Singleton
         /// <returns></returns>
         public string GetSpecialText(SpecialText textType)
         {
-            string key = String.Concat(textType.ToString(), SettingsSingleton.Instance.Language == Language.English ? "_Eng" : "_Ger");
-
-            return GetText(key);
+            return GetText(textType.ToString());
         }
     }
 }

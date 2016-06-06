@@ -7,6 +7,7 @@ using Menu;
 using Misc;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
+using Cars;
 
 namespace Singleton
 {
@@ -48,6 +49,8 @@ namespace Singleton
                     _instance.Init();
                 }
 
+                _instance.CheckInstances();
+
                 return _instance;
             }
         }
@@ -73,13 +76,22 @@ namespace Singleton
             InputHandler = handlingPrefab.GetComponent<InputHandler>();
             HQHandler = handlingPrefab.GetComponent<HQHandler>();
 
-            PlayersCar = GameObject.Find("PlayerCarsPrefab");
-            PlayersCarScript = PlayersCar.GetComponent<MoveCars>();
-
             AllCars = Resources.LoadAll<GameObject>("Vehicles").ToList();
 
             ProfileContainer = new PlayerProfile();
             ActualGameData = new GameData();
+        }
+
+        /// <summary>
+        /// This will be checked for each call
+        /// </summary>
+        public void CheckInstances()
+        {
+            if (PlayersCar == null || PlayersCar.gameObject == null)
+            {
+                PlayersCar = GameObject.Find("PlayerCarsPrefab");
+                PlayersCarScript = PlayersCar.GetComponent<MoveCars>();
+            }
         }
 
         /// <summary>

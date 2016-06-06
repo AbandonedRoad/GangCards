@@ -42,12 +42,12 @@ namespace Menu
             LoadSceneData();
         }
 
-		/// <summary>
-		/// Handles the profile changed.
-		/// </summary>
-		/// <param name="sender">Sender.</param>
-		/// <param name="e">E.</param>
-		void HandleProfileChanged (object sender, EventArgs e)
+        /// <summary>
+        /// Handles the profile changed.
+        /// </summary>
+        /// <param name="sender">Sender.</param>
+        /// <param name="e">E.</param>
+        void HandleProfileChanged (object sender, EventArgs e)
 		{
 			PrefabSingleton.Instance.LoadGameData();
             _actualProfileText.text = PrefabSingleton.Instance.ProfileContainer.ActiveProfile;

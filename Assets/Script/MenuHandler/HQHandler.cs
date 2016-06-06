@@ -148,6 +148,15 @@ namespace Menu
         }
 
         /// <summary>
+        /// HQ will be left.
+        /// </summary>
+        public void LeaveHQ()
+        {
+            SwitchPanel();
+            PrefabSingleton.Instance.PlayersCarScript.SetCarBackOnTheRoadWithTurn();
+        }
+
+        /// <summary>
         /// Refrehes GUI.
         /// </summary>
         private void Refresh()
@@ -199,14 +208,6 @@ namespace Menu
                     _visualizer.VisualizeMember(key, _membersInCar.ElementAt(i));
                 }
             }
-        }
-
-        /// <summary>
-        /// HQ will be left.
-        /// </summary>
-        private void LeaveHQ()
-        {
-            SwitchPanel();
         }
     }
 }

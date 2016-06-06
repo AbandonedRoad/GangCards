@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Linq;
 using Singleton;
+using Cars;
 
 public class StopCar : MonoBehaviour
 {

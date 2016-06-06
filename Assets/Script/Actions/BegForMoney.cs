@@ -2,9 +2,7 @@
 using Enum;
 using Singleton;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Collections;
 using UnityEngine;
 
 namespace Assets.Script.Actions
@@ -46,25 +44,31 @@ namespace Assets.Script.Actions
         /// <summary>
         /// Checks if begging succeeds.
         /// </summary>
-        private void EvaluateBegging()
+        private IEnumerator EvaluateBegging()
         {
-            var greatSuccess = ActionSucceeds(_beggingLevel);
+            var dicingResult = ActionSucceeds(_beggingLevel);
 
             _textPart1 = ResourceSingleton.Instance.CreateActionText(this.GetType().Name.ToString(), "Part1");
 
-            _textPart2 = greatSuccess
+            yield return new WaitForSeconds(0.75f);
+
+            _textPart2 = (dicingResult == DicingResult.Success || dicingResult == DicingResult.GreatSuccess)
                 ? ResourceSingleton.Instance.CreateActionText(this.GetType().Name.ToString(), "Part2")
                 : ResourceSingleton.Instance.CreateActionText(this.GetType().Name.ToString(), "Part2Fail");
 
-            if (greatSuccess)
+            if (dicingResult == DicingResult.Success || dicingResult == DicingResult.GreatSuccess)
             {
-                var moneyEarned = Math.Round(UnityEngine.Random.Range(1f, 10f), 2);
+                var moneyEarned = dicingResult == DicingResult.Success
+                    ? Math.Round(UnityEngine.Random.Range(1f, 5), 2)
+                    : Math.Round(UnityEngine.Random.Range(5f, 10f), 2);
                 CharacterSingleton.Instance.AvailableMoney += (float)moneyEarned;
                 _textPart2 += String.Concat(moneyEarned.ToString(), "$");
             }
             else
             {
-                var damageEarned = UnityEngine.Random.Range(1, 4);
+                var damageEarned = dicingResult == DicingResult.Failure
+                    ? UnityEngine.Random.Range(1, 3)
+                    : UnityEngine.Random.Range(3, 6);
                 _textPart2 += damageEarned.ToString();
             }
         }

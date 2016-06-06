@@ -1,4 +1,6 @@
-﻿namespace Interfaces
+﻿using System.Collections;
+
+namespace Interfaces
 {
     public interface IAction
     {
