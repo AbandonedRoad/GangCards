@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using Enum;
 using System.Linq;
 using Singleton;

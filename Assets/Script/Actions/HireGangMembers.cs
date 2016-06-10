@@ -70,7 +70,7 @@ namespace Assets.Script.Actions
             if (DebugSingleton.Instance.IsEnabled)
             {
                 _actualMember = CharacterSingleton.Instance.GenerateAIPlayer(_pubLevel);
-                CharacterSingleton.Instance.AddAIPlayer(_actualMember);
+                CharacterSingleton.Instance.PlayersGang.Add(_actualMember);
 
                 if (CharacterSingleton.Instance.PlayerMembersInCar.Count < 3)
                 {
@@ -80,7 +80,7 @@ namespace Assets.Script.Actions
             else
             {
                 PrepareNewMember();
-                CharacterSingleton.Instance.AddAIPlayer(_actualMember);
+                CharacterSingleton.Instance.PlayersGang.Add(_actualMember);
             }
 
             return _actualMember;

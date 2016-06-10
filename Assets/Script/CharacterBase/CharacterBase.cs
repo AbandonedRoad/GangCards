@@ -1,9 +1,11 @@
 ﻿using Enum;
 using Interfaces;
+using System;
 using System.Collections.Generic;
 
 namespace Assets.Script.Characters
 {
+    [Serializable]
     public class CharacterBase
     {
         private int _health;

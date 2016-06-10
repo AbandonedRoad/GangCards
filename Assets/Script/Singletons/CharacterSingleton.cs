@@ -20,7 +20,6 @@ namespace Singleton
         public float AvailableMoney { get; set; }
         public List<IGangMember> PlayersGang { get; private set; }
         public List<IGangMember> PlayerMembersInCar { get; private set; }
-        public string GangName { get; set; }
         public int GangLevel { get { return GetGangLevel(false); } }
         public int GangCarLevel { get { return GetGangLevel(true); } }
 
@@ -41,12 +40,13 @@ namespace Singleton
             }
         }
 
+        /// <summary>
+        /// Initialize
+        /// </summary>
         private void Init()
         {
             PlayersGang = new List<IGangMember>();
             PlayerMembersInCar = new List<IGangMember>();
-            GangName = "Crumps";
-            GangOfPlayer = Gangs.Wheelers;
             AvailableMoney = 0;
         }
 
@@ -63,15 +63,6 @@ namespace Singleton
             member.Name = String.Concat(name[0], " ", name[1]);
 
             return member;
-        }
-
-        /// <summary>
-        /// Adds a new AI Player
-        /// </summary>
-        /// <param name="desiredLevel"></param>
-        public void AddAIPlayer(IGangMember newMember)
-        {
-            PlayersGang.Add(newMember);
         }
 
         /// <summary>

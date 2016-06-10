@@ -28,6 +28,9 @@ namespace Menu
         private Text _streeName;
         private Text _intelligence;
         private Text _strength;
+        private Text _accuracy;
+        private Text _courage;
+        private Text _initiative;
         private Text _level;
         private Text _gangName;
         private Text _gangLevel;
@@ -42,11 +45,14 @@ namespace Menu
 
             _memberInfosContainer = _gangPanel.GetComponentsInChildren<Transform>().First(go => go.gameObject.name == "MemberInfos").gameObject;
 
-            var texts = _gangPanel.GetComponentsInChildren<Text>();
+            var texts = _gangPanel.GetComponentsInChildren<Text>().ToList();
             _name = texts.First(tx => tx.gameObject.name == "NameText");
             _streeName = texts.First(tx => tx.gameObject.name == "StreetNameText");
             _intelligence = texts.First(tx => tx.gameObject.name == "IntelligenceText");
             _strength = texts.First(tx => tx.gameObject.name == "StrengthText");
+            _accuracy = texts.First(tx => tx.gameObject.name == "AccuracyText");
+            _courage = texts.First(tx => tx.gameObject.name == "CourageText");
+            _initiative = texts.First(tx => tx.gameObject.name == "InitiativeText");
             _level = texts.First(tx => tx.gameObject.name == "LevelText");
             _gangName = texts.First(tx => tx.gameObject.name == "GangNameText");
             _gangLevel = texts.First(tx => tx.gameObject.name == "GangLevelText");
@@ -83,6 +89,8 @@ namespace Menu
                 }
                 _itemButtons[slot].onClick.AddListener(() => PrefabSingleton.Instance.ItemHandler.SelectItem(slot, new Func<IItem, ItemSlot, bool>(NewItemSelected)));
             }
+
+            GUIHelper.ReplaceText(texts);
 
             _memberInfosContainer.SetActive(false);
             FillLabels();
@@ -145,7 +153,7 @@ namespace Menu
         /// </summary>
         private void PreviousStreeName()
         {
-            if (_actualMember == null)
+            if (_actualMember == null || _actualMember.StreetName.Count == 0)
             {
                 return;
             }
@@ -169,7 +177,7 @@ namespace Menu
         /// </summary>
         private void NextStreeName()
         {
-            if (_actualMember == null)
+            if (_actualMember == null || _actualMember.StreetName.Count == 0)
             {
                 return;
             }
@@ -238,7 +246,7 @@ namespace Menu
         {
             _memberInfosContainer.SetActive(_actualMember != null);
 
-            _gangName.text = CharacterSingleton.Instance.GangName;
+            _gangName.text = HelperSingleton.Instance.SplitUp(CharacterSingleton.Instance.GangOfPlayer.ToString());
             _gangLevel.text = CharacterSingleton.Instance.GangLevel.ToString();
 
             _name.text = _actualMember != null ? _actualMember.Name : String.Empty;
@@ -246,6 +254,9 @@ namespace Menu
             _intelligence.text = _actualMember != null ? _actualMember.Intelligence.ToString() : String.Empty;
             _strength.text = _actualMember != null ? _actualMember.Strength.ToString() : String.Empty;
             _level.text = _actualMember != null ? _actualMember.Level.ToString() : String.Empty;
+            _initiative.text = _actualMember != null ? _actualMember.Initiative.ToString() : String.Empty;
+            _accuracy.text = _actualMember != null ? _actualMember.Accuracy.ToString() : String.Empty;
+            _courage.text = _actualMember != null ? _actualMember.Courage.ToString() : String.Empty;
 
             LoadItemsFromGangster();
         }

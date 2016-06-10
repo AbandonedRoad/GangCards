@@ -100,8 +100,6 @@ namespace Humans
         /// <param name="key"></param>
         public IGangMember SelectEntry(string key)
         {
-            var itemToBeFilled = _gangs[key];
-
             _gangImages.Values.ToList().ForEach(spr => spr.sprite = ResourceSingleton.Instance.BackgroundDeSelected);
 
             if (_gangMembers.ContainsKey(key))

@@ -1,4 +1,5 @@
 ﻿using Singleton;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,11 +62,19 @@ namespace Menu
         {
             SwitchPanel();
             AnswerGiven = 0;
+            var text = String.Empty;
 
-            _title.text = ResourceSingleton.Instance.GetText(string.Concat(questionKey, "Title"));
-            _question.text = ResourceSingleton.Instance.GetText(questionKey);
-            _answer1Text.text = ResourceSingleton.Instance.GetText(string.Concat(questionKey, "A1"));
-            _answer2Text.text = ResourceSingleton.Instance.GetText(string.Concat(questionKey, "A2"));
+            ResourceSingleton.Instance.GetText(string.Concat(questionKey, "Title"), out text);
+            _title.text = text;
+            ResourceSingleton.Instance.GetText(questionKey, out text);
+            _question.text = text;
+            ResourceSingleton.Instance.GetText(string.Concat(questionKey, "A1"), out text);
+            _answer1Text.text = text;
+            if (!ResourceSingleton.Instance.GetText(string.Concat(questionKey, "A2"), out text))
+            {
+                _answer2Button.gameObject.SetActive(false);
+            }
+            _answer2Text.text = text;
 
             if (parameters != null)
             {

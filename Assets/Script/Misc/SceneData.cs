@@ -11,8 +11,9 @@ namespace Misc
     {
         public List<GOInfo> GameObjects { get; set; }
         public List<IGangMember> GangMembers { get; set; }
+        public List<IGangMember> GangMembersInCar { get; set; }
         public float Money { get; set; }
-        public Gangs GangOfPlayer { get; set; }
+        public Gangs GangOfPlayer { get; set; }        
 
         public int ActualScene;
 

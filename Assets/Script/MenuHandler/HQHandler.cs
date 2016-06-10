@@ -30,7 +30,9 @@ namespace Menu
 
             var buttons = _panel.GetComponentsInChildren<Button>();
             var images = _panel.GetComponentsInChildren<Image>();
-            var texts = _panel.GetComponentsInChildren<Text>();
+            var texts = _panel.GetComponentsInChildren<Text>().ToList();
+
+            GUIHelper.ReplaceText(texts);
 
             _amountHQText = texts.FirstOrDefault(txt => txt.gameObject.name == "GangMembersInHQAmountText");
             _amountCarText = texts.FirstOrDefault(txt => txt.gameObject.name == "GangMembersInCarAmountText");

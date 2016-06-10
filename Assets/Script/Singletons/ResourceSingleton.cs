@@ -20,6 +20,7 @@ namespace Singleton
         public Sprite BackgroundDeSelected { get; private set; }
         public Sprite FightingSkullSprite { get; private set; }
         public Sprite FightingRegularSprite { get; private set; }
+        public List<AudioClip> AllClips { get; private set; }
 
         /// <summary>
         /// Gets instance
@@ -33,6 +34,7 @@ namespace Singleton
                     _instance = new ResourceSingleton();
                     _instance.Init();
                     _instance.LoadImages();
+                    _instance.LoadAudio();
                 }
 
                 return _instance;
@@ -78,6 +80,14 @@ namespace Singleton
                 var filteredValue = keyValuePair[1].Trim();
                 _items.Add(filteredKey, filteredValue);
             }    
+        }
+
+        /// <summary>
+        /// Load all sounds
+        /// </summary>
+        private void LoadAudio()
+        {
+            AllClips = Resources.LoadAll<AudioClip>(String.Empty).ToList();
         }
 
         /// <summary>
@@ -160,8 +170,8 @@ namespace Singleton
                     var actionPointCosts = int.Parse(p3Val);
 
                     var wType = String.IsNullOrEmpty(itemType) ? null : System.Enum.Parse(typeof(WeaponType), itemType, true) as WeaponType?;
-                    var pt1Type = String.IsNullOrEmpty(p1Type) ? null : System.Enum.Parse(typeof(PropertyType), p1Type, true) as PropertyType?;
-                    var pt2Type = String.IsNullOrEmpty(p2Type) ? null : System.Enum.Parse(typeof(PropertyType), p2Type, true) as PropertyType?;
+                    var pt1Type = String.IsNullOrEmpty(p1Type) ? null : System.Enum.Parse(typeof(DamageType), p1Type, true) as DamageType?;
+                    var pt2Type = String.IsNullOrEmpty(p2Type) ? null : System.Enum.Parse(typeof(DamageType), p2Type, true) as DamageType?;
                     var iSlot = String.IsNullOrEmpty(slot) ? null : System.Enum.Parse(typeof(ItemSlot), slot, true) as ItemSlot?;
                     var neededSkill = String.IsNullOrEmpty(skill) ? Skills.None : System.Enum.Parse(typeof(Skills), skill, true) as Skills?;
 
@@ -179,7 +189,6 @@ namespace Singleton
                     }
                     
                     ((Weapon)weapon).Init(itemKey, name, neededSkill.Value, wType.Value, iSlot.Value, actionPointCosts);
-
                     result.Add(weapon);
                 }
                 else if (System.Enum.GetNames(typeof(ArmorType)).Contains(itemType))
@@ -205,7 +214,9 @@ namespace Singleton
         {
             var key = string.Concat(prefix, "Action", actualAction.ToString());
 
-            return ResourceSingleton.Instance.GetText(key);
+            var text = String.Empty;
+            ResourceSingleton.Instance.GetText(key, out text);
+            return text;
         }
 
         /// <summary>
@@ -218,7 +229,9 @@ namespace Singleton
         {
             var key = string.Concat(prefix, textType);
 
-            return ResourceSingleton.Instance.GetText(key);
+            var text = String.Empty;
+            ResourceSingleton.Instance.GetText(key, out text);
+            return text;
         }
 
         /// <summary>
@@ -226,17 +239,17 @@ namespace Singleton
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        public string GetText(string key)
+        public bool GetText(string key, out string value)
         {
-            string result;
             key += (SettingsSingleton.Instance.Language == Language.English ? "_Eng" : "_Ger");
 
-            if (!_texts.TryGetValue(key, out result))
+            if (!_texts.TryGetValue(key, out value))
             {
-                result = String.Concat("?! Key: '", key, "' !?");
+                value = String.Concat("?! ", key, " !?");
+                return false;
             }
 
-            return result;
+            return true;
         }
 
         /// <summary>
@@ -246,7 +259,10 @@ namespace Singleton
         /// <returns></returns>
         public string GetSpecialText(SpecialText textType)
         {
-            return GetText(textType.ToString());
+            var text = String.Empty;
+            ResourceSingleton.Instance.GetText(textType.ToString(), out text);
+
+            return text;
         }
     }
 }

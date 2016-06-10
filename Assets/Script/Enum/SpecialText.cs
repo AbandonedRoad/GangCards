@@ -11,6 +11,7 @@ namespace Enum
         Decline,
         Close,
         Ok,
-        Leave
+        Leave,
+        NotSet
     }
 }

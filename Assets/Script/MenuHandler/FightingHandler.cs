@@ -128,9 +128,13 @@ namespace Menu
 
             _nextRoundButton.interactable = _isPlayersTurn;
 
-            _combatLog.text = 
-                String.Concat(_isPlayersTurn ? ResourceSingleton.Instance.GetText("FightNextRoundYou") : ResourceSingleton.Instance.GetText("FightNextRoundEnemey"),
-                Environment.NewLine, _combatLog.text);
+            var logTextPlayer = String.Empty;
+            var logTextEnemey = String.Empty;
+
+            ResourceSingleton.Instance.GetText("FightNextRoundYou", out logTextPlayer);
+            ResourceSingleton.Instance.GetText("FightNextRoundEnemey", out logTextEnemey);
+
+            _combatLog.text = String.Concat(_isPlayersTurn ? logTextPlayer : logTextEnemey, Environment.NewLine, _combatLog.text);
 
             if (!_isPlayersTurn)
             {
@@ -171,7 +175,9 @@ namespace Menu
 
             if ((_actualMember.UsedItems[_slotClicked] as Weapon).ActionCosts > _actualMember.ActionPoints)
             {
-                _combatLog.text = ResourceSingleton.Instance.GetText("FightNotEnoughPoints") + Environment.NewLine + _combatLog.text;
+                var text = String.Empty;
+                ResourceSingleton.Instance.GetText("FightNotEnoughPoints", out text);
+                _combatLog.text = String.Concat(text, Environment.NewLine, _combatLog.text);
                 _itemVisualizer.DeSelectAll();
                 _slotClicked = ItemSlot.NotSet;
                 return;
@@ -243,7 +249,9 @@ namespace Menu
                 if (clickedGangMember.HealthStatus == HealthStatus.Dead)
                 {
                     // Bereits tot? Kann nicht mehr drauf ballern!
-                    nextCombatLogEntry = ReplaceVariables(ResourceSingleton.Instance.GetText("FightAlreadyDead"), _actualMember, clickedGangMember);
+                    var alreadyDead = String.Empty;
+                    ResourceSingleton.Instance.GetText("FightAlreadyDead", out alreadyDead);
+                    nextCombatLogEntry = ReplaceVariables(alreadyDead, _actualMember, clickedGangMember);
                     _combatLog.text = nextCombatLogEntry + Environment.NewLine + _combatLog.text;
                     _slotClicked = ItemSlot.NotSet;
                     _itemVisualizer.DeSelectAll();
@@ -259,12 +267,11 @@ namespace Menu
                         // User decided to stop fire.
                         yield break;
                     }
-                    nextCombatLogEntry = ReplaceVariables(ResourceSingleton.Instance.GetText(textKey), _actualMember, clickedGangMember);
                 }
-                else
-                {
-                    nextCombatLogEntry = ReplaceVariables(ResourceSingleton.Instance.GetText(textKey), _actualMember, clickedGangMember);
-                }                
+
+                var text = String.Empty;
+                ResourceSingleton.Instance.GetText(textKey, out text);
+                nextCombatLogEntry = ReplaceVariables(text, _actualMember, clickedGangMember);               
             }
             else
             {
@@ -274,7 +281,9 @@ namespace Menu
                     .OrderBy(pay => pay.Health).FirstOrDefault();
 
                 textKey = "FightActionAI" + slot.ToString();
-                nextCombatLogEntry = ReplaceVariables(ResourceSingleton.Instance.GetText(textKey), playerToBeAttacked, _actualMember);
+                var text = String.Empty;
+                ResourceSingleton.Instance.GetText(textKey, out text);
+                nextCombatLogEntry = ReplaceVariables(text, playerToBeAttacked, _actualMember);
             }
 
             // Add to combat log
@@ -361,14 +370,18 @@ namespace Menu
                 CharacterSingleton.Instance.PlayerMembersInCar.Clear();
                 _nextRoundButton.gameObject.SetActive(false);
                 _fleeText.text = "Close";
-                _combatLog.text = String.Concat(ResourceSingleton.Instance.GetText("FightYouLost"), Environment.NewLine, _combatLog.text);
+                var text = String.Empty;
+                ResourceSingleton.Instance.GetText("FightYouLost", out text);
+                _combatLog.text = String.Concat(text, Environment.NewLine, _combatLog.text);
                 
                 _callBack.DynamicInvoke(false);
             }
             else if (_allCombatants.Where(comb => comb.GangAssignment != CharacterSingleton.Instance.GangOfPlayer).All(comb => comb.HealthStatus == HealthStatus.Dead))
             {
                 // All Enemey gang members are dead! Player won!
-                _combatLog.text = String.Concat(ResourceSingleton.Instance.GetText("FightYouWon"), Environment.NewLine, _combatLog.text);
+                var text = String.Empty;
+                ResourceSingleton.Instance.GetText("FightYouWon", out text);
+                _combatLog.text = String.Concat(text, Environment.NewLine, _combatLog.text);
 
                 Dictionary<string, string> parameters = new Dictionary<string, string>();
                 parameters.Add("bodies",

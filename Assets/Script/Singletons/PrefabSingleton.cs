@@ -1,7 +1,5 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections.Generic;
-using Random = UnityEngine.Random;
 using System.Linq;
 using Menu;
 using Misc;
@@ -32,7 +30,6 @@ namespace Singleton
         public PlayerProfile ProfileContainer { get; set; }
         public GameData ActualGameData { get; set; }
         public List<GameObject> AllCars { get; private set; }
-
         public GameObject PlayersCar { get; set; }
         public MoveCars PlayersCarScript { get; set; }
 

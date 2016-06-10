@@ -5,6 +5,7 @@ using Random = UnityEngine.Random;
 
 namespace Assets.Script.Characters
 {
+    [Serializable]
     public class Human : CharacterBase, IGangMember
     {
         /// <summary>

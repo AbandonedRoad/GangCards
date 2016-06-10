@@ -1,4 +1,5 @@
 ﻿using Enum;
+using UnityEngine;
 
 namespace Interfaces
 {
@@ -15,6 +16,8 @@ namespace Interfaces
         IItemStrategy ItemStragegy { get; }
 
         Skills NeededSkill { get; }
+
+        AudioClip AudioClip { get; }
 
         string GetValue(ItemIdentifiers identifier);
 

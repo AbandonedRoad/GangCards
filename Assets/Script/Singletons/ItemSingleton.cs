@@ -54,17 +54,30 @@ namespace Singleton
         }
 
         /// <summary>
+        /// Gets an item for the desired slot.
+        /// </summary>
+        /// <returns></returns>
+        public IItem GetItem(ItemSlot type, int level, IGangMember assignTo)
+        {
+            var result = Items.FirstOrDefault(typ => typ.UsedInSlot == type);
+
+            if (result == null)
+            {
+                Debug.LogError("An item of type " + type + " is not found!");
+            }
+
+            result.ApplyParamters(level, assignTo);
+
+            return result;
+        }
+
+        /// <summary>
         /// Returns an appropriate Weapon for a level
         /// </summary>
         /// <returns></returns>
-        public IItem ReturnAppropiateWeapon(int level)
+        public void ReturnAppropiateWeapon(int level, IGangMember assignToMember)
         {
-            var weapon = ItemSingleton.Instance.Items.FirstOrDefault(itm => itm.UsedInSlot == ItemSlot.MainWeapon
-                && itm.Level == level);
-
-            Debug.LogWarning("WARNING! No weapon found for Level " + level.ToString());
-
-            return weapon;
+            Instance.GetItem(ItemSlot.MainWeapon, level, assignToMember);
         }
 
         /// <summary>

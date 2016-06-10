@@ -62,12 +62,12 @@ namespace Singleton
             {
                 var newParent = parent.transform.parent.gameObject;
 
-                if (getLastTagged && newParent.tag != "Untagged")
+                if (getLastTagged && newParent.tag != "Container")
                 {
                     intermediateResult = newParent;
                 }
 
-                if (newParent.transform.position == Vector3.zero)
+                if (newParent.tag == "Container")
                 {
                     // This is only a container - we reached the end!
                     return parent;
@@ -76,7 +76,7 @@ namespace Singleton
                 parent = newParent;
             }
 
-            if (parent.tag == "Untagged" && getLastTagged)
+            if (parent.tag == "Container" && getLastTagged)
             {
                 // If we wanted to return the last tagged, return it.
                 return intermediateResult != null
@@ -142,10 +142,10 @@ namespace Singleton
         }
 
         /// <summary>
-        /// Splits up.
+        /// Splits up a string, whereby each uppercase letter gets a new word.
         /// </summary>
-        /// <returns>The up.</returns>
-        /// <param name="splitUp">Split up.</param>
+        /// <returns>The string split up.</returns>
+        /// <param name="splitUp">String to be split.</param>
         public string SplitUp(string splitUp)
         {
             string output = String.Empty;

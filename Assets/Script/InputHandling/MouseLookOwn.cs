@@ -23,10 +23,10 @@ namespace InputHandling
             if (Input.GetMouseButton(1))
             {
                 float mouseX = Input.GetAxis("Mouse X");
-                float mouseY = -Input.GetAxis("Mouse Y");
+                float mouseY = Input.GetAxis("Mouse Y");
 
                 rotY += mouseX * mouseSensitivity * Time.deltaTime;
-                rotX += mouseY * mouseSensitivity * Time.deltaTime;
+                rotX -= mouseY * mouseSensitivity * Time.deltaTime;
 
                 rotX = Mathf.Clamp(rotX, -clampAngle, clampAngle);
 

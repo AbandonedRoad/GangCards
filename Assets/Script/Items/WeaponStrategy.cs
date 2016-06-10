@@ -10,6 +10,7 @@ using System.Text;
 
 namespace Items
 {
+    [Serializable]
     public class WeaponStrategy : IItemStrategy
     {
         private readonly Weapon _parent;
@@ -41,14 +42,15 @@ namespace Items
         /// <returns></returns>
         public IItemStrategyOutput GetOutpt(bool isPlayer)
         {
-            var text = _attackResult.Successful
-                ? ResourceSingleton.Instance.GetText(isPlayer ? "FightActionSuccess" : "FightActionAISuccess")
-                : ResourceSingleton.Instance.GetText(isPlayer ? "FightActionFail" : "FightActionAIFail");
+            var text = String.Empty;
+            var entryFound = _attackResult.Successful
+                ? ResourceSingleton.Instance.GetText(isPlayer ? "FightActionSuccess" : "FightActionAISuccess", out text)
+                : ResourceSingleton.Instance.GetText(isPlayer ? "FightActionFail" : "FightActionAIFail", out text);
             text = text.Replace("@diceResult", _attackResult.GetOutput());
 
             var damage = _attackResult.Successful
                 ? _parent.DamageRanges[ItemIdentifiers.Property1Val].GetDamage()
-                : new KeyValuePair<PropertyType, int>(PropertyType.NotSet, 0);
+                : new KeyValuePair<DamageType, int>(DamageType.NotSet, 0);
 
             text = text.Replace("@damage", damage.Value.ToString());
 

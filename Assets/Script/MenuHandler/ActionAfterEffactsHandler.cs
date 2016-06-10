@@ -34,9 +34,11 @@ namespace Menu
         {
             _actionsAfterEffects = GameObject.Find("ActionAfterEffactsPrefab");
 
-            var texts = _actionsAfterEffects.GetComponentsInChildren<Text>();
+            var texts = _actionsAfterEffects.GetComponentsInChildren<Text>().ToList();
             _textPart1 = texts.First(txt => txt.gameObject.name == "TextPart1Text");
             _textPart2 = texts.First(txt => txt.gameObject.name == "TextPart2Text");
+
+            GUIHelper.ReplaceText(texts);
 
             ActionHelper.PrepareInstances(_actionsAfterEffects, ref _actionButtons, ref _actionButtonsText, 3);
             ActionHelper.SetActiveStatus(null, _actionButtons, _actionButtonsText, false);

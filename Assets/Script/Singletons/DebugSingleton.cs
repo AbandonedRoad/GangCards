@@ -7,9 +7,6 @@ namespace Singleton
     {
         private static DebugSingleton _instance;
 
-        private Text _facingDirectionText;
-        private Text _positionText;
-
         /// <summary>
         /// Gets instance
         /// </summary>

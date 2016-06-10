@@ -34,6 +34,8 @@ GangMemberHealth_Eng	Health~
 GangMemberHealth_Ger	Gesundheit~
 GangMemberInitiative_Eng	Initiative~
 GangMemberInitiative_Ger	Initiative~
+GangMemberStrength_Eng	Strength~
+GangMemberStrength_Ger	Stärke~
 GangMemberCourage_Eng	Courage~
 GangMemberCourage_Ger	Mut~
 GangMemberAccuracy_Eng	Accuracy~
@@ -144,3 +146,17 @@ FightQuestTakeBodiesA1_Eng	Yes~
 FightQuestTakeBodiesA1_Ger	Ja~
 FightQuestTakeBodiesA2_Eng	No~
 FightQuestTakeBodiesA2_Ger	Nein~
+ChoseGangSplitPoints_Eng	Split the remaining points on the given attributes.~
+ChoseGangSplitPoints_Ger	Verteilt die verbleibenden Punkte auf die jeweiligen Attribute.~
+ChoseGangCreatePlayer_Eng	Create Player~
+ChoseGangCreatePlayer_Ger	Spieler erstellen~
+ChoseGangRemainingPoints_Eng	Remaining Points:~
+ChoseGangRemainingPoints_Ger	Verbleinde Punkte:~
+ChoseGangDestiny_Eng	Choose your destiny~
+ChoseGangDestiny_Ger	Bestimme dein Schicksal~
+ChoseGangSpendAllTitle_Eng	Character creation unfinished.~
+ChoseGangSpendAllTitle_Ger	Spieler erstellung unfertig.~
+ChoseGangSpendAll_Eng	Please enter a name for your player and spend all points.~
+ChoseGangSpendAll_Ger	Bitte einen Namen auswahlen und alle Punkte vergeben.~
+ChoseGangSpendAllA1_Ger	Ok~
+ChoseGangSpendAllA1_Eng	Ok~

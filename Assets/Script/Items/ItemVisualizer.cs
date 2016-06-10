@@ -164,7 +164,10 @@ namespace Items
             itemSlot[ItemIdentifiers.Name].text = item.Name;
             itemSlot[ItemIdentifiers.Property1Type].text = item.GetValue(ItemIdentifiers.Property1Type);
             itemSlot[ItemIdentifiers.Property2Type].text = item.GetValue(ItemIdentifiers.Property2Type);
-            itemSlot[ItemIdentifiers.Property3Type].text = ResourceSingleton.Instance.GetText("FightAPCost");
+
+            var text = string.Empty;
+            ResourceSingleton.Instance.GetText("FightAPCost", out text);
+            itemSlot[ItemIdentifiers.Property3Type].text = text;
             itemSlot[ItemIdentifiers.Property1Val].text = item.GetValue(ItemIdentifiers.Property1Val);
             itemSlot[ItemIdentifiers.Property2Val].text = item.GetValue(ItemIdentifiers.Property2Val);
             itemSlot[ItemIdentifiers.Property3Val].text = item.GetValue(ItemIdentifiers.Property3Val);

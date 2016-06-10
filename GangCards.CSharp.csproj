@@ -13,13 +13,11 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.3.4f1</UnityVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <LangVersion Condition=" '$(VisualStudioVersion)' != '10.0' ">4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -104,6 +102,7 @@
     <Compile Include="Assets\Script\Debug\StartAFight.cs" />
     <Compile Include="Assets\Script\Enum\AnimalType.cs" />
     <Compile Include="Assets\Script\Enum\ArmorType.cs" />
+    <Compile Include="Assets\Script\Enum\DamageType.cs" />
     <Compile Include="Assets\Script\Enum\DicingResult.cs" />
     <Compile Include="Assets\Script\Enum\Directions.cs" />
     <Compile Include="Assets\Script\Enum\GOType.cs" />
@@ -112,7 +111,7 @@
     <Compile Include="Assets\Script\Enum\ItemIdentifiers.cs" />
     <Compile Include="Assets\Script\Enum\ItemSlot.cs" />
     <Compile Include="Assets\Script\Enum\ItemType.cs" />
-    <Compile Include="Assets\Script\Enum\PropertyType.cs" />
+    <Compile Include="Assets\Script\Enum\MemberSkills.cs" />
     <Compile Include="Assets\Script\Enum\Rarity.cs" />
     <Compile Include="Assets\Script\Enum\Skills.cs" />
     <Compile Include="Assets\Script\Enum\SpecialText.cs" />
@@ -153,6 +152,7 @@
     <Compile Include="Assets\Script\Misc\GOInfo.cs" />
     <Compile Include="Assets\Script\Misc\GameData.cs" />
     <Compile Include="Assets\Script\Misc\Language.cs" />
+    <Compile Include="Assets\Script\Misc\LightSwitcher.cs" />
     <Compile Include="Assets\Script\Misc\LogInfo.cs" />
     <Compile Include="Assets\Script\Misc\OpenPanel.cs" />
     <Compile Include="Assets\Script\Misc\PlayerProfile.cs" />
@@ -163,11 +163,13 @@
     <Compile Include="Assets\Script\Singletons\BuildingSingleton.cs" />
     <Compile Include="Assets\Script\Singletons\CharacterSingleton.cs" />
     <Compile Include="Assets\Script\Singletons\DebugSingleton.cs" />
+    <Compile Include="Assets\Script\Singletons\GUIHelper.cs" />
     <Compile Include="Assets\Script\Singletons\HelperSingleton.cs" />
     <Compile Include="Assets\Script\Singletons\ItemSingleton.cs" />
     <Compile Include="Assets\Script\Singletons\PrefabSingleton.cs" />
     <Compile Include="Assets\Script\Singletons\ResourceSingleton.cs" />
     <Compile Include="Assets\Script\Singletons\SettingsSingleton.cs" />
+    <Compile Include="Assets\Script\Singletons\SoundSingleton.cs" />
     <Compile Include="Assets\Script\Singletons\WorldHelperSingleton.cs" />
     <Compile Include="Assets\Script\WayPoint.cs" />
   </ItemGroup>

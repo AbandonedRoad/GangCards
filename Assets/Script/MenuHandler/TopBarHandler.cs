@@ -1,8 +1,6 @@
 ﻿using Singleton;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,7 +13,6 @@ namespace Assets.Script.MenuHandler
             get { return _headerPanel; }
         }
 
-        private ActionContainer _container;
         private GameObject _headerPanel;
         private Text _gangAmountText;
         private Text _cashText;

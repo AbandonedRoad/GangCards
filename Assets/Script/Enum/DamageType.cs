@@ -1,10 +1,9 @@
 ﻿namespace Enum
 {
-    public enum PropertyType
+    public enum DamageType
     {
         CutDamage,
         BulletDamage,
-        ActionPoints,
         NotSet
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Assets.Script.Actions;
+using Enum;
 using Interfaces;
 using Singleton;
 using System;
@@ -28,6 +29,9 @@ namespace Menu
         void Start()
         {
             _actionsPanel = GameObject.Find("PlayerOptionsPanel");
+
+            var texts = _actionsPanel.GetComponentsInChildren<Text>().ToList();
+            GUIHelper.ReplaceText(texts);
 
             ActionHelper.PrepareInstances(_actionsPanel, ref _actionTexts, ref _actionButtons, ref _actionButtonsText, 3);
 

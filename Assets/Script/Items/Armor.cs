@@ -1,9 +1,11 @@
 ﻿using System;
 using Enum;
 using Interfaces;
+using UnityEngine;
 
 namespace Items
 {
+    [Serializable]
     public class Armor : IItem
     {
         public int Key { get; private set; }
@@ -14,6 +16,7 @@ namespace Items
         public ItemSlot UsedInSlot { get; private set; }
         public IItemStrategy ItemStragegy { get; private set; }
         public Skills NeededSkill { get; private set; }
+        public AudioClip AudioClip { get; private set; }
 
         /// <summary>
         /// 

@@ -112,6 +112,10 @@ namespace Menu
 			{
 				sceneData.GangMembers.Add(gangMember);
 			}
+            foreach (var gangMember in CharacterSingleton.Instance.PlayerMembersInCar)
+            {
+                sceneData.GangMembersInCar.Add(gangMember);
+            }
 
             sceneData.Money = CharacterSingleton.Instance.AvailableMoney;
             sceneData.GangOfPlayer = CharacterSingleton.Instance.GangOfPlayer;
@@ -283,7 +287,11 @@ namespace Menu
 
             foreach (var member in sceneData.GangMembers)
             {
-                CharacterSingleton.Instance.AddAIPlayer(member);
+                CharacterSingleton.Instance.PlayersGang.Add(member);
+            }
+            foreach (var member in sceneData.GangMembersInCar)
+            {
+                CharacterSingleton.Instance.PlayerMembersInCar.Add(member);
             }
 
             CharacterSingleton.Instance.AvailableMoney = sceneData.Money;

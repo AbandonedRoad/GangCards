@@ -4,9 +4,11 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using System.Linq;
+using Singleton;
 
 namespace Items
 {
+    [Serializable]
     public class Weapon : IItem
     {
         public int Key { get; private set; }
@@ -19,6 +21,7 @@ namespace Items
         public Skills NeededSkill { get; private set; }
         public IGangMember AssignedTo { get; private set; }
         public int ActionCosts { get; private set; }
+        public AudioClip AudioClip { get; private set; }
 
         /// <summary>
         /// Creates a new Weapon
@@ -26,7 +29,7 @@ namespace Items
         /// <param name="type"></param>
         /// <param name="damageTypeP1"></param>
         /// <param name="dmgRangeP1"></param>
-        public Weapon(PropertyType damageTypeP1, int[] dmgRangeP1)
+        public Weapon(DamageType damageTypeP1, int[] dmgRangeP1)
         {
             DamageRanges = new Dictionary<ItemIdentifiers, DamageRange>();
             DamageRanges.Add(ItemIdentifiers.Property1Val, new DamageRange(damageTypeP1, dmgRangeP1[0], dmgRangeP1[1]));
@@ -38,7 +41,7 @@ namespace Items
         /// <param name="type"></param>
         /// <param name="damageTypeP1"></param>
         /// <param name="dmgRangeP1"></param>
-        public Weapon(PropertyType damageTypeP1, int[] dmgRangeP1, PropertyType damageTypeP2, int[] dmgRangeP2)
+        public Weapon(DamageType damageTypeP1, int[] dmgRangeP1, DamageType damageTypeP2, int[] dmgRangeP2)
         {
             DamageRanges = new Dictionary<ItemIdentifiers, DamageRange>();
             DamageRanges.Add(ItemIdentifiers.Property1Val, new DamageRange(damageTypeP1, dmgRangeP1[0], dmgRangeP1[1]));
@@ -61,6 +64,7 @@ namespace Items
             ActionCosts = actionPointsCost;
             UsedInSlot = slot;
             ItemStragegy = new WeaponStrategy(this);
+            AudioClip = ResourceSingleton.Instance.AllClips.FirstOrDefault(clp => clp.name == String.Concat(name, "Sound"));
         }
 
         /// <summary>

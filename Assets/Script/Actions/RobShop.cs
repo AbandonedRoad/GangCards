@@ -93,7 +93,7 @@ namespace Assets.Script.Actions
                 {
                     // Up to 3 opponents.
                     var opponent = CharacterSingleton.Instance.GenerateAIPlayer(_shopLevel);
-                    opponent.UsedItems[ItemSlot.MainWeapon] = ItemSingleton.Instance.ReturnAppropiateWeapon(_shopLevel);
+                    ItemSingleton.Instance.ReturnAppropiateWeapon(_shopLevel, opponent);
                     _opponents.Add(opponent);
                 }
             }
