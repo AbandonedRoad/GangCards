@@ -20,6 +20,7 @@ namespace Singleton
         public Sprite BackgroundDeSelected { get; private set; }
         public Sprite FightingSkullSprite { get; private set; }
         public Sprite FightingRegularSprite { get; private set; }
+        public Dictionary<Gangs, Sprite> Logos { get; private set; }
         public List<AudioClip> AllClips { get; private set; }
 
         /// <summary>
@@ -129,6 +130,12 @@ namespace Singleton
             // Special Sprites
             FightingSkullSprite = sprites.First(spr => spr.name == "Skull");
             FightingRegularSprite = sprites.First(spr => spr.name == "EnemyBorder");
+
+            Logos = new Dictionary<Gangs, Sprite>();
+            Logos.Add(Gangs.WheelersOfDecay, sprites.First(spr => spr.name == "WheelersLogo"));
+            Logos.Add(Gangs.CGN9, sprites.First(spr => spr.name == "CNG9Logo"));
+            Logos.Add(Gangs.Shamans, sprites.First(spr => spr.name == "ShamansLogo"));
+            Logos.Add(Gangs.Tragosa, sprites.First(spr => spr.name == "TragosaLogo"));
 
             BackgroundDeSelected = sprites.First(spr => spr.name == "BackgroundGray");
             BackgroundSelected = sprites.First(spr => spr.name == "BackgroundSelected");

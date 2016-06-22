@@ -295,7 +295,7 @@ namespace Menu
             {
                 Weapon weapon = _actualMember.UsedItems[slot] as Weapon;
                 bool attackSuccessful = weapon.ItemStragegy.ExecuteAction();
-                var result = weapon.ItemStragegy.GetOutpt(true);
+                var result = weapon.ItemStragegy.GetAttackOutpt(true);
                 _combatLog.text = ReplaceVariables(result.Message, _actualMember, clickedGangMember) + Environment.NewLine + _combatLog.text;
 
                 if (attackSuccessful)
@@ -314,7 +314,7 @@ namespace Menu
                 }
 
                 bool attackSuccessful = weapon.ItemStragegy.ExecuteAction();
-                var result = weapon.ItemStragegy.GetOutpt(false);
+                var result = weapon.ItemStragegy.GetAttackOutpt(false);
                 _combatLog.text = ReplaceVariables(result.Message, playerToBeAttacked, _actualMember) + Environment.NewLine + _combatLog.text;
 
                 if (attackSuccessful)

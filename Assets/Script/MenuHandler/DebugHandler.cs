@@ -34,7 +34,7 @@ namespace Menu
             for (int i = 0; i < amount; i++)
             {
                 var member = hire.AddProspectToGang();
-                member.PostProcessInit(Gangs.Wheelers);
+                member.PostProcessInit(Gangs.WheelersOfDecay);
                 member.UsedItems[ItemSlot.MainWeapon] = ItemSingleton.Instance.GetItem(1277109520, member.Level, member);
             }            
         }

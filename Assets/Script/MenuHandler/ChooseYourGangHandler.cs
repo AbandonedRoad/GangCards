@@ -108,6 +108,7 @@ namespace Menu
             _cc_controls.ForEach(cntrl => cntrl.gameObject.SetActive(true));
 
             _player = CharacterSingleton.Instance.GenerateAIPlayer(1);
+            _player.PostProcessInit(CharacterSingleton.Instance.GangOfPlayer);
             _player.Accuracy = 8;
             _player.Courage = 8;
             _player.Initiative = 8;

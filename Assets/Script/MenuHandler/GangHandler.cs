@@ -11,11 +11,6 @@ namespace Menu
 {
     public class GangHandler : MonoBehaviour
     {
-        public GameObject Panel
-        {
-            get { return _gangPanel; }
-        }
-
         private IGangMember _actualMember;
         private GameObject _gangPanel;
         private Button _previousButton;
@@ -34,7 +29,9 @@ namespace Menu
         private Text _level;
         private Text _gangName;
         private Text _gangLevel;
+        private Text _locationText;
         private GameObject _memberInfosContainer;
+        private Image _gangImage;
 
         /// <summary>
         /// Start this instance.
@@ -56,6 +53,10 @@ namespace Menu
             _level = texts.First(tx => tx.gameObject.name == "LevelText");
             _gangName = texts.First(tx => tx.gameObject.name == "GangNameText");
             _gangLevel = texts.First(tx => tx.gameObject.name == "GangLevelText");
+            _locationText = texts.First(tx => tx.gameObject.name == "LocationText");
+
+            var images = _gangPanel.GetComponentsInChildren<Image>().ToList();
+            _gangImage = images.FirstOrDefault(img => img.gameObject.name == "GangImage");
 
             var buttons = _gangPanel.GetComponentsInChildren<Button>();
             _nextButton = buttons.First(tx => tx.gameObject.name == "NextButton");
@@ -87,7 +88,8 @@ namespace Menu
                 {
                     continue;
                 }
-                _itemButtons[slot].onClick.AddListener(() => PrefabSingleton.Instance.ItemHandler.SelectItem(slot, new Func<IItem, ItemSlot, bool>(NewItemSelected)));
+                var useSlot = slot;
+                _itemButtons[useSlot].onClick.AddListener(() => PrefabSingleton.Instance.ItemHandler.SelectItem(_actualMember, useSlot, false, new Func<IItem, ItemSlot, bool>(NewItemSelected)));
             }
 
             GUIHelper.ReplaceText(texts);
@@ -107,6 +109,10 @@ namespace Menu
             if (_gangPanel.activeSelf)
             {
                 _actualMember = _actualMember ?? CharacterSingleton.Instance.PlayersGang.FirstOrDefault();
+                if (_actualMember != null)
+                {
+                    _gangImage.sprite = ResourceSingleton.Instance.Logos[_actualMember.GangAssignment];
+                }
                 FillLabels();
 
                 _gangPanel.transform.SetAsLastSibling();
@@ -119,6 +125,7 @@ namespace Menu
         private bool NewItemSelected(IItem selectedItem, ItemSlot desiredSlot)
         {
             _actualMember.UsedItems[desiredSlot] = selectedItem;
+            LoadItemsFromGangster();
 
             return true;
         }
@@ -257,6 +264,12 @@ namespace Menu
             _initiative.text = _actualMember != null ? _actualMember.Initiative.ToString() : String.Empty;
             _accuracy.text = _actualMember != null ? _actualMember.Accuracy.ToString() : String.Empty;
             _courage.text = _actualMember != null ? _actualMember.Courage.ToString() : String.Empty;
+
+            var locText = String.Empty;
+            bool found = CharacterSingleton.Instance.PlayerMembersInCar.Contains(_actualMember)
+                ? ResourceSingleton.Instance.GetText("GangMemberLocationCar", out locText)
+                : ResourceSingleton.Instance.GetText("GangMemberLocationHQ", out locText);
+            _locationText.text = locText;
 
             LoadItemsFromGangster();
         }

@@ -223,16 +223,6 @@ namespace Singleton
         }
 
         /// <summary>
-        /// Waits for an amount of seconds
-        /// </summary>
-        /// <param name="frameCount">Amount of seconds to be waited.</param>
-        /// <returns></returns>
-        public IEnumerator WaitForSeconds(int seconds)
-        {
-            yield return new WaitForSeconds(seconds);
-        }
-
-        /// <summary>
         /// Returns 
         /// </summary>
         /// <returns></returns>

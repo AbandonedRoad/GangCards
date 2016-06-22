@@ -4,6 +4,7 @@ using Interfaces;
 using Items;
 using Singleton;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -13,13 +14,9 @@ namespace Menu
 {
     public class ItemHandler : MonoBehaviour
     {
-        public GameObject Panel
-        {
-            get { return _itemPanel; }
-        }
-
         private Delegate _itemClickedResponse;
         private IItem _firstItem;
+        private IItem _selectedItem;
         private GameObject _itemPanel;
         private ItemVisualizer _itemVisualizer = new ItemVisualizer();
         private List<Image> _itemSlots;
@@ -27,7 +24,12 @@ namespace Menu
         private Button _filterArmorButton;
         private Button _nextButton;
         private Button _previousButton;
+        private Button _buyButton;
         private ItemSlot _itemTypeToBeSelected = ItemSlot.NotSet;
+        private Text _priceText;
+        private Text _priceValue;
+        private bool _isShop;
+        private ItemType _filterForType = ItemType.NotSet;
 
         /// <summary>
         /// Start this instance.
@@ -41,6 +43,11 @@ namespace Menu
             _filterArmorButton = buttons.First(btn => btn.gameObject.name == "ArmorButton");
             _nextButton = buttons.First(btn => btn.gameObject.name == "NextButton");
             _previousButton = buttons.First(btn => btn.gameObject.name == "PreviousButton");
+            _buyButton = buttons.First(btn => btn.gameObject.name == "BuyButton");
+
+            var texts = _itemPanel.GetComponentsInChildren<Text>();
+            _priceText = texts.First(btn => btn.gameObject.name == "PriceText");
+            _priceValue = texts.First(btn => btn.gameObject.name == "PriceValue");
 
             _itemSlots = _itemPanel.GetComponentsInChildren<Image>().ToList();
             for (int i = 1; i < 7; i++)
@@ -58,13 +65,17 @@ namespace Menu
         /// <summary>
         /// Switchs the scene end panel.
         /// </summary>
-        public void SwitchItemPanel()
+        public void SwitchItemPanel(bool isShop)
         {
+            _isShop = isShop;
             LoadItems();
             _itemPanel.SetActive(!_itemPanel.activeSelf);
             if (_itemPanel.activeSelf)
             {
                 _itemPanel.transform.SetAsLastSibling();
+
+                _priceText.gameObject.SetActive(_isShop);
+                _priceValue.gameObject.SetActive(_isShop);
             }
         }
 
@@ -75,14 +86,19 @@ namespace Menu
         public void ItemClicked(int itemNumber)
         {
             var name = _itemVisualizer.GetItem(itemNumber)[ItemIdentifiers.Name].text;
-            var item = ItemSingleton.Instance.OwnedItems.FirstOrDefault(itm => itm.Name == name);
+            _selectedItem = ItemSingleton.Instance.OwnedItems.FirstOrDefault(itm => itm.Name == name);
 
             if (_itemClickedResponse != null)
             {
-                _itemClickedResponse.DynamicInvoke(item, _itemTypeToBeSelected);
+                _itemClickedResponse.DynamicInvoke(_selectedItem, _itemTypeToBeSelected);
                 _itemClickedResponse = null;
 
-                SwitchItemPanel();
+                SwitchItemPanel(_isShop);
+            }
+            else if (_isShop)
+            {
+                // Buy stuff!
+                _buyButton.interactable = _selectedItem != null;
             }
         }
 
@@ -90,12 +106,64 @@ namespace Menu
         /// Selects an item
         /// </summary>
         /// <param name="type"></param>
-        public void SelectItem(ItemSlot type, Delegate itemClickedResponse)
+        public void SelectItem(IGangMember assignTo, ItemSlot type, bool isShop, Delegate itemClickedResponse)
         {
+            if (assignTo == null && !isShop)
+            {
+                return;
+            }
+
+            _filterForType = (type == ItemSlot.Chest || type == ItemSlot.Pants)
+                ? ItemType.Armor
+                : ItemType.Weapon;
+
             _itemTypeToBeSelected = type;
             _itemClickedResponse = itemClickedResponse;
+            _selectedItem = null;
 
-            SwitchItemPanel();
+            SwitchItemPanel(isShop);
+        }
+
+        /// <summary>
+        /// Filter for specific type
+        /// </summary>
+        /// <param name="type"></param>
+        public void FilterItems(int type)
+        {
+            _filterForType = type == 1
+                ? ItemType.Weapon
+                : ItemType.Armor;
+
+            LoadItems();
+        }
+
+        public void BuyItem()
+        {
+            StartCoroutine(BuyItemQuestion());
+        }
+
+        /// <summary>
+        /// Buy the item bitch!
+        /// </summary>
+        /// <returns></returns>
+        private IEnumerator BuyItemQuestion()
+        {
+            if (_selectedItem == null)
+            {
+                if (CharacterSingleton.Instance.AvailableMoney < 5)
+                {
+                    // Genug Geld da?
+                }
+
+                PrefabSingleton.Instance.InputHandler.AddQuestion("BuyWeaponsReally");
+                yield return StartCoroutine(PrefabSingleton.Instance.InputHandler.WaitForAnswer());
+
+                if (PrefabSingleton.Instance.InputHandler.AnswerGiven == 2)
+                {
+                    // User decided not to buy
+                    yield break;
+                }
+            }
         }
 
         /// <summary>
@@ -117,7 +185,9 @@ namespace Menu
                 index++;
                 var name = String.Concat("ItemSlot", i.ToString(), "Prefab");
                 _itemSlots.First(itm => itm.gameObject.name == name).gameObject.SetActive(item != null);
-                if (item == null || item.UsedInSlot != _itemTypeToBeSelected)
+                if (item == null 
+                    || (item.UsedInSlot != _itemTypeToBeSelected && _itemTypeToBeSelected != ItemSlot.NotSet)
+                    || (item.ItemType != _filterForType && _filterForType != ItemType.NotSet))
                 {
                     _itemSlots.First(itm => itm.gameObject.name == name).gameObject.SetActive(false);
                     continue;

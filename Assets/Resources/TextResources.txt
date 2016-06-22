@@ -42,6 +42,10 @@ GangMemberAccuracy_Eng	Accuracy~
 GangMemberAccuracy_Ger	Genauigkeit~
 GangMemberLevel_Eng	Level~
 GangMemberLevel_Ger	Level~
+GangMemberLocationCar_Eng	Car~
+GangMemberLocationCar_Ger	Auto~
+GangMemberLocationHQ_Eng	Headquarter~
+GangMemberLocationHQ_Ger	Hauptquartier~
 UseCar_Eng	Use Car~
 UseCar_Ger	Benutze Auto~
 UseCarAction0_Eng	Drive with the car.~
@@ -88,6 +92,32 @@ RobShopPart1Fail_Eng	~
 RobShopPart1Fail_Ger	~
 RobShopPart2Fail_Eng	The employee is not as freightend as expected - grabs a weapon and attacks!~
 RobShopPart2Fail_Ger	Der Besitzer ist überhaupt nicht beeindruckt - zieht eine Waffe und attackiert!~
+RobShopSuccPart1_Eng	You incapacitated all employees
+
+You got:~
+RobShopSuccPart1_Ger	Ihr habt alle Angestellten kampfunfäig gemacht.
+
+Ihr erbeutet:~
+RobShopFailPart1_Eng	The shop owner incapacitated all your team members.
+
+The police will arrest everyone left alive.~
+RobShopFailPart1_Ger	Der Besitzer hat alle deine Mitglieder kampfunfäig gemacht.
+
+Die Polizei hat alle Überlebenden fest genommen.~
+WeaponShopAction0_Eng	Buy Weapons and Armor~
+WeaponShopAction0_Ger	Kaufe Waffen und Rüstungen~
+WeaponShopAction1_Eng	Start assualt on the weapon dealer.~
+WeaponShopAction1_Ger	Überfalle den Waffenhändler~
+BuyWeapons_Eng	Purchase~
+BuyWeapons_Ger	Einkaufen~
+BuyWeaponsReally_Eng	Do you really want to buy this item?~
+BuyWeaponsReally_Ger	Diesen Gegenstand wirklich kaufen?~
+BuyWeaponsReallyTitle_Eng	Buy Item?~
+BuyWeaponsReallyTitle_Ger	Gegenstand kaufen?~
+BuyWeaponsReallyA1_Eng	Yes~
+BuyWeaponsReallyA1_Ger	Ja~
+BuyWeaponsReallyA2_Eng	No~
+BuyWeaponsReallyA2_Ger	Nein~
 FightActionMainWeapon_Ger	@player attackierst @enemey mit deiner primären Waffe.~
 FightActionMainWeapon_Eng	@player are attachking @enemey with your primary weapon.~
 FightActionPistol_Ger	@player schießt aus deiner Pistole auf @enemey.~

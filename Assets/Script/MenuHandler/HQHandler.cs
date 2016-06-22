@@ -1,4 +1,5 @@
-﻿using Humans;
+﻿using Enum;
+using Humans;
 using Interfaces;
 using Singleton;
 using System;
@@ -18,6 +19,11 @@ namespace Menu
         private GangVisualizer _visualizer = new GangVisualizer();
         private Text _amountHQText;
         private Text _amountCarText;
+        private Dictionary<ItemSlot, Button> _itemButtons = new Dictionary<ItemSlot, Button>();
+        private Dictionary<ItemSlot, Text> _itemTexts = new Dictionary<ItemSlot, Text>();
+        private Dictionary<ItemSlot, Text> _itemNameTexts = new Dictionary<ItemSlot, Text>();
+
+        private IGangMember _actualMember;
 
         public int AnswerGiven { get; private set; }
 
@@ -56,6 +62,37 @@ namespace Menu
                 var name = String.Concat(key, "Prefab");
                 var actCar = images.First(itm => itm.gameObject.name == name);
                 _visualizer.AddDetailledMember(key, actCar);
+            }
+
+            // Add Buttons
+            _itemButtons.Add(ItemSlot.Chest, buttons.First(tx => tx.gameObject.name == "ChestButton"));
+            _itemButtons.Add(ItemSlot.Knife, buttons.First(tx => tx.gameObject.name == "KnifeButton"));
+            _itemButtons.Add(ItemSlot.MainWeapon, buttons.First(tx => tx.gameObject.name == "MainWeaponButton"));
+            _itemButtons.Add(ItemSlot.Pants, buttons.First(tx => tx.gameObject.name == "PantsButton"));
+            _itemButtons.Add(ItemSlot.Pistol, buttons.First(tx => tx.gameObject.name == "PistolButton"));
+
+            // Add Texts
+            _itemTexts.Add(ItemSlot.Chest, texts.First(tx => tx.gameObject.name == "ChestText"));
+            _itemTexts.Add(ItemSlot.Knife, texts.First(tx => tx.gameObject.name == "KnifeText"));
+            _itemTexts.Add(ItemSlot.MainWeapon, texts.First(tx => tx.gameObject.name == "MainWeaponText"));
+            _itemTexts.Add(ItemSlot.Pants, texts.First(tx => tx.gameObject.name == "PantsText"));
+            _itemTexts.Add(ItemSlot.Pistol, texts.First(tx => tx.gameObject.name == "PistolText"));
+
+            // Add Item Texts
+            _itemNameTexts.Add(ItemSlot.Chest, texts.First(tx => tx.gameObject.name == "ChestItemText"));
+            _itemNameTexts.Add(ItemSlot.Knife, texts.First(tx => tx.gameObject.name == "KnifeItemText"));
+            _itemNameTexts.Add(ItemSlot.MainWeapon, texts.First(tx => tx.gameObject.name == "MainWeaponItemText"));
+            _itemNameTexts.Add(ItemSlot.Pants, texts.First(tx => tx.gameObject.name == "PantsItemText"));
+            _itemNameTexts.Add(ItemSlot.Pistol, texts.First(tx => tx.gameObject.name == "PistolItemText"));
+
+            foreach (ItemSlot slot in System.Enum.GetValues(typeof(ItemSlot)))
+            {
+                if (slot == ItemSlot.NotSet)
+                {
+                    continue;
+                }
+                var useSlot = slot;
+                _itemButtons[useSlot].onClick.AddListener(() => PrefabSingleton.Instance.ItemHandler.SelectItem(_actualMember, useSlot, false, new Func<IItem, ItemSlot, bool>(NewItemSelected)));
             }
 
             SwitchPanel();
@@ -105,16 +142,17 @@ namespace Menu
         /// <param name="key"></param>
         public void SelectMember(string key)
         {
-            var member = _visualizer.SelectEntry(key);
-
-            if (member == null)
+            _actualMember = _visualizer.SelectEntry(key);
+            if (_actualMember == null)
             {
                 return;
             }
 
-            _enterExitButtonText.text = CharacterSingleton.Instance.PlayerMembersInCar.Contains(member)
+            _enterExitButtonText.text = CharacterSingleton.Instance.PlayerMembersInCar.Contains(_actualMember)
                 ? "Exit Car"
                 : "Enter Car";
+
+            LoadItemsFromGangster();
         }
 
         /// <summary>
@@ -167,6 +205,35 @@ namespace Menu
             _membersInHQ = CharacterSingleton.Instance.PlayersGang.Except(_membersInCar).ToList();
 
             PaintLists();
+        }
+
+        /// <summary>
+        /// This is fired if an item was selected.
+        /// </summary>
+        private bool NewItemSelected(IItem selectedItem, ItemSlot desiredSlot)
+        {
+            _actualMember.UsedItems[desiredSlot] = selectedItem;
+            LoadItemsFromGangster();
+
+            return true;
+        }
+
+        /// <summary>
+        /// Loads actual items.
+        /// </summary>
+        private void LoadItemsFromGangster()
+        {
+            if (_actualMember == null)
+            {
+                return;
+            }
+
+            foreach (var pair in _actualMember.UsedItems)
+            {
+                var actCol = _itemTexts[pair.Key].color;
+                _itemTexts[pair.Key].color = pair.Value == null ? Color.gray : Color.black;
+                _itemNameTexts[pair.Key].text = pair.Value == null ? String.Empty : String.Concat(pair.Value.Name, "  / ", pair.Value.ItemStragegy.GetDamageOutput());
+            }
         }
 
         /// <summary>

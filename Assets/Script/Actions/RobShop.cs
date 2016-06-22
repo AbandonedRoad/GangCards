@@ -12,6 +12,7 @@ namespace Assets.Script.Actions
     public class RobShop : ActionBase, ITextPresenter
     {
         private int _shopLevel;
+        private bool _betterWeapons;
         private string _textPart1;
         private string _textPart2;
         private List<IGangMember> _opponents = new List<IGangMember>();
@@ -25,11 +26,16 @@ namespace Assets.Script.Actions
         /// Creates instnace
         /// </summary>
         /// <param name="shopLevel"></param>
-        public RobShop(string shopLevel)
+        public RobShop(string shopLevel, string betterWeapons)
         {
+            if (!bool.TryParse(betterWeapons, out _betterWeapons))
+            {
+                Debug.LogError("Parse failed! Value are not bool!");
+            }
+
             if (!int.TryParse(shopLevel, out _shopLevel))
             {
-                Debug.LogError("Parse failed! Values are not integer!");
+                Debug.LogError("Parse failed! Value are not integer!");
             }
         }
 
@@ -93,7 +99,8 @@ namespace Assets.Script.Actions
                 {
                     // Up to 3 opponents.
                     var opponent = CharacterSingleton.Instance.GenerateAIPlayer(_shopLevel);
-                    ItemSingleton.Instance.ReturnAppropiateWeapon(_shopLevel, opponent);
+                    int level = _betterWeapons ? _shopLevel + 1 : _shopLevel;
+                    ItemSingleton.Instance.ReturnAppropiateWeapon(level, opponent);
                     _opponents.Add(opponent);
                 }
             }
@@ -108,10 +115,17 @@ namespace Assets.Script.Actions
         {
             if (victory)
             {
+                _textPart1 = ResourceSingleton.Instance.CreateActionText(String.Concat(this.GetType().Name.ToString(), "Succ"), "Part1");
 
+                var moneyEarned = Math.Round(UnityEngine.Random.Range(20f, 40f), 2);
+                moneyEarned = moneyEarned * _shopLevel;
+                CharacterSingleton.Instance.AvailableMoney += (float)moneyEarned;
+                _textPart1 += String.Concat(moneyEarned.ToString(), "$");
             }
-
-
+            else
+            {
+                _textPart1 = ResourceSingleton.Instance.CreateActionText(String.Concat(this.GetType().Name.ToString(), "Fail"), "Part1");
+            }
 
             return true;
         }

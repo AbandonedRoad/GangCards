@@ -9,6 +9,8 @@ namespace Interfaces
     {
         bool ExecuteAction();
 
-        IItemStrategyOutput GetOutpt(bool isPlayer);
+        IItemStrategyOutput GetAttackOutpt(bool isPlayer);
+
+        string GetDamageOutput();
     }
 }

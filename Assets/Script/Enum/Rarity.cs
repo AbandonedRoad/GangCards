@@ -5,6 +5,6 @@ namespace Enum
         Normal,
         Rare,
         VeryRare,
-        Outstanding
+        Unique
     }
 }

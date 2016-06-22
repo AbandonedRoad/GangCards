@@ -13,6 +13,12 @@ namespace Interfaces
 
         ItemSlot UsedInSlot { get; }
 
+        ItemType ItemType { get; }
+
+        Rarity Rarity { get; }
+
+        int Price { get; }
+
         IItemStrategy ItemStragegy { get; }
 
         Skills NeededSkill { get; }

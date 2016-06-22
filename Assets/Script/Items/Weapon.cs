@@ -22,6 +22,9 @@ namespace Items
         public IGangMember AssignedTo { get; private set; }
         public int ActionCosts { get; private set; }
         public AudioClip AudioClip { get; private set; }
+        public ItemType ItemType { get { return ItemType.Weapon; } }
+        public int Price { get; private set; }
+        public Rarity Rarity { get; private set; }
 
         /// <summary>
         /// Creates a new Weapon

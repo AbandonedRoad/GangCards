@@ -17,6 +17,9 @@ namespace Items
         public IItemStrategy ItemStragegy { get; private set; }
         public Skills NeededSkill { get; private set; }
         public AudioClip AudioClip { get; private set; }
+        public ItemType ItemType { get { return ItemType.Armor; } }
+        public int Price { get; private set; }
+        public Rarity Rarity { get; private set; }
 
         /// <summary>
         /// 

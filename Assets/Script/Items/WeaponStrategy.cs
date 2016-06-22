@@ -37,10 +37,10 @@ namespace Items
         }
 
         /// <summary>
-        /// Perpares the output
+        /// Perpares the output for the combast log
         /// </summary>
         /// <returns></returns>
-        public IItemStrategyOutput GetOutpt(bool isPlayer)
+        public IItemStrategyOutput GetAttackOutpt(bool isPlayer)
         {
             var text = String.Empty;
             var entryFound = _attackResult.Successful
@@ -55,6 +55,22 @@ namespace Items
             text = text.Replace("@damage", damage.Value.ToString());
 
             return new WeaponStrategyOutput(text, damage.Key, damage.Value);
+        }
+
+        /// <summary>
+        /// Returns which kind and which amount of damage this weapon does.
+        /// </summary>
+        /// <returns></returns>
+        public string GetDamageOutput()
+        {
+            var output = String.Empty;
+            foreach (var range in _parent.DamageRanges)
+            {
+                output += String.IsNullOrEmpty(output) ? "Dmg: " : ", ";
+                output += range.Value.CreateDisplayValue();
+            }
+
+            return output;
         }
     }
 }

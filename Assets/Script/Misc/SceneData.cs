@@ -29,6 +29,7 @@ namespace Misc
         {
             GameObjects = new List<GOInfo>();
             GangMembers = new List<IGangMember>();
+            GangMembersInCar = new List<IGangMember>();
         }
 
         /// <summary>
