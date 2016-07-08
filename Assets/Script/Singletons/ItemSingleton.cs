@@ -1,5 +1,6 @@
 ﻿using Enum;
 using Interfaces;
+using Items;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +13,12 @@ namespace Singleton
     {
         private static ItemSingleton _instance;
 
-        public List<IItem> OwnedItems { get; private set; }
-        public List<IItem> Items { get; private set; }
+        public List<IItem> OwnedItems
+        {
+            get { return GetOwnItems(); }
+        }
+
+        public List<IItem> AvailableItems { get; private set; }
 
         /// <summary>
         /// Gets instance
@@ -39,18 +44,18 @@ namespace Singleton
         /// <param name="name"></param>
         /// <param name="level"></param>
         /// <returns></returns>
-        public IItem GetItem(int key, int level, IGangMember assignTo)
+        public IItem GetItem(WeaponType weaponType, int level, IGangMember assignTo)
         {
-            var result = Items.FirstOrDefault(typ => typ.Key == key);
+            var item = AvailableItems.Where(it => it is Weapon).Cast<Weapon>().FirstOrDefault(typ => typ.WeaponType == weaponType);
 
-            if (result == null)
+            if (item == null)
             {
-                Debug.LogError("Following item is not found!  Key: " + key);
+                Debug.LogError("No item was found for type!  Weapon Type: " + weaponType);
             }
 
-            result.ApplyParamters(level, assignTo);
+            item.AssignedTo = assignTo;
 
-            return result;
+            return item;
         }
 
         /// <summary>
@@ -59,16 +64,16 @@ namespace Singleton
         /// <returns></returns>
         public IItem GetItem(ItemSlot type, int level, IGangMember assignTo)
         {
-            var result = Items.FirstOrDefault(typ => typ.UsedInSlot == type);
+            var item = AvailableItems.FirstOrDefault(typ => typ.UsedInSlot == type);
 
-            if (result == null)
+            if (item == null)
             {
                 Debug.LogError("An item of type " + type + " is not found!");
             }
 
-            result.ApplyParamters(level, assignTo);
+            item.AssignedTo = assignTo;
 
-            return result;
+            return item;
         }
 
         /// <summary>
@@ -79,14 +84,79 @@ namespace Singleton
         {
             Instance.GetItem(ItemSlot.MainWeapon, level, assignToMember);
         }
+        
+        /// <summary>
+        /// Returns the price for an item
+        /// </summary>
+        /// <param name="item"></param>
+        public int ReturnPriceForItem(IItem item)
+        {
+            Weapon weapon = item as Weapon;
+            Armor armor = item as Armor;
+
+            int price = 0;
+
+            if (weapon != null)
+            {
+                switch (weapon.WeaponType)
+                {
+                    case WeaponType.Rifle:
+                        price = UnityEngine.Random.Range(200, 400);
+                        price = price * item.Level;
+                        break;
+                    case WeaponType.Pistol:
+                        price = UnityEngine.Random.Range(100, 200);
+                        price = price * item.Level;
+                        break;
+                    case WeaponType.Blade:
+                        price = UnityEngine.Random.Range(75, 150);
+                        price = price * item.Level;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else if (armor != null)
+            {
+                Debug.LogError("Armor is not implemeted!");
+            }
+            else
+            {
+                Debug.LogError("IItem type unknown");
+            }
+
+            return price;
+        }
 
         /// <summary>
         /// Initialize
         /// </summary>
         private void Init()
         {
-            Items = ResourceSingleton.Instance.GetItems();
-            OwnedItems = ResourceSingleton.Instance.GetItems();
+            AvailableItems = ResourceSingleton.Instance.GetUniqueItems();
+            AvailableItems.AddRange(ResourceSingleton.Instance.GenerateItems());
+        }
+
+        /// <summary>
+        /// Generate List of Items which the gang owns
+        /// </summary>
+        /// <returns></returns>
+        private List<IItem> GetOwnItems()
+        {
+            List<ItemSlot> slotsToCheck = new List<ItemSlot> { ItemSlot.Knife, ItemSlot.MainWeapon, ItemSlot.Pistol };
+            var result = new List<IItem>();
+            foreach (var gangMember in CharacterSingleton.Instance.PlayersGang)
+            {
+                foreach (var slot in slotsToCheck)
+                {
+                    if (gangMember.UsedItems.ContainsKey(slot) && gangMember.UsedItems[slot] != null)
+                    {
+                        OwnedItems.Add(gangMember.UsedItems[slot]);
+                    }
+                }
+            }
+
+            return result;
         }
     }
 }

@@ -19,49 +19,88 @@ namespace Items
         public Dictionary<ItemIdentifiers, DamageRange> DamageRanges { get; private set; }
         public IItemStrategy ItemStragegy { get; private set; }
         public Skills NeededSkill { get; private set; }
-        public IGangMember AssignedTo { get; private set; }
+        public IGangMember AssignedTo { get; set; }
         public int ActionCosts { get; private set; }
         public AudioClip AudioClip { get; private set; }
         public ItemType ItemType { get { return ItemType.Weapon; } }
-        public int Price { get; private set; }
         public Rarity Rarity { get; private set; }
 
         /// <summary>
-        /// Creates a new Weapon
+        /// Creates a weapon with one damage range
         /// </summary>
         /// <param name="type"></param>
         /// <param name="damageTypeP1"></param>
         /// <param name="dmgRangeP1"></param>
         public Weapon(DamageType damageTypeP1, int[] dmgRangeP1)
-        {
-            DamageRanges = new Dictionary<ItemIdentifiers, DamageRange>();
-            DamageRanges.Add(ItemIdentifiers.Property1Val, new DamageRange(damageTypeP1, dmgRangeP1[0], dmgRangeP1[1]));
-        }
+            : this(new DamageRange(damageTypeP1, dmgRangeP1[0], dmgRangeP1[1]))
+        { }
 
         /// <summary>
-        /// Creates a new Weapon
+        /// Creates a new Weapon with two damage ranges.
         /// </summary>
         /// <param name="type"></param>
         /// <param name="damageTypeP1"></param>
         /// <param name="dmgRangeP1"></param>
         public Weapon(DamageType damageTypeP1, int[] dmgRangeP1, DamageType damageTypeP2, int[] dmgRangeP2)
+            : this (new DamageRange(damageTypeP1, dmgRangeP1[0], dmgRangeP1[1]), 
+                    new DamageRange(damageTypeP2, dmgRangeP2[0], dmgRangeP2[1]))
+        { }
+
+        /// <summary>
+        /// Creates a weapon with one damage range
+        /// </summary>
+        /// <param name="range1"></param>
+        public Weapon(DamageRange range1)
         {
             DamageRanges = new Dictionary<ItemIdentifiers, DamageRange>();
-            DamageRanges.Add(ItemIdentifiers.Property1Val, new DamageRange(damageTypeP1, dmgRangeP1[0], dmgRangeP1[1]));
-            DamageRanges.Add(ItemIdentifiers.Property2Val, new DamageRange(damageTypeP2, dmgRangeP2[0], dmgRangeP2[1]));
+            DamageRanges.Add(ItemIdentifiers.Property1Val, range1);
         }
 
         /// <summary>
-        /// Initializes base set
+        /// Creates a new Weapon with two damage ranges.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="type"></param>
-        /// <param name="damageTypeP1"></param>
-        /// <param name="dmgRangeP1"></param>
-        public void Init(int key, string name, Skills neededSkill, WeaponType type, ItemSlot slot, int actionPointsCost)
+        /// <param name="range1"></param>
+        /// <param name="range2"></param>
+        public Weapon(DamageRange range1, DamageRange range2)
         {
-            Key = key;
+            DamageRanges = new Dictionary<ItemIdentifiers, DamageRange>();
+            DamageRanges.Add(ItemIdentifiers.Property1Val, range1);
+            DamageRanges.Add(ItemIdentifiers.Property2Val, range2);
+        }
+
+        /// <summary>
+        /// Creates a weapon, whereby the given weapon is the base for it.
+        /// </summary>
+        /// <param name="weapon"></param>
+        public Weapon(Weapon weapon)
+        {
+            Key = weapon.Key;
+            Name = weapon.Name;
+            Level = weapon.Level;
+            WeaponType = weapon.WeaponType;
+            UsedInSlot = weapon.UsedInSlot;
+            DamageRanges = new Dictionary<ItemIdentifiers, DamageRange>(weapon.DamageRanges);
+            ItemStragegy = weapon.ItemStragegy;
+            NeededSkill = weapon.NeededSkill;
+            AssignedTo = null;
+            ActionCosts = weapon.ActionCosts;
+            AudioClip = weapon.AudioClip;
+            Rarity = weapon.Rarity;
+    }
+
+    /// <summary>
+    /// Initializes base set
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="type"></param>
+    /// <param name="damageTypeP1"></param>
+    /// <param name="dmgRangeP1"></param>
+    public void Init(int key, string name, int level, Skills neededSkill, WeaponType type, ItemSlot slot, int actionPointsCost, Rarity rarity)
+        {
+            Key = key != 0 ? key : Math.Abs(name.GetHashCode());
             Name = name;
+            Rarity = rarity;
+            Level = level;
             NeededSkill = neededSkill;
             WeaponType = type;
             ActionCosts = actionPointsCost;
@@ -104,24 +143,14 @@ namespace Items
         }
 
         /// <summary>
-        /// Applies a new level.
+        /// Clones this item
         /// </summary>
-        /// <param name="level">Level to be used.</param>
-        public void ApplyParamters(int level, IGangMember assignTo)
+        /// <returns></returns>
+        public IItem Clone()
         {
-            AssignedTo = assignTo;
-            Level = level;
-            if (Level > 1)
-            {
-                // Apply level to damage
-                float factor = Level * 0.75f;
-                var keys = DamageRanges.Keys.ToList();
-                foreach (var identifierKey in keys)
-                {
-                    var actual = DamageRanges[identifierKey];
-                    actual = new DamageRange(actual.Type, (int)Math.Round(actual.MinDamage * factor), (int)Math.Round(actual.MaxDamage * factor));
-                }
-            }
+            Weapon clone = new Weapon(this);
+
+            return clone;
         }
 
         /// <summary>

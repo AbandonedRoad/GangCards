@@ -22,14 +22,13 @@ namespace Menu
         private List<Image> _itemSlots;
         private Button _filterWeaponButton;
         private Button _filterArmorButton;
-        private Button _nextButton;
-        private Button _previousButton;
         private Button _buyButton;
         private ItemSlot _itemTypeToBeSelected = ItemSlot.NotSet;
         private Text _priceText;
         private Text _priceValue;
         private bool _isShop;
         private ItemType _filterForType = ItemType.NotSet;
+        private List<IItem> _itemCollection;
 
         /// <summary>
         /// Start this instance.
@@ -41,8 +40,6 @@ namespace Menu
             var buttons = _itemPanel.GetComponentsInChildren<Button>();
             _filterWeaponButton = buttons.First(btn => btn.gameObject.name == "WeaponButton");
             _filterArmorButton = buttons.First(btn => btn.gameObject.name == "ArmorButton");
-            _nextButton = buttons.First(btn => btn.gameObject.name == "NextButton");
-            _previousButton = buttons.First(btn => btn.gameObject.name == "PreviousButton");
             _buyButton = buttons.First(btn => btn.gameObject.name == "BuyButton");
 
             var texts = _itemPanel.GetComponentsInChildren<Text>();
@@ -68,6 +65,11 @@ namespace Menu
         public void SwitchItemPanel(bool isShop)
         {
             _isShop = isShop;
+
+            _itemCollection = _isShop
+                ? ItemSingleton.Instance.AvailableItems
+                : ItemSingleton.Instance.OwnedItems;
+
             LoadItems();
             _itemPanel.SetActive(!_itemPanel.activeSelf);
             if (_itemPanel.activeSelf)
@@ -97,7 +99,8 @@ namespace Menu
             }
             else if (_isShop)
             {
-                // Buy stuff!
+                // Show price.
+                _priceValue.text = ItemSingleton.Instance.ReturnPriceForItem(_selectedItem).ToString() + "$";
                 _buyButton.interactable = _selectedItem != null;
             }
         }
@@ -137,9 +140,61 @@ namespace Menu
             LoadItems();
         }
 
+        /// <summary>
+        /// Buy an item
+        /// </summary>
         public void BuyItem()
         {
             StartCoroutine(BuyItemQuestion());
+        }
+
+        /// <summary>
+        /// Gets the previous gangster
+        /// </summary>
+        public void PreviousEntries()
+        {
+            if (_firstItem == null)
+            {
+                return;
+            }
+
+            var index = _itemCollection.IndexOf(_firstItem);
+            if ((index - 6) < 0)
+            {
+                // Switch to first item
+                _firstItem = _itemCollection.FirstOrDefault();
+                return;
+            }
+            else
+            {
+                _firstItem = _itemCollection.ElementAt(index - 6);
+            }
+
+            LoadItems();
+        }
+
+        /// <summary>
+        /// Gets the previous gangster
+        /// </summary>
+        public void NextEntries()
+        {
+            if (_firstItem == null)
+            {
+                return;
+            }
+
+            var index = _itemCollection.IndexOf(_firstItem);
+            if ((index + 6) >= _itemCollection.Count)
+            {
+                // We reached the end!
+                return;
+            }
+            else
+            {
+                _firstItem = _itemCollection.ElementAt(index + 6);
+            }
+
+            LoadItems();
         }
 
         /// <summary>
@@ -148,13 +203,10 @@ namespace Menu
         /// <returns></returns>
         private IEnumerator BuyItemQuestion()
         {
-            if (_selectedItem == null)
+            var price = ItemSingleton.Instance.ReturnPriceForItem(_selectedItem);
+            if (_selectedItem != null && CharacterSingleton.Instance.AvailableMoney >= price )
             {
-                if (CharacterSingleton.Instance.AvailableMoney < 5)
-                {
-                    // Genug Geld da?
-                }
-
+                // User has enough money.
                 PrefabSingleton.Instance.InputHandler.AddQuestion("BuyWeaponsReally");
                 yield return StartCoroutine(PrefabSingleton.Instance.InputHandler.WaitForAnswer());
 
@@ -162,6 +214,11 @@ namespace Menu
                 {
                     // User decided not to buy
                     yield break;
+                }
+                else
+                {
+                    CharacterSingleton.Instance.AvailableMoney -= price;
+                    ItemSingleton.Instance.OwnedItems.Add(_selectedItem.Clone());
                 }
             }
         }
@@ -176,12 +233,17 @@ namespace Menu
                 return;
             }
 
-            _firstItem = _firstItem ?? ItemSingleton.Instance.OwnedItems.First();
+            _firstItem = _firstItem ?? _itemCollection.FirstOrDefault();
+            if (_firstItem == null)
+            {
+                // No items available.
+                return;
+            }
 
-            var index = ItemSingleton.Instance.OwnedItems.IndexOf(_firstItem);
+            var index = _itemCollection.IndexOf(_firstItem);
             for (int i = 1; i < 7; i++)
             {
-                var item = ItemSingleton.Instance.OwnedItems.ElementAtOrDefault(index);
+                var item = _itemCollection.ElementAtOrDefault(index);
                 index++;
                 var name = String.Concat("ItemSlot", i.ToString(), "Prefab");
                 _itemSlots.First(itm => itm.gameObject.name == name).gameObject.SetActive(item != null);

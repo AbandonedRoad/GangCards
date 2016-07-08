@@ -31,19 +31,19 @@ namespace Assets.Script.Characters
             switch (type)
             {
                 case AnimalType.Dog:
-                    UsedItems[ItemSlot.MainWeapon] = ItemSingleton.Instance.GetItem(413357241, Level, this); // Claws
+                    UsedItems[ItemSlot.MainWeapon] = ItemSingleton.Instance.GetItem(WeaponType.Claws, Level, this);
                     Name = "Frenzy pitbull";
                     MaxHealth = (int)Math.Round(10 * (Level > 1 ? Level * 0.5f : 1));
                     Intelligence = +Level;
                     break;
                 case AnimalType.Bear:
-                    UsedItems[ItemSlot.MainWeapon] = ItemSingleton.Instance.GetItem(413357241, Level, this); // Claws
+                    UsedItems[ItemSlot.MainWeapon] = ItemSingleton.Instance.GetItem(WeaponType.Claws, Level, this);
                     Name = "Vicious Grizzly";
                     MaxHealth = (int)Math.Round(20 * (Level > 1 ? Level * 0.5f : 1));
                     Strength =+ (int)Math.Round((1.5f * Level));
                     break;
                 case AnimalType.Harpy:
-                    UsedItems[ItemSlot.MainWeapon] = ItemSingleton.Instance.GetItem(413357241, Level, this); // Claws
+                    UsedItems[ItemSlot.MainWeapon] = ItemSingleton.Instance.GetItem(WeaponType.Claws, Level, this);
                     Name = "Slaying Harpy";
                     MaxHealth = (int)Math.Round(20 * (Level > 1 ? Level * 0.5f : 1));
                     Initiative= +(int)Math.Round((1.5f * Level));

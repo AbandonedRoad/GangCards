@@ -161,7 +161,23 @@ namespace Items
         /// <param name="item"></param>
         private void FillItem(Dictionary<ItemIdentifiers, Text> itemSlot, IItem item)
         {
-            itemSlot[ItemIdentifiers.Name].text = item.Name;
+            itemSlot[ItemIdentifiers.Name].text = string.Concat(item.Name, " (Lvl. ", item.Level, " ", HelperSingleton.Instance.SplitUp(item.Rarity.ToString()), ")");
+
+            Color nameColor = Color.black;
+            switch (item.Rarity)
+            {
+                case Rarity.Rare:
+                    nameColor = Color.green;
+                    break;
+                case Rarity.VeryRare:
+                    nameColor = Color.blue;
+                    break;
+                case Rarity.Unique:
+                    nameColor = Color.red;
+                    break;
+            }
+
+            itemSlot[ItemIdentifiers.Name].color = nameColor;
             itemSlot[ItemIdentifiers.Property1Type].text = item.GetValue(ItemIdentifiers.Property1Type);
             itemSlot[ItemIdentifiers.Property2Type].text = item.GetValue(ItemIdentifiers.Property2Type);
 

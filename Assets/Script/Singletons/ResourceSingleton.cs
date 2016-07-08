@@ -145,7 +145,7 @@ namespace Singleton
         /// Gets all Items fro the Text Ressource
         /// </summary>
         /// <returns></returns>
-        internal List<IItem> GetItems()
+        internal List<IItem> GetUniqueItems()
         {
             List<IItem> result = new List<IItem>();
 
@@ -154,12 +154,16 @@ namespace Singleton
 
             foreach (var item in keys)
             {
+                // Add all unique items.
+
                 var key = item.Key.Substring(5, item.Key.Length - ("Item_Name_Ger").Length);
                 string language = SettingsSingleton.Instance.Language == Language.English ? "Eng" : "Ger";
 
                 var name = _items[String.Concat("Item_", key, "Name_", language)];
                 var itemKey = int.Parse(_items[String.Concat("Item_", key, "Key")]);
                 var skill = _items[String.Concat("Item_", key, "Skill")];
+                var rarity = _items[String.Concat("Item_", key, "Rarity")];
+                var level = _items[String.Concat("Item_", key, "Level")];
                 var itemType = _items[String.Concat("Item_", key, "Type_", language)];
                 var slot = _items[String.Concat("Item_", key, "Slot_", language)];
                 var p1Type = _items[String.Concat("Item_", key, "Prop1Typ_", language)];
@@ -181,6 +185,7 @@ namespace Singleton
                     var pt2Type = String.IsNullOrEmpty(p2Type) ? null : System.Enum.Parse(typeof(DamageType), p2Type, true) as DamageType?;
                     var iSlot = String.IsNullOrEmpty(slot) ? null : System.Enum.Parse(typeof(ItemSlot), slot, true) as ItemSlot?;
                     var neededSkill = String.IsNullOrEmpty(skill) ? Skills.None : System.Enum.Parse(typeof(Skills), skill, true) as Skills?;
+                    var rarityEnum = System.Enum.Parse(typeof(Rarity), rarity, true) as Rarity?;
 
                     IItem weapon = null;
                     if (splitP2.Length == 1)
@@ -195,7 +200,7 @@ namespace Singleton
                             pt2Type.Value, new int[] { int.Parse(splitP2[0]), int.Parse(splitP2[1]) });
                     }
                     
-                    ((Weapon)weapon).Init(itemKey, name, neededSkill.Value, wType.Value, iSlot.Value, actionPointCosts);
+                    ((Weapon)weapon).Init(itemKey, name, int.Parse(level), neededSkill.Value, wType.Value, iSlot.Value, actionPointCosts, rarityEnum.Value);
                     result.Add(weapon);
                 }
                 else if (System.Enum.GetNames(typeof(ArmorType)).Contains(itemType))
@@ -205,6 +210,44 @@ namespace Singleton
                 else
                 {
                     Debug.LogError("Item Type " + itemType + " unknown!");
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Generate items.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<IItem> GenerateItems()
+        {
+            List<IItem> result = new List<IItem>();
+            for (int level = 1; level < 15; level++)
+            {
+                // Generate Weapons
+                foreach (WeaponType weaponType in System.Enum.GetValues(typeof(WeaponType)).Cast<WeaponType>().Where(wt => wt != WeaponType.NotSet))
+                {
+                    var rarity = Rarity.Normal;
+                    rarity = rarity.GetRandomRarity();
+
+                    Weapon weapon;
+                    DamageType dmgType = DamageType.NotSet;
+                    dmgType = dmgType.GetDamageTypeForWeaponType(weaponType);
+                    if (rarity != Rarity.VeryRare)
+                    {
+                        weapon = new Weapon(new DamageRange(dmgType, weaponType, level));
+                    }
+                    else
+                    {
+                        weapon = new Weapon(new DamageRange(dmgType, weaponType, level),
+                                            new DamageRange(dmgType, weaponType, level)); // TODO: Macht eigentlich keinen sinn! 2x den selben type ist käse!
+                    }
+
+                    weapon.Init(0, weaponType.ToString(), level, weaponType.GetNeededSkillForWeaponType(), 
+                        weaponType, weaponType.GetMatchingItemSlot(), weaponType.GetActionCost(), rarity);
+
+                    result.Add(weapon);
                 }
             }
 

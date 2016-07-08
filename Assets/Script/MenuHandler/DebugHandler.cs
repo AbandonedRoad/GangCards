@@ -35,7 +35,7 @@ namespace Menu
             {
                 var member = hire.AddProspectToGang();
                 member.PostProcessInit(Gangs.WheelersOfDecay);
-                member.UsedItems[ItemSlot.MainWeapon] = ItemSingleton.Instance.GetItem(1277109520, member.Level, member);
+                member.UsedItems[ItemSlot.MainWeapon] = ItemSingleton.Instance.GetItem(WeaponType.Rifle, member.Level, member);
             }            
         }
 

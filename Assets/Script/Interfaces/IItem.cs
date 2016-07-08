@@ -17,16 +17,16 @@ namespace Interfaces
 
         Rarity Rarity { get; }
 
-        int Price { get; }
-
         IItemStrategy ItemStragegy { get; }
 
         Skills NeededSkill { get; }
+
+        IGangMember AssignedTo { get; set; }
 
         AudioClip AudioClip { get; }
 
         string GetValue(ItemIdentifiers identifier);
 
-        void ApplyParamters(int level, IGangMember assignedTo);
+        IItem Clone();
     }
 }

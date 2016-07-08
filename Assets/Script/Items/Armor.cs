@@ -14,11 +14,11 @@ namespace Items
         public ArmorType ArmorType { get; private set; }
         public int DamageAbsorb { get; private set; }
         public ItemSlot UsedInSlot { get; private set; }
+        public IGangMember AssignedTo { get; set; }
         public IItemStrategy ItemStragegy { get; private set; }
         public Skills NeededSkill { get; private set; }
         public AudioClip AudioClip { get; private set; }
         public ItemType ItemType { get { return ItemType.Armor; } }
-        public int Price { get; private set; }
         public Rarity Rarity { get; private set; }
 
         /// <summary>
@@ -35,12 +35,21 @@ namespace Items
             NeededSkill = Skills.None;
         }
 
+        /// <summary>
+        /// Prepare Armor
+        /// </summary>
+        /// <param name="rarity"></param>
+        public void Init(Rarity rarity)
+        {
+            Rarity = rarity;
+        }
+
         public string GetValue(ItemIdentifiers identifier)
         {
             throw new NotImplementedException();
         }
 
-        public void ApplyParamters(int level, IGangMember assignTo)
+        public IItem Clone()
         {
             throw new NotImplementedException();
         }
