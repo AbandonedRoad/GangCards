@@ -25,6 +25,8 @@ namespace Interfaces
 
         AudioClip AudioClip { get; }
 
+        int Price { get; set; }
+
         string GetValue(ItemIdentifiers identifier);
 
         IItem Clone();

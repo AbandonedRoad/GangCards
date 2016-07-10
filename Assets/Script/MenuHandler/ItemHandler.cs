@@ -27,6 +27,7 @@ namespace Menu
         private Text _priceText;
         private Text _priceValue;
         private bool _isShop;
+        private int _shopLevel;
         private ItemType _filterForType = ItemType.NotSet;
         private List<IItem> _itemCollection;
 
@@ -67,7 +68,8 @@ namespace Menu
             _isShop = isShop;
 
             _itemCollection = _isShop
-                ? ItemSingleton.Instance.AvailableItems
+                ? ItemSingleton.Instance.AvailableItems.Where(itm => itm.Level <= _shopLevel 
+                    && (itm is Weapon && ((Weapon)itm).WeaponType != WeaponType.Bite && ((Weapon)itm).WeaponType != WeaponType.Claws)).ToList()
                 : ItemSingleton.Instance.OwnedItems;
 
             LoadItems();
@@ -88,7 +90,8 @@ namespace Menu
         public void ItemClicked(int itemNumber)
         {
             var name = _itemVisualizer.GetItem(itemNumber)[ItemIdentifiers.Name].text;
-            _selectedItem = ItemSingleton.Instance.OwnedItems.FirstOrDefault(itm => itm.Name == name);
+            var key = _itemVisualizer.GetItemKey(itemNumber);
+            _selectedItem = _itemCollection.FirstOrDefault(itm => itm.Key == key);
 
             if (_itemClickedResponse != null)
             {
@@ -109,10 +112,12 @@ namespace Menu
         /// Selects an item
         /// </summary>
         /// <param name="type"></param>
-        public void SelectItem(IGangMember assignTo, ItemSlot type, bool isShop, Delegate itemClickedResponse)
+        public void OpenItemScreen(IGangMember assignTo, ItemSlot type, int shopLevel, Delegate itemClickedResponse)
         {
-            if (assignTo == null && !isShop)
+            _shopLevel = shopLevel;
+            if (assignTo == null && _shopLevel == 0)
             {
+                // shop level 0 mean we have no shop
                 return;
             }
 
@@ -124,7 +129,7 @@ namespace Menu
             _itemClickedResponse = itemClickedResponse;
             _selectedItem = null;
 
-            SwitchItemPanel(isShop);
+            SwitchItemPanel(_shopLevel > 0);
         }
 
         /// <summary>

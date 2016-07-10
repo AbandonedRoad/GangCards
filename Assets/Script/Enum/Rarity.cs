@@ -13,12 +13,14 @@ namespace Enum
 
     public static partial class EnumExtensions
     {
+        /// <summary>
+        /// Returns a Rarity for an imte.
+        /// </summary>
+        /// <param name="rarity"></param>
+        /// <returns></returns>
         public static Rarity GetRandomRarity(this Rarity rarity)
         {
-            UnityEngine.Random.seed = DateTime.Now.Millisecond;
-            int rand = UnityEngine.Random.Range(1, 4);
-
-            switch (rand)
+            switch (UnityEngine.Random.Range(1, 4))
             {
                 case 1:
                     return Rarity.Normal;
@@ -27,7 +29,7 @@ namespace Enum
                 case 3:
                     return Rarity.VeryRare;
                 default:
-                    Debug.LogError(rand.ToString() + " is not supported in GetRandomRarity");
+                    Debug.LogError("This is not supported in GetRandomRarity");
                     throw new ArgumentException();
             }
         }

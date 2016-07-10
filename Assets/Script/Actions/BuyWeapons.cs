@@ -54,7 +54,7 @@ namespace Assets.Script.Actions
         /// </summary>
         private void EvaluateItems()
         {
-            PrefabSingleton.Instance.ItemHandler.SelectItem(null, ItemSlot.NotSet, true, null);
+            PrefabSingleton.Instance.ItemHandler.OpenItemScreen(null, ItemSlot.NotSet, _shopLevel, null);
         }
     }
 }

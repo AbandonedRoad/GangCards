@@ -24,6 +24,7 @@ namespace Items
         public AudioClip AudioClip { get; private set; }
         public ItemType ItemType { get { return ItemType.Weapon; } }
         public Rarity Rarity { get; private set; }
+        public int Price { get; set; }
 
         /// <summary>
         /// Creates a weapon with one damage range
@@ -97,7 +98,7 @@ namespace Items
     /// <param name="dmgRangeP1"></param>
     public void Init(int key, string name, int level, Skills neededSkill, WeaponType type, ItemSlot slot, int actionPointsCost, Rarity rarity)
         {
-            Key = key != 0 ? key : Math.Abs(name.GetHashCode());
+            Key = key != 0 ? key : Math.Abs((name + level.ToString()).GetHashCode());
             Name = name;
             Rarity = rarity;
             Level = level;

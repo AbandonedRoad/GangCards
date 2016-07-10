@@ -92,7 +92,7 @@ namespace Menu
                     continue;
                 }
                 var useSlot = slot;
-                _itemButtons[useSlot].onClick.AddListener(() => PrefabSingleton.Instance.ItemHandler.SelectItem(_actualMember, useSlot, false, new Func<IItem, ItemSlot, bool>(NewItemSelected)));
+                _itemButtons[useSlot].onClick.AddListener(() => PrefabSingleton.Instance.ItemHandler.OpenItemScreen(_actualMember, useSlot, 0, new Func<IItem, ItemSlot, bool>(NewItemSelected)));
             }
 
             SwitchPanel();

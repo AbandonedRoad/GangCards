@@ -2,6 +2,7 @@
 {
     public enum ItemIdentifiers
     {
+        Key,
         Name,
         Type,
         Property1Type,

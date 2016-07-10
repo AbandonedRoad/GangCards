@@ -20,6 +20,7 @@ namespace Items
         public AudioClip AudioClip { get; private set; }
         public ItemType ItemType { get { return ItemType.Armor; } }
         public Rarity Rarity { get; private set; }
+        public int Price { get; set; }
 
         /// <summary>
         /// 

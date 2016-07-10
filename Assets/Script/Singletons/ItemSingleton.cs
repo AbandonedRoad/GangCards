@@ -98,6 +98,25 @@ namespace Singleton
 
             if (weapon != null)
             {
+                if (weapon.Price > 0)
+                {
+                    return weapon.Price;
+                }
+
+                float rarityFactor = 1;
+                if (item.Rarity == Rarity.Rare)
+                {
+                    rarityFactor = 1.2f;
+                }
+                else if (item.Rarity == Rarity.VeryRare)
+                {
+                    rarityFactor = 1.4f;
+                }
+                else if (item.Rarity == Rarity.Unique)
+                {
+                    rarityFactor = 1.8f;
+                }
+
                 switch (weapon.WeaponType)
                 {
                     case WeaponType.Rifle:
@@ -115,6 +134,8 @@ namespace Singleton
                     default:
                         break;
                 }
+
+                item.Price = (int)Math.Round((price * rarityFactor), 0);
             }
             else if (armor != null)
             {
@@ -133,6 +154,8 @@ namespace Singleton
         /// </summary>
         private void Init()
         {
+            UnityEngine.Random.seed = DateTime.Now.Millisecond * DateTime.Now.Second;
+
             AvailableItems = ResourceSingleton.Instance.GetUniqueItems();
             AvailableItems.AddRange(ResourceSingleton.Instance.GenerateItems());
         }

@@ -11,6 +11,7 @@ namespace Items
     public class ItemVisualizer
     {
         private Dictionary<int, Dictionary<ItemIdentifiers, Text>> _items = new Dictionary<int, Dictionary<ItemIdentifiers, Text>>();
+        private Dictionary<int, int> _itemKeys = new Dictionary<int, int>();
         private Dictionary<ItemSlot, Dictionary<ItemIdentifiers, Text>> _itemsViaSlot = new Dictionary<ItemSlot, Dictionary<ItemIdentifiers, Text>>();
 
         public Dictionary<int, Image> ItemImages { get; private set; }
@@ -37,6 +38,7 @@ namespace Items
 
             ItemImages.Add(key, itemImage);
 
+            _itemKeys.Add(key, 0);
             _items[key].Add(ItemIdentifiers.Name, itemTexts.First(tx => tx.gameObject.name == "NameText"));
             _items[key].Add(ItemIdentifiers.Type, itemTexts.First(tx => tx.gameObject.name == "TypeText"));
             _items[key].Add(ItemIdentifiers.Property1Type, itemTexts.First(tx => tx.gameObject.name == "Property1Container"));
@@ -95,6 +97,25 @@ namespace Items
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
+        public int GetItemKey(int key)
+        {
+            if (_itemKeys.ContainsKey(key))
+            {
+                return _itemKeys[key];
+            }
+            else
+            {
+                Debug.LogError("GetItemKey(): Key " + key.ToString() + " does not exist!");
+            }
+
+            return 0;
+        }
+
+        /// <summary>
+        /// Gets an item.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public Dictionary<ItemIdentifiers, Text> GetItem(int key)
         {
             if (_items.ContainsKey(key))
@@ -135,6 +156,7 @@ namespace Items
         public void VisualizeItem(int key, IItem item)
         {
             var itemToBeFilled = _items[key];
+            _itemKeys[key] = item.Key;
             FillItem(itemToBeFilled, item);
         }
 
