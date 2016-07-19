@@ -12,14 +12,18 @@ namespace Menu
         public GameObject DebugPanel { get; private set; }
 
         private Button _addGangMembers;
+        private Button _addMoneyButton;
 
         void Awake()
         {
             DebugPanel = GameObject.Find("DebugPanelPrefab");
 
-            _addGangMembers = DebugPanel.GetComponentsInChildren<Button>().First(btn => btn.name == "AddGangMembersButton");
+            var buttons = DebugPanel.GetComponentsInChildren<Button>();
+            _addGangMembers = buttons.First(btn => btn.name == "AddGangMembersButton");
+            _addMoneyButton = buttons.First(btn => btn.name == "AddMoneyButton");
 
             _addGangMembers.onClick.AddListener(() => AddGangMembers(1));
+            _addMoneyButton.onClick.AddListener(() => AddMoney(1000));
 
             SwitchDebugPanel();
         }
@@ -36,7 +40,7 @@ namespace Menu
                 var member = hire.AddProspectToGang();
                 member.PostProcessInit(Gangs.WheelersOfDecay);
                 member.UsedItems[ItemSlot.MainWeapon] = ItemSingleton.Instance.GetItem(WeaponType.Rifle, member.Level, member);
-            }            
+            }
         }
 
         /// <summary>
@@ -49,6 +53,14 @@ namespace Menu
             {
                 DebugPanel.transform.SetAsLastSibling();
             }
+        }
+
+        /// <summary>
+        /// Adds members to the gang
+        /// </summary>
+        private void AddMoney(int amount)
+        {
+            CharacterSingleton.Instance.AvailableMoney += amount;
         }
     }
 }

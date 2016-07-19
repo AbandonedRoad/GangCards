@@ -1,4 +1,5 @@
 ﻿using Enum;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.UI;
@@ -13,7 +14,7 @@ namespace Singleton
         /// <param name="textToBeReplaced"></param>
         public static void ReplaceText(List<Text> textToBeReplaced)
         {
-            var filtered = textToBeReplaced.Where(tx => tx.text.Trim().StartsWith("@") && tx.text.EndsWith("@"));
+            var filtered = textToBeReplaced.Where(tx => tx.text.Trim().StartsWith("@") && tx.text.Trim().EndsWith("@"));
 
             foreach (var text in filtered)
             {

@@ -43,7 +43,7 @@ namespace Menu
             _filterArmorButton = buttons.First(btn => btn.gameObject.name == "ArmorButton");
             _buyButton = buttons.First(btn => btn.gameObject.name == "BuyButton");
 
-            var texts = _itemPanel.GetComponentsInChildren<Text>();
+            var texts = _itemPanel.GetComponentsInChildren<Text>().ToList();
             _priceText = texts.First(btn => btn.gameObject.name == "PriceText");
             _priceValue = texts.First(btn => btn.gameObject.name == "PriceValue");
 
@@ -70,7 +70,7 @@ namespace Menu
             _itemCollection = _isShop
                 ? ItemSingleton.Instance.AvailableItems.Where(itm => itm.Level <= _shopLevel 
                     && (itm is Weapon && ((Weapon)itm).WeaponType != WeaponType.Bite && ((Weapon)itm).WeaponType != WeaponType.Claws)).ToList()
-                : ItemSingleton.Instance.OwnedItems;
+                : ItemSingleton.Instance.ItemCollections[ItemLocation.ItemsInTheCar].Invoke();
 
             LoadItems();
             _itemPanel.SetActive(!_itemPanel.activeSelf);
@@ -208,11 +208,18 @@ namespace Menu
         /// <returns></returns>
         private IEnumerator BuyItemQuestion()
         {
+            if (_selectedItem == null)
+            {
+                yield break;
+            }
+
             var price = ItemSingleton.Instance.ReturnPriceForItem(_selectedItem);
-            if (_selectedItem != null && CharacterSingleton.Instance.AvailableMoney >= price )
+            var pair = new Dictionary<string, string>();
+            pair.Add("@item", _selectedItem.Name);
+            if (CharacterSingleton.Instance.AvailableMoney >= price )
             {
                 // User has enough money.
-                PrefabSingleton.Instance.InputHandler.AddQuestion("BuyWeaponsReally");
+                PrefabSingleton.Instance.InputHandler.AddQuestion("BuyWeaponsReally", pair);
                 yield return StartCoroutine(PrefabSingleton.Instance.InputHandler.WaitForAnswer());
 
                 if (PrefabSingleton.Instance.InputHandler.AnswerGiven == 2)
@@ -223,8 +230,18 @@ namespace Menu
                 else
                 {
                     CharacterSingleton.Instance.AvailableMoney -= price;
-                    ItemSingleton.Instance.OwnedItems.Add(_selectedItem.Clone());
+                    ItemSingleton.Instance.ItemCollections[ItemLocation.ItemsInHeadQuarter].Invoke().Add(_selectedItem.Clone());
+
+                    // Success
+                    PrefabSingleton.Instance.InputHandler.AddQuestion("BuySuccessful", pair);
+                    yield return StartCoroutine(PrefabSingleton.Instance.InputHandler.WaitForAnswer());
                 }
+            }
+            else
+            {
+                // User has not enough money.
+                PrefabSingleton.Instance.InputHandler.AddQuestion("BuyNotEnoughMoney", pair);
+                yield return StartCoroutine(PrefabSingleton.Instance.InputHandler.WaitForAnswer());
             }
         }
 

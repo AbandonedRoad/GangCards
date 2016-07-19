@@ -12,12 +12,10 @@ namespace Singleton
     public class ItemSingleton
     {
         private static ItemSingleton _instance;
+        private List<IItem> _itemsInHQ;
+        private List<IItem> _itemsInCar;
 
-        public List<IItem> OwnedItems
-        {
-            get { return GetOwnItems(); }
-        }
-
+        public Dictionary<ItemLocation, Func<List<IItem>>> ItemCollections { get; private set; }
         public List<IItem> AvailableItems { get; private set; }
 
         /// <summary>
@@ -158,23 +156,54 @@ namespace Singleton
 
             AvailableItems = ResourceSingleton.Instance.GetUniqueItems();
             AvailableItems.AddRange(ResourceSingleton.Instance.GenerateItems());
+
+            // Prepare Dictionaries.
+            _itemsInHQ = new List<IItem>();
+            _itemsInCar = new List<IItem>();
+
+            ItemCollections = new Dictionary<ItemLocation, Func<List<IItem>>>();
+            ItemCollections.Add(ItemLocation.ItemsInHeadQuarter, () => { return _itemsInHQ; });
+            ItemCollections.Add(ItemLocation.ItemsInTheCar, () => { return _itemsInCar; });
+            ItemCollections.Add(ItemLocation.ItemsOfTheMembers, () => GetGangMembersItems());
         }
 
         /// <summary>
         /// Generate List of Items which the gang owns
         /// </summary>
         /// <returns></returns>
-        private List<IItem> GetOwnItems()
+        private List<IItem> GetGangMembersItems()
         {
-            List<ItemSlot> slotsToCheck = new List<ItemSlot> { ItemSlot.Knife, ItemSlot.MainWeapon, ItemSlot.Pistol };
             var result = new List<IItem>();
+            List<ItemSlot> slotsToCheck = new List<ItemSlot> { ItemSlot.Knife, ItemSlot.MainWeapon, ItemSlot.Pistol };
             foreach (var gangMember in CharacterSingleton.Instance.PlayersGang)
             {
                 foreach (var slot in slotsToCheck)
                 {
                     if (gangMember.UsedItems.ContainsKey(slot) && gangMember.UsedItems[slot] != null)
                     {
-                        OwnedItems.Add(gangMember.UsedItems[slot]);
+                        result.Add(gangMember.UsedItems[slot]);
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Generate List of Items which the gang owns
+        /// </summary>
+        /// <returns></returns>
+        private List<IItem> GetHQItems()
+        {
+            var result = new List<IItem>();
+            List<ItemSlot> slotsToCheck = new List<ItemSlot> { ItemSlot.Knife, ItemSlot.MainWeapon, ItemSlot.Pistol };
+            foreach (var gangMember in CharacterSingleton.Instance.PlayersGang)
+            {
+                foreach (var slot in slotsToCheck)
+                {
+                    if (gangMember.UsedItems.ContainsKey(slot) && gangMember.UsedItems[slot] != null)
+                    {
+                        result.Add(gangMember.UsedItems[slot]);
                     }
                 }
             }

@@ -104,20 +104,38 @@ The police will arrest everyone left alive.~
 RobShopFailPart1_Ger	Der Besitzer hat alle deine Mitglieder kampfunfäig gemacht.
 
 Die Polizei hat alle Überlebenden fest genommen.~
+WeaponShopEntry_Eng	You are enterring a well equipped Weapon and Armor shop.
+
+The shop owner is just reloading a rifle, which seems a little over the top...~
+WeaponShopEntry_Ger	Ihr betretet einen gut ausgestatteten Händler für Waffen und Rüstungen.
+
+Der Besitzer ist gerade dabei ein Gewehr nachzuladen, was etwas übertrieben wirkt...~
 WeaponShopAction0_Eng	Buy Weapons and Armor~
 WeaponShopAction0_Ger	Kaufe Waffen und Rüstungen~
 WeaponShopAction1_Eng	Start assualt on the weapon dealer.~
 WeaponShopAction1_Ger	Überfalle den Waffenhändler~
 BuyWeapons_Eng	Purchase~
 BuyWeapons_Ger	Einkaufen~
-BuyWeaponsReally_Eng	Do you really want to buy this item?~
-BuyWeaponsReally_Ger	Diesen Gegenstand wirklich kaufen?~
-BuyWeaponsReallyTitle_Eng	Buy Item?~
-BuyWeaponsReallyTitle_Ger	Gegenstand kaufen?~
+BuyWeaponsReally_Eng	Do you really want to buy @item?~
+BuyWeaponsReally_Ger	@item wirklich kaufen?~
+BuyWeaponsReallyTitle_Eng	Relly?~
+BuyWeaponsReallyTitle_Ger	Wirklich kaufen?~
 BuyWeaponsReallyA1_Eng	Yes~
 BuyWeaponsReallyA1_Ger	Ja~
 BuyWeaponsReallyA2_Eng	No~
 BuyWeaponsReallyA2_Ger	Nein~
+BuyNotEnoughMoney_Eng	You don't have enough money to buy @item.~
+BuyNotEnoughMoney_Ger	Es ist nicht genug Geld verfügbar um @item zu kaufen.~
+BuyNotEnoughMoneyTitle_Eng	Not enough money.~
+BuyNotEnoughMoneyTitle_Ger	Nicht genügend Geld~
+BuyNotEnoughMoneyA1_Eng	Ok~
+BuyNotEnoughMoneyA1_Ger	Ok~
+BuySuccessful_Eng	You have purchased @item and it will be delivered to your Headquarter.~
+BuySuccessful_Ger	Ihr habt @item erworben und er wird nun in das Hauptquartier geliefert.~
+BuySuccessfulTitle_Eng	Success.~
+BuySuccessfulTitle_Ger	Erfolg~
+BuySuccessfulA1_Eng	Ok~
+BuySuccessfulA1_Ger	Ok~
 FightActionMainWeapon_Ger	@player attackierst @enemey mit deiner primären Waffe.~
 FightActionMainWeapon_Eng	@player are attachking @enemey with your primary weapon.~
 FightActionPistol_Ger	@player schießt aus deiner Pistole auf @enemey.~
